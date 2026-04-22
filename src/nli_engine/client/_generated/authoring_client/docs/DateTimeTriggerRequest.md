@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.date_time_trigger_request import DateTimeTriggerRequest
+from nli_engine.client._generated.authoring_client.models.date_time_trigger_request import DateTimeTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

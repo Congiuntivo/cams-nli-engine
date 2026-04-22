@@ -1,4 +1,4 @@
-# authoring_client.TriggersApi
+# nli_engine.client.\_generated.authoring_client.TriggersApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -33,23 +33,23 @@ Adds a cron scheduled trigger using optional cron fields. Null fields match all 
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.cron_scheduled_trigger_request import CronScheduledTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.cron_scheduled_trigger_request import CronScheduledTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     cron_scheduled_trigger_request = {"triggerName":"daily_evening_prompt","minute":30,"hour":19} # CronScheduledTriggerRequest | Cron scheduled trigger payload.
 
@@ -103,23 +103,23 @@ Adds a trigger that fires once at the specified ISO-8601 date-time.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.date_time_trigger_request import DateTimeTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.date_time_trigger_request import DateTimeTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     date_time_trigger_request = {"triggerName":"enrollment_follow_up","schedule":"2026-10-01T09:30:00Z"} # DateTimeTriggerRequest | Date-time trigger payload.
 
@@ -173,23 +173,23 @@ Adds a trigger that fires after a delay from sensing start.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.delayed_trigger_request import DelayedTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.delayed_trigger_request import DelayedTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     delayed_trigger_request = {"triggerName":"delayed_prompt","delay":{"minutes":15}} # DelayedTriggerRequest | Delayed trigger payload.
 
@@ -243,23 +243,23 @@ Adds a trigger that fires when elapsed time from sensing start is reached.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.elapsed_time_trigger_request import ElapsedTimeTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.elapsed_time_trigger_request import ElapsedTimeTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     elapsed_time_trigger_request = {"triggerName":"elapsed_30_minutes","elapsedTime":{"minutes":30}} # ElapsedTimeTriggerRequest | Elapsed-time trigger payload.
 
@@ -313,23 +313,23 @@ Adds a trigger that fires immediately when sensing starts.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.immediate_trigger_request import ImmediateTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.immediate_trigger_request import ImmediateTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     immediate_trigger_request = {"triggerName":"start_now"} # ImmediateTriggerRequest | Immediate trigger payload.
 
@@ -383,23 +383,23 @@ Adds a manual trigger with optional label and description.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.manual_trigger_request import ManualTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.manual_trigger_request import ManualTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     manual_trigger_request = {"triggerName":"manual_daily_prompt","label":"Daily prompt","description":"Shown manually by the participant."} # ManualTriggerRequest | Manual trigger payload.
 
@@ -453,23 +453,23 @@ Adds a trigger that starts immediately and never stops.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.no_op_trigger_request import NoOpTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.no_op_trigger_request import NoOpTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     no_op_trigger_request = {"triggerName":"always_on"} # NoOpTriggerRequest | No-op trigger payload.
 
@@ -523,23 +523,23 @@ Adds a trigger that fires when the specified task is not on the task list.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.no_user_task_trigger_request import NoUserTaskTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.no_user_task_trigger_request import NoUserTaskTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     no_user_task_trigger_request = {"triggerName":"ensure_survey_task","taskName":"daily_survey"} # NoUserTaskTriggerRequest | No-user-task trigger payload.
 
@@ -593,23 +593,23 @@ Adds a trigger that can only be fired once during deployment.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.one_time_trigger_request import OneTimeTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.one_time_trigger_request import OneTimeTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     one_time_trigger_request = {"triggerName":"show_demographics_once"} # OneTimeTriggerRequest | One-time trigger payload.
 
@@ -663,23 +663,23 @@ Adds a trigger that fires only when manually triggered from code.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.passive_trigger_request import PassiveTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.passive_trigger_request import PassiveTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     passive_trigger_request = {"triggerName":"manual_code_trigger"} # PassiveTriggerRequest | Passive trigger payload.
 
@@ -733,23 +733,23 @@ Adds a trigger that repeats with a fixed period.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.periodic_trigger_request import PeriodicTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.periodic_trigger_request import PeriodicTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     periodic_trigger_request = {"triggerName":"periodic_prompt","period":{"minutes":20}} # PeriodicTriggerRequest | Periodic trigger payload.
 
@@ -803,23 +803,23 @@ Adds a random recurrent trigger with time window and trigger count bounds.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.random_recurrent_trigger_request import RandomRecurrentTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.random_recurrent_trigger_request import RandomRecurrentTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     random_recurrent_trigger_request = {"triggerName":"random_daily_prompts","minNumberOfTriggers":3,"maxNumberOfTriggers":8,"startTime":{"hour":8,"minute":0},"endTime":{"hour":20,"minute":0}} # RandomRecurrentTriggerRequest | Random recurrent trigger payload.
 
@@ -873,23 +873,23 @@ Adds a recurrent scheduled trigger with daily, weekly, or monthly recurrence.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.recurrent_scheduled_trigger_request import RecurrentScheduledTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.recurrent_scheduled_trigger_request import RecurrentScheduledTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     recurrent_scheduled_trigger_request = {"triggerName":"weekday_checkin","type":"weekly","time":{"hour":9,"minute":30},"dayOfWeek":1} # RecurrentScheduledTriggerRequest | Recurrent scheduled trigger payload.
 
@@ -943,23 +943,23 @@ Adds a trigger that fires when data of a specific measure type is sampled. Optio
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.sampling_event_trigger_request import SamplingEventTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.sampling_event_trigger_request import SamplingEventTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     sampling_event_trigger_request = {"triggerName":"after_completed_task","measureType":"dk.cachet.carp.completed_task","triggerCondition":{"__type":"dk.cachet.carp.common.application.data.completedtask"}} # SamplingEventTriggerRequest | Sampling-event trigger payload. triggerCondition is optional and should follow serialized CARP Data format.
 
@@ -1013,23 +1013,23 @@ Adds a scheduled trigger with a recurrence rule based on RFC-5545 concepts.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.scheduled_trigger_request import ScheduledTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.scheduled_trigger_request import ScheduledTriggerRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     scheduled_trigger_request = {"triggerName":"daily_checkin","time":{"hour":9,"minute":0},"recurrenceRule":{"frequency":"daily","interval":1,"end":{"type":"never"}}} # ScheduledTriggerRequest | Scheduled trigger payload.
 
@@ -1083,23 +1083,23 @@ Adds a trigger that fires when a named user task reaches the specified state.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.models.user_task_trigger_request import UserTaskTriggerRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import UserTaskTriggerRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     user_task_trigger_request = {"triggerName":"survey_completion_trigger","taskName":"daily_survey","triggerCondition":"done"} # UserTaskTriggerRequest | User-task trigger payload.
 
@@ -1153,22 +1153,22 @@ Returns configured trigger ids and serialized trigger configurations currently i
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.triggers_response import TriggersResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.triggers_response import TriggersResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TriggersApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

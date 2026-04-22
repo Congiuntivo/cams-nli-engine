@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.user_task_trigger_request import UserTaskTriggerRequest
+from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import (
+    UserTaskTriggerRequest,
+)
 
 
 class TestUserTaskTriggerRequest(unittest.TestCase):

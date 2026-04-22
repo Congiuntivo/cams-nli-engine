@@ -1,4 +1,4 @@
-# authoring_client.PrimaryDevicesApi
+# nli_engine.client.\_generated.authoring_client.PrimaryDevicesApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -19,23 +19,23 @@ Adds a smartphone as a primary device in the session protocol.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
-from authoring_client.models.requirements_response import RequirementsResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
+from nli_engine.client._generated.authoring_client.models.requirements_response import RequirementsResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.PrimaryDevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.PrimaryDevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     primary_device_role_request = {"roleName":"User Phone"} # PrimaryDeviceRoleRequest | Optional role name for the primary smartphone.
 
@@ -89,23 +89,23 @@ Adds a web browser as a primary device in the session protocol.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
-from authoring_client.models.requirements_response import RequirementsResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
+from nli_engine.client._generated.authoring_client.models.requirements_response import RequirementsResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.PrimaryDevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.PrimaryDevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     primary_device_role_request = {"roleName":"Participant Browser"} # PrimaryDeviceRoleRequest | Optional role name for the primary web browser.
 
@@ -159,22 +159,22 @@ Returns primary devices currently configured in the session protocol, including 
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.primary_devices_response import PrimaryDevicesResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.primary_devices_response import PrimaryDevicesResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.PrimaryDevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.PrimaryDevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

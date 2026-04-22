@@ -18,7 +18,9 @@ import json
 
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
-from authoring_client.models.named_device import NamedDevice
+from nli_engine.client._generated.authoring_client.models.named_device import (
+    NamedDevice,
+)
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python

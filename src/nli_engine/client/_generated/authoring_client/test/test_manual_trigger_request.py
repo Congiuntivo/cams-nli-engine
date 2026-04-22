@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.manual_trigger_request import ManualTriggerRequest
+from nli_engine.client._generated.authoring_client.models.manual_trigger_request import (
+    ManualTriggerRequest,
+)
 
 
 class TestManualTriggerRequest(unittest.TestCase):

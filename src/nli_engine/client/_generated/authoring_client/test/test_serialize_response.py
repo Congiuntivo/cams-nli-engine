@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.serialize_response import SerializeResponse
+from nli_engine.client._generated.authoring_client.models.serialize_response import (
+    SerializeResponse,
+)
 
 
 class TestSerializeResponse(unittest.TestCase):

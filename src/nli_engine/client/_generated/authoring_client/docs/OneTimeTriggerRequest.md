@@ -9,7 +9,7 @@
 ## Example
 
 ```python
-from authoring_client.models.one_time_trigger_request import OneTimeTriggerRequest
+from nli_engine.client._generated.authoring_client.models.one_time_trigger_request import OneTimeTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

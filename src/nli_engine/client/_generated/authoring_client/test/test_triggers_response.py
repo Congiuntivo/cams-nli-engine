@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.triggers_response import TriggersResponse
+from nli_engine.client._generated.authoring_client.models.triggers_response import (
+    TriggersResponse,
+)
 
 
 class TestTriggersResponse(unittest.TestCase):
@@ -36,17 +38,17 @@ class TestTriggersResponse(unittest.TestCase):
         if include_optional:
             return TriggersResponse(
                 triggers = [
-                    authoring_client.models.trigger_summary.TriggerSummary(
+                    nli_engine.client._generated.authoring_client.models.trigger_summary.TriggerSummary(
                         name = '0', 
-                        trigger = authoring_client.models.trigger.trigger(), )
+                        trigger = nli_engine.client._generated.authoring_client.models.trigger.trigger(), )
                     ]
             )
         else:
             return TriggersResponse(
                 triggers = [
-                    authoring_client.models.trigger_summary.TriggerSummary(
+                    nli_engine.client._generated.authoring_client.models.trigger_summary.TriggerSummary(
                         name = '0', 
-                        trigger = authoring_client.models.trigger.trigger(), )
+                        trigger = nli_engine.client._generated.authoring_client.models.trigger.trigger(), )
                     ],
         )
         """

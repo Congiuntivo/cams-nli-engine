@@ -1,4 +1,4 @@
-# authoring_client.ServicesApi
+# nli_engine.client.\_generated.authoring_client.ServicesApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -21,22 +21,22 @@ Adds air quality service as a connected device. Requires a configured primary de
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ServicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ServicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     primary_device_role_name = 'User Phone' # str | Role name of the primary device this service is connected to.
     role_name = 'Local Air Quality' # str | Optional role name for the air quality service. (optional)
@@ -92,22 +92,22 @@ Adds health service as a connected device. Requires a configured primary device.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ServicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ServicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     primary_device_role_name = 'User Phone' # str | Role name of the primary device this service is connected to.
     role_name = 'Device Health' # str | Optional role name for the health service. (optional)
@@ -163,23 +163,23 @@ Adds location service as a connected device. Requires a configured primary devic
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.location_service_request import LocationServiceRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.location_service_request import LocationServiceRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ServicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ServicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     location_service_request = {"roleName":"User Location","primaryDeviceRoleName":"User Phone","accuracy":"balanced","distance":10.0,"interval":{"seconds":60},"notificationTitle":"Tracking active","notificationMessage":"Location tracking is running.","notificationDescription":"Tap to return to the app.","notificationIconName":"ic_notification","notificationOnTapBringToFront":false} # LocationServiceRequest | Location service configuration payload.
 
@@ -233,22 +233,22 @@ Adds weather service as a connected device. Requires a configured primary device
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ServicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ServicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     primary_device_role_name = 'User Phone' # str | Role name of the primary device this service is connected to.
     role_name = 'Local Weather' # str | Optional role name for the weather service. (optional)
@@ -304,22 +304,22 @@ Returns connected services currently configured in the session protocol, includi
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.service_roles_response import ServiceRolesResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.service_roles_response import ServiceRolesResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ServicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ServicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

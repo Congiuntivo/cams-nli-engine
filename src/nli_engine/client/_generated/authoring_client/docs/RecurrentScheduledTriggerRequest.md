@@ -18,7 +18,7 @@
 ## Example
 
 ```python
-from authoring_client.models.recurrent_scheduled_trigger_request import RecurrentScheduledTriggerRequest
+from nli_engine.client._generated.authoring_client.models.recurrent_scheduled_trigger_request import RecurrentScheduledTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

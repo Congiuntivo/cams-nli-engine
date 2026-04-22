@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.no_user_task_trigger_request import NoUserTaskTriggerRequest
+from nli_engine.client._generated.authoring_client.models.no_user_task_trigger_request import NoUserTaskTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

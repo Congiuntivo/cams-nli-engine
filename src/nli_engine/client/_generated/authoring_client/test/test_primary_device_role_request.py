@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
+from nli_engine.client._generated.authoring_client.models.primary_device_role_request import (
+    PrimaryDeviceRoleRequest,
+)
 
 
 class TestPrimaryDeviceRoleRequest(unittest.TestCase):

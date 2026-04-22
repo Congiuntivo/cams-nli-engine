@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
+    SessionMutationResponse,
+)
 
 
 class TestSessionMutationResponse(unittest.TestCase):

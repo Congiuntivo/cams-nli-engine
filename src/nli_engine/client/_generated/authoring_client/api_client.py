@@ -24,11 +24,17 @@ from urllib.parse import quote
 from typing import Tuple, Optional, List, Dict, Union
 from pydantic import SecretStr
 
-from authoring_client.configuration import Configuration
-from authoring_client.api_response import ApiResponse, T as ApiResponseT
-import authoring_client.models
-from authoring_client import rest
-from authoring_client.exceptions import ApiValueError, ApiException
+from nli_engine.client._generated.authoring_client.configuration import Configuration
+from nli_engine.client._generated.authoring_client.api_response import (
+    ApiResponse,
+    T as ApiResponseT,
+)
+import nli_engine.client._generated.authoring_client.models
+from nli_engine.client._generated.authoring_client import rest
+from nli_engine.client._generated.authoring_client.exceptions import (
+    ApiValueError,
+    ApiException,
+)
 
 RequestSerialized = Tuple[str, str, Dict[str, str], Optional[str], List[str]]
 
@@ -439,7 +445,9 @@ class ApiClient:
             if klass in self.NATIVE_TYPES_MAPPING:
                 klass = self.NATIVE_TYPES_MAPPING[klass]
             else:
-                klass = getattr(authoring_client.models, klass)
+                klass = getattr(
+                    nli_engine.client._generated.authoring_client.models, klass
+                )
 
         if klass in self.PRIMITIVE_TYPES:
             return self.__deserialize_primitive(data, klass)

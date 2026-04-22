@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.task_controls_response import TaskControlsResponse
+from nli_engine.client._generated.authoring_client.models.task_controls_response import (
+    TaskControlsResponse,
+)
 
 
 class TestTaskControlsResponse(unittest.TestCase):
@@ -36,21 +38,21 @@ class TestTaskControlsResponse(unittest.TestCase):
         if include_optional:
             return TaskControlsResponse(
                 task_controls = [
-                    authoring_client.models.task_control_summary.TaskControlSummary(
-                        task_control = authoring_client.models.task_control.taskControl(), 
-                        trigger = authoring_client.models.trigger.trigger(), 
-                        task = authoring_client.models.task.task(), 
-                        target_device = authoring_client.models.target_device.targetDevice(), )
+                    nli_engine.client._generated.authoring_client.models.task_control_summary.TaskControlSummary(
+                        task_control = nli_engine.client._generated.authoring_client.models.task_control.taskControl(), 
+                        trigger = nli_engine.client._generated.authoring_client.models.trigger.trigger(), 
+                        task = nli_engine.client._generated.authoring_client.models.task.task(), 
+                        target_device = nli_engine.client._generated.authoring_client.models.target_device.targetDevice(), )
                     ]
             )
         else:
             return TaskControlsResponse(
                 task_controls = [
-                    authoring_client.models.task_control_summary.TaskControlSummary(
-                        task_control = authoring_client.models.task_control.taskControl(), 
-                        trigger = authoring_client.models.trigger.trigger(), 
-                        task = authoring_client.models.task.task(), 
-                        target_device = authoring_client.models.target_device.targetDevice(), )
+                    nli_engine.client._generated.authoring_client.models.task_control_summary.TaskControlSummary(
+                        task_control = nli_engine.client._generated.authoring_client.models.task_control.taskControl(), 
+                        trigger = nli_engine.client._generated.authoring_client.models.trigger.trigger(), 
+                        task = nli_engine.client._generated.authoring_client.models.task.task(), 
+                        target_device = nli_engine.client._generated.authoring_client.models.target_device.targetDevice(), )
                     ],
         )
         """

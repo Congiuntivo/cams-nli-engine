@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.tasks_response import TasksResponse
+from nli_engine.client._generated.authoring_client.models.tasks_response import (
+    TasksResponse,
+)
 
 
 class TestTasksResponse(unittest.TestCase):
@@ -36,17 +38,17 @@ class TestTasksResponse(unittest.TestCase):
         if include_optional:
             return TasksResponse(
                 tasks = [
-                    authoring_client.models.task_summary.TaskSummary(
+                    nli_engine.client._generated.authoring_client.models.task_summary.TaskSummary(
                         name = 'daily_survey', 
-                        serialized_obj = authoring_client.models.serialized_obj.serializedObj(), )
+                        serialized_obj = nli_engine.client._generated.authoring_client.models.serialized_obj.serializedObj(), )
                     ]
             )
         else:
             return TasksResponse(
                 tasks = [
-                    authoring_client.models.task_summary.TaskSummary(
+                    nli_engine.client._generated.authoring_client.models.task_summary.TaskSummary(
                         name = 'daily_survey', 
-                        serialized_obj = authoring_client.models.serialized_obj.serializedObj(), )
+                        serialized_obj = nli_engine.client._generated.authoring_client.models.serialized_obj.serializedObj(), )
                     ],
         )
         """

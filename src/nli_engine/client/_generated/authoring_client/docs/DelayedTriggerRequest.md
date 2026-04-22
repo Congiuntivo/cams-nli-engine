@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.delayed_trigger_request import DelayedTriggerRequest
+from nli_engine.client._generated.authoring_client.models.delayed_trigger_request import DelayedTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

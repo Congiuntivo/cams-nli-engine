@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.location_service_request import LocationServiceRequest
+from nli_engine.client._generated.authoring_client.models.location_service_request import (
+    LocationServiceRequest,
+)
 
 
 class TestLocationServiceRequest(unittest.TestCase):
@@ -39,7 +41,7 @@ class TestLocationServiceRequest(unittest.TestCase):
                 primary_device_role_name = 'User Phone',
                 accuracy = 'powerSave',
                 distance = 1.337,
-                interval = authoring_client.models.duration_request.DurationRequest(
+                interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 

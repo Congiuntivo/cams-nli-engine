@@ -9,7 +9,7 @@
 ## Example
 
 ```python
-from authoring_client.models.error_response import ErrorResponse
+from nli_engine.client._generated.authoring_client.models.error_response import ErrorResponse
 
 # TODO update the JSON string below
 json = "{}"

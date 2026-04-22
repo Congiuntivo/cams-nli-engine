@@ -11,7 +11,7 @@
 ## Example
 
 ```python
-from authoring_client.models.recurrence_end_request import RecurrenceEndRequest
+from nli_engine.client._generated.authoring_client.models.recurrence_end_request import RecurrenceEndRequest
 
 # TODO update the JSON string below
 json = "{}"

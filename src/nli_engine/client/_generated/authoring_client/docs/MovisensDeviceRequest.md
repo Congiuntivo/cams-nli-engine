@@ -15,7 +15,7 @@
 ## Example
 
 ```python
-from authoring_client.models.movisens_device_request import MovisensDeviceRequest
+from nli_engine.client._generated.authoring_client.models.movisens_device_request import MovisensDeviceRequest
 
 # TODO update the JSON string below
 json = "{}"

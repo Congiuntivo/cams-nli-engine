@@ -93,178 +93,226 @@ __all__ = [
 ]
 
 # import apis into sdk package
-from authoring_client.api.data_endpoint_api import DataEndpointApi as DataEndpointApi
-from authoring_client.api.devices_api import DevicesApi as DevicesApi
-from authoring_client.api.expected_participant_data_api import (
+from nli_engine.client._generated.authoring_client.api.data_endpoint_api import (
+    DataEndpointApi as DataEndpointApi,
+)
+from nli_engine.client._generated.authoring_client.api.devices_api import (
+    DevicesApi as DevicesApi,
+)
+from nli_engine.client._generated.authoring_client.api.expected_participant_data_api import (
     ExpectedParticipantDataApi as ExpectedParticipantDataApi,
 )
-from authoring_client.api.participant_roles_api import (
+from nli_engine.client._generated.authoring_client.api.participant_roles_api import (
     ParticipantRolesApi as ParticipantRolesApi,
 )
-from authoring_client.api.primary_devices_api import (
+from nli_engine.client._generated.authoring_client.api.primary_devices_api import (
     PrimaryDevicesApi as PrimaryDevicesApi,
 )
-from authoring_client.api.requirements_and_serialization_api import (
+from nli_engine.client._generated.authoring_client.api.requirements_and_serialization_api import (
     RequirementsAndSerializationApi as RequirementsAndSerializationApi,
 )
-from authoring_client.api.services_api import ServicesApi as ServicesApi
-from authoring_client.api.sessions_api import SessionsApi as SessionsApi
-from authoring_client.api.task_controls_api import TaskControlsApi as TaskControlsApi
-from authoring_client.api.tasks_api import TasksApi as TasksApi
-from authoring_client.api.triggers_api import TriggersApi as TriggersApi
+from nli_engine.client._generated.authoring_client.api.services_api import (
+    ServicesApi as ServicesApi,
+)
+from nli_engine.client._generated.authoring_client.api.sessions_api import (
+    SessionsApi as SessionsApi,
+)
+from nli_engine.client._generated.authoring_client.api.task_controls_api import (
+    TaskControlsApi as TaskControlsApi,
+)
+from nli_engine.client._generated.authoring_client.api.tasks_api import (
+    TasksApi as TasksApi,
+)
+from nli_engine.client._generated.authoring_client.api.triggers_api import (
+    TriggersApi as TriggersApi,
+)
 
 # import ApiClient
-from authoring_client.api_response import ApiResponse as ApiResponse
-from authoring_client.api_client import ApiClient as ApiClient
-from authoring_client.configuration import Configuration as Configuration
-from authoring_client.exceptions import OpenApiException as OpenApiException
-from authoring_client.exceptions import ApiTypeError as ApiTypeError
-from authoring_client.exceptions import ApiValueError as ApiValueError
-from authoring_client.exceptions import ApiKeyError as ApiKeyError
-from authoring_client.exceptions import ApiAttributeError as ApiAttributeError
-from authoring_client.exceptions import ApiException as ApiException
+from nli_engine.client._generated.authoring_client.api_response import (
+    ApiResponse as ApiResponse,
+)
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient as ApiClient,
+)
+from nli_engine.client._generated.authoring_client.configuration import (
+    Configuration as Configuration,
+)
+from nli_engine.client._generated.authoring_client.exceptions import (
+    OpenApiException as OpenApiException,
+)
+from nli_engine.client._generated.authoring_client.exceptions import (
+    ApiTypeError as ApiTypeError,
+)
+from nli_engine.client._generated.authoring_client.exceptions import (
+    ApiValueError as ApiValueError,
+)
+from nli_engine.client._generated.authoring_client.exceptions import (
+    ApiKeyError as ApiKeyError,
+)
+from nli_engine.client._generated.authoring_client.exceptions import (
+    ApiAttributeError as ApiAttributeError,
+)
+from nli_engine.client._generated.authoring_client.exceptions import (
+    ApiException as ApiException,
+)
 
 # import models into sdk package
-from authoring_client.models.app_task_request import AppTaskRequest as AppTaskRequest
-from authoring_client.models.background_task_request import (
+from nli_engine.client._generated.authoring_client.models.app_task_request import (
+    AppTaskRequest as AppTaskRequest,
+)
+from nli_engine.client._generated.authoring_client.models.background_task_request import (
     BackgroundTaskRequest as BackgroundTaskRequest,
 )
-from authoring_client.models.create_protocol_request import (
+from nli_engine.client._generated.authoring_client.models.create_protocol_request import (
     CreateProtocolRequest as CreateProtocolRequest,
 )
-from authoring_client.models.create_session_response import (
+from nli_engine.client._generated.authoring_client.models.create_session_response import (
     CreateSessionResponse as CreateSessionResponse,
 )
-from authoring_client.models.cron_scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.cron_scheduled_trigger_request import (
     CronScheduledTriggerRequest as CronScheduledTriggerRequest,
 )
-from authoring_client.models.data_endpoint_request import (
+from nli_engine.client._generated.authoring_client.models.data_endpoint_request import (
     DataEndpointRequest as DataEndpointRequest,
 )
-from authoring_client.models.data_endpoint_response import (
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
     DataEndpointResponse as DataEndpointResponse,
 )
-from authoring_client.models.date_time_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.date_time_trigger_request import (
     DateTimeTriggerRequest as DateTimeTriggerRequest,
 )
-from authoring_client.models.delayed_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.delayed_trigger_request import (
     DelayedTriggerRequest as DelayedTriggerRequest,
 )
-from authoring_client.models.device_roles_response import (
+from nli_engine.client._generated.authoring_client.models.device_roles_response import (
     DeviceRolesResponse as DeviceRolesResponse,
 )
-from authoring_client.models.duration_request import DurationRequest as DurationRequest
-from authoring_client.models.e_sense_device_request import (
+from nli_engine.client._generated.authoring_client.models.duration_request import (
+    DurationRequest as DurationRequest,
+)
+from nli_engine.client._generated.authoring_client.models.e_sense_device_request import (
     ESenseDeviceRequest as ESenseDeviceRequest,
 )
-from authoring_client.models.elapsed_time_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.elapsed_time_trigger_request import (
     ElapsedTimeTriggerRequest as ElapsedTimeTriggerRequest,
 )
-from authoring_client.models.error_response import ErrorResponse as ErrorResponse
-from authoring_client.models.health_app_task_request import (
+from nli_engine.client._generated.authoring_client.models.error_response import (
+    ErrorResponse as ErrorResponse,
+)
+from nli_engine.client._generated.authoring_client.models.health_app_task_request import (
     HealthAppTaskRequest as HealthAppTaskRequest,
 )
-from authoring_client.models.immediate_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.immediate_trigger_request import (
     ImmediateTriggerRequest as ImmediateTriggerRequest,
 )
-from authoring_client.models.location_service_request import (
+from nli_engine.client._generated.authoring_client.models.location_service_request import (
     LocationServiceRequest as LocationServiceRequest,
 )
-from authoring_client.models.manual_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.manual_trigger_request import (
     ManualTriggerRequest as ManualTriggerRequest,
 )
-from authoring_client.models.movesense_device_request import (
+from nli_engine.client._generated.authoring_client.models.movesense_device_request import (
     MovesenseDeviceRequest as MovesenseDeviceRequest,
 )
-from authoring_client.models.movisens_device_request import (
+from nli_engine.client._generated.authoring_client.models.movisens_device_request import (
     MovisensDeviceRequest as MovisensDeviceRequest,
 )
-from authoring_client.models.named_device import NamedDevice as NamedDevice
-from authoring_client.models.no_op_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.named_device import (
+    NamedDevice as NamedDevice,
+)
+from nli_engine.client._generated.authoring_client.models.no_op_trigger_request import (
     NoOpTriggerRequest as NoOpTriggerRequest,
 )
-from authoring_client.models.no_user_task_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.no_user_task_trigger_request import (
     NoUserTaskTriggerRequest as NoUserTaskTriggerRequest,
 )
-from authoring_client.models.one_time_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.one_time_trigger_request import (
     OneTimeTriggerRequest as OneTimeTriggerRequest,
 )
-from authoring_client.models.participant_roles_response import (
+from nli_engine.client._generated.authoring_client.models.participant_roles_response import (
     ParticipantRolesResponse as ParticipantRolesResponse,
 )
-from authoring_client.models.passive_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.passive_trigger_request import (
     PassiveTriggerRequest as PassiveTriggerRequest,
 )
-from authoring_client.models.periodic_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.periodic_trigger_request import (
     PeriodicTriggerRequest as PeriodicTriggerRequest,
 )
-from authoring_client.models.polar_device_request import (
+from nli_engine.client._generated.authoring_client.models.polar_device_request import (
     PolarDeviceRequest as PolarDeviceRequest,
 )
-from authoring_client.models.primary_device_role_request import (
+from nli_engine.client._generated.authoring_client.models.primary_device_role_request import (
     PrimaryDeviceRoleRequest as PrimaryDeviceRoleRequest,
 )
-from authoring_client.models.primary_devices_response import (
+from nli_engine.client._generated.authoring_client.models.primary_devices_response import (
     PrimaryDevicesResponse as PrimaryDevicesResponse,
 )
-from authoring_client.models.random_recurrent_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.random_recurrent_trigger_request import (
     RandomRecurrentTriggerRequest as RandomRecurrentTriggerRequest,
 )
-from authoring_client.models.recurrence_end_request import (
+from nli_engine.client._generated.authoring_client.models.recurrence_end_request import (
     RecurrenceEndRequest as RecurrenceEndRequest,
 )
-from authoring_client.models.recurrence_rule_request import (
+from nli_engine.client._generated.authoring_client.models.recurrence_rule_request import (
     RecurrenceRuleRequest as RecurrenceRuleRequest,
 )
-from authoring_client.models.recurrent_scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.recurrent_scheduled_trigger_request import (
     RecurrentScheduledTriggerRequest as RecurrentScheduledTriggerRequest,
 )
-from authoring_client.models.requirements_response import (
+from nli_engine.client._generated.authoring_client.models.requirements_response import (
     RequirementsResponse as RequirementsResponse,
 )
-from authoring_client.models.sampling_event_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.sampling_event_trigger_request import (
     SamplingEventTriggerRequest as SamplingEventTriggerRequest,
 )
-from authoring_client.models.scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.scheduled_trigger_request import (
     ScheduledTriggerRequest as ScheduledTriggerRequest,
 )
-from authoring_client.models.serialize_response import (
+from nli_engine.client._generated.authoring_client.models.serialize_response import (
     SerializeResponse as SerializeResponse,
 )
-from authoring_client.models.serialized_carp_data_request import (
+from nli_engine.client._generated.authoring_client.models.serialized_carp_data_request import (
     SerializedCarpDataRequest as SerializedCarpDataRequest,
 )
-from authoring_client.models.service_roles_response import (
+from nli_engine.client._generated.authoring_client.models.service_roles_response import (
     ServiceRolesResponse as ServiceRolesResponse,
 )
-from authoring_client.models.session_mutation_response import (
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
     SessionMutationResponse as SessionMutationResponse,
 )
-from authoring_client.models.task_control_request import (
+from nli_engine.client._generated.authoring_client.models.task_control_request import (
     TaskControlRequest as TaskControlRequest,
 )
-from authoring_client.models.task_control_summary import (
+from nli_engine.client._generated.authoring_client.models.task_control_summary import (
     TaskControlSummary as TaskControlSummary,
 )
-from authoring_client.models.task_controls_response import (
+from nli_engine.client._generated.authoring_client.models.task_controls_response import (
     TaskControlsResponse as TaskControlsResponse,
 )
-from authoring_client.models.task_measure_request import (
+from nli_engine.client._generated.authoring_client.models.task_measure_request import (
     TaskMeasureRequest as TaskMeasureRequest,
 )
-from authoring_client.models.task_sampling_configuration_request import (
+from nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request import (
     TaskSamplingConfigurationRequest as TaskSamplingConfigurationRequest,
 )
-from authoring_client.models.task_summary import TaskSummary as TaskSummary
-from authoring_client.models.tasks_response import TasksResponse as TasksResponse
-from authoring_client.models.time_of_day_request import (
+from nli_engine.client._generated.authoring_client.models.task_summary import (
+    TaskSummary as TaskSummary,
+)
+from nli_engine.client._generated.authoring_client.models.tasks_response import (
+    TasksResponse as TasksResponse,
+)
+from nli_engine.client._generated.authoring_client.models.time_of_day_request import (
     TimeOfDayRequest as TimeOfDayRequest,
 )
-from authoring_client.models.trigger_summary import TriggerSummary as TriggerSummary
-from authoring_client.models.triggers_response import (
+from nli_engine.client._generated.authoring_client.models.trigger_summary import (
+    TriggerSummary as TriggerSummary,
+)
+from nli_engine.client._generated.authoring_client.models.triggers_response import (
     TriggersResponse as TriggersResponse,
 )
-from authoring_client.models.user_task_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import (
     UserTaskTriggerRequest as UserTaskTriggerRequest,
 )
-from authoring_client.models.web_task_request import WebTaskRequest as WebTaskRequest
+from nli_engine.client._generated.authoring_client.models.web_task_request import (
+    WebTaskRequest as WebTaskRequest,
+)

@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.web_task_request import WebTaskRequest
+from nli_engine.client._generated.authoring_client.models.web_task_request import (
+    WebTaskRequest,
+)
 
 
 class TestWebTaskRequest(unittest.TestCase):
@@ -38,18 +40,18 @@ class TestWebTaskRequest(unittest.TestCase):
                 name = 'daily_survey',
                 description = 'Open a daily web survey for participants.',
                 measures = [
-                    authoring_client.models.task_measure_request.TaskMeasureRequest(
+                    nli_engine.client._generated.authoring_client.models.task_measure_request.TaskMeasureRequest(
                         measure_type = 'dk.cachet.carp.activity', 
-                        sampling_configuration = authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
+                        sampling_configuration = nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
                             sampling_type = 'none', 
-                            interval = authoring_client.models.duration_request.DurationRequest(
+                            interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
                                 seconds = 56, 
                                 milliseconds = 56, 
                                 microseconds = 56, ), 
-                            duration = authoring_client.models.duration_request.DurationRequest(
+                            duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
@@ -69,18 +71,18 @@ class TestWebTaskRequest(unittest.TestCase):
                 name = 'daily_survey',
                 description = 'Open a daily web survey for participants.',
                 measures = [
-                    authoring_client.models.task_measure_request.TaskMeasureRequest(
+                    nli_engine.client._generated.authoring_client.models.task_measure_request.TaskMeasureRequest(
                         measure_type = 'dk.cachet.carp.activity', 
-                        sampling_configuration = authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
+                        sampling_configuration = nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
                             sampling_type = 'none', 
-                            interval = authoring_client.models.duration_request.DurationRequest(
+                            interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
                                 seconds = 56, 
                                 milliseconds = 56, 
                                 microseconds = 56, ), 
-                            duration = authoring_client.models.duration_request.DurationRequest(
+                            duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 

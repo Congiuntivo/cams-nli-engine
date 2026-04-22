@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.primary_devices_response import PrimaryDevicesResponse
+from nli_engine.client._generated.authoring_client.models.primary_devices_response import (
+    PrimaryDevicesResponse,
+)
 
 
 class TestPrimaryDevicesResponse(unittest.TestCase):
@@ -36,17 +38,17 @@ class TestPrimaryDevicesResponse(unittest.TestCase):
         if include_optional:
             return PrimaryDevicesResponse(
                 primary_devices = [
-                    authoring_client.models.named_device.NamedDevice(
+                    nli_engine.client._generated.authoring_client.models.named_device.NamedDevice(
                         name = '', 
-                        device = authoring_client.models.device.device(), )
+                        device = nli_engine.client._generated.authoring_client.models.device.device(), )
                     ]
             )
         else:
             return PrimaryDevicesResponse(
                 primary_devices = [
-                    authoring_client.models.named_device.NamedDevice(
+                    nli_engine.client._generated.authoring_client.models.named_device.NamedDevice(
                         name = '', 
-                        device = authoring_client.models.device.device(), )
+                        device = nli_engine.client._generated.authoring_client.models.device.device(), )
                     ],
         )
         """

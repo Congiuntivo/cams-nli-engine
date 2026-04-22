@@ -12,7 +12,7 @@
 ## Example
 
 ```python
-from authoring_client.models.background_task_request import BackgroundTaskRequest
+from nli_engine.client._generated.authoring_client.models.background_task_request import BackgroundTaskRequest
 
 # TODO update the JSON string below
 json = "{}"

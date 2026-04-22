@@ -1,4 +1,4 @@
-# authoring_client.ParticipantRolesApi
+# nli_engine.client.\_generated.authoring_client.ParticipantRolesApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -18,22 +18,22 @@ Adds a participant role. Protocol must already be started with POST /protocol/ne
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ParticipantRolesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ParticipantRolesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     role_name = 'Patient' # str | Participant role name.
     is_optional = false # bool | Whether the role is optional. (optional)
@@ -89,22 +89,22 @@ Returns participant role names currently configured in the session protocol.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.participant_roles_response import ParticipantRolesResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.participant_roles_response import ParticipantRolesResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.ParticipantRolesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.ParticipantRolesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

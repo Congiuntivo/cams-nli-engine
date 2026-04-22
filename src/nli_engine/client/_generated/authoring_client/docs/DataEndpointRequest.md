@@ -16,7 +16,7 @@
 ## Example
 
 ```python
-from authoring_client.models.data_endpoint_request import DataEndpointRequest
+from nli_engine.client._generated.authoring_client.models.data_endpoint_request import DataEndpointRequest
 
 # TODO update the JSON string below
 json = "{}"

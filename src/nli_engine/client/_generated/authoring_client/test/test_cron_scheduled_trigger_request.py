@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.cron_scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.cron_scheduled_trigger_request import (
     CronScheduledTriggerRequest,
 )
 

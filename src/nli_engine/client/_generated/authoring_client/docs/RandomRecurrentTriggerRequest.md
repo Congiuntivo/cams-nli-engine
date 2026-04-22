@@ -13,7 +13,7 @@
 ## Example
 
 ```python
-from authoring_client.models.random_recurrent_trigger_request import RandomRecurrentTriggerRequest
+from nli_engine.client._generated.authoring_client.models.random_recurrent_trigger_request import RandomRecurrentTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

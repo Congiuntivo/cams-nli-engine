@@ -14,12 +14,19 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import StrictBool
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.participant_roles_response import ParticipantRolesResponse
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
+    DataEndpointResponse,
+)
+from nli_engine.client._generated.authoring_client.models.participant_roles_response import (
+    ParticipantRolesResponse,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class ParticipantRolesApi:

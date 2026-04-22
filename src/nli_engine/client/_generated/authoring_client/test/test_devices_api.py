@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.devices_api import DevicesApi
+from nli_engine.client._generated.authoring_client.api.devices_api import DevicesApi
 
 
 class TestDevicesApi(unittest.TestCase):

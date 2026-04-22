@@ -13,13 +13,22 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.location_service_request import LocationServiceRequest
-from authoring_client.models.service_roles_response import ServiceRolesResponse
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
+    DataEndpointResponse,
+)
+from nli_engine.client._generated.authoring_client.models.location_service_request import (
+    LocationServiceRequest,
+)
+from nli_engine.client._generated.authoring_client.models.service_roles_response import (
+    ServiceRolesResponse,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class ServicesApi:

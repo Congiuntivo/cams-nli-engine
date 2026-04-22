@@ -9,7 +9,7 @@
 ## Example
 
 ```python
-from authoring_client.models.serialized_carp_data_request import SerializedCarpDataRequest
+from nli_engine.client._generated.authoring_client.models.serialized_carp_data_request import SerializedCarpDataRequest
 
 # TODO update the JSON string below
 json = "{}"

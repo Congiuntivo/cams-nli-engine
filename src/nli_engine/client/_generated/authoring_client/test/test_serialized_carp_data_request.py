@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.serialized_carp_data_request import (
+from nli_engine.client._generated.authoring_client.models.serialized_carp_data_request import (
     SerializedCarpDataRequest,
 )
 

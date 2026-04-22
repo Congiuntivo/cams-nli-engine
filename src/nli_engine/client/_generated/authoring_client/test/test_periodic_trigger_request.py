@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.periodic_trigger_request import PeriodicTriggerRequest
+from nli_engine.client._generated.authoring_client.models.periodic_trigger_request import (
+    PeriodicTriggerRequest,
+)
 
 
 class TestPeriodicTriggerRequest(unittest.TestCase):
@@ -36,7 +38,7 @@ class TestPeriodicTriggerRequest(unittest.TestCase):
         if include_optional:
             return PeriodicTriggerRequest(
                 trigger_name = 'periodic_prompt',
-                period = authoring_client.models.duration_request.DurationRequest(
+                period = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -47,7 +49,7 @@ class TestPeriodicTriggerRequest(unittest.TestCase):
         else:
             return PeriodicTriggerRequest(
                 trigger_name = 'periodic_prompt',
-                period = authoring_client.models.duration_request.DurationRequest(
+                period = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 

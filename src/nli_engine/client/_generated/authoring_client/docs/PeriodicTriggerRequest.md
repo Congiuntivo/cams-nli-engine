@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.periodic_trigger_request import PeriodicTriggerRequest
+from nli_engine.client._generated.authoring_client.models.periodic_trigger_request import PeriodicTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

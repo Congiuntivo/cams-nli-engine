@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.participant_roles_response import ParticipantRolesResponse
+from nli_engine.client._generated.authoring_client.models.participant_roles_response import (
+    ParticipantRolesResponse,
+)
 
 
 class TestParticipantRolesResponse(unittest.TestCase):

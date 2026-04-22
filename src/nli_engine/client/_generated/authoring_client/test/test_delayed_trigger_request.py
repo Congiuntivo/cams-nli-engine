@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.delayed_trigger_request import DelayedTriggerRequest
+from nli_engine.client._generated.authoring_client.models.delayed_trigger_request import (
+    DelayedTriggerRequest,
+)
 
 
 class TestDelayedTriggerRequest(unittest.TestCase):
@@ -36,7 +38,7 @@ class TestDelayedTriggerRequest(unittest.TestCase):
         if include_optional:
             return DelayedTriggerRequest(
                 trigger_name = 'delayed_prompt',
-                delay = authoring_client.models.duration_request.DurationRequest(
+                delay = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -47,7 +49,7 @@ class TestDelayedTriggerRequest(unittest.TestCase):
         else:
             return DelayedTriggerRequest(
                 trigger_name = 'delayed_prompt',
-                delay = authoring_client.models.duration_request.DurationRequest(
+                delay = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 

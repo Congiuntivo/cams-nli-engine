@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.one_time_trigger_request import OneTimeTriggerRequest
+from nli_engine.client._generated.authoring_client.models.one_time_trigger_request import (
+    OneTimeTriggerRequest,
+)
 
 
 class TestOneTimeTriggerRequest(unittest.TestCase):

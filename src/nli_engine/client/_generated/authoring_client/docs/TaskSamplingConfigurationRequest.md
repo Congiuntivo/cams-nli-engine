@@ -16,7 +16,7 @@
 ## Example
 
 ```python
-from authoring_client.models.task_sampling_configuration_request import TaskSamplingConfigurationRequest
+from nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request import TaskSamplingConfigurationRequest
 
 # TODO update the JSON string below
 json = "{}"

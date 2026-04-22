@@ -12,7 +12,7 @@
 ## Example
 
 ```python
-from authoring_client.models.e_sense_device_request import ESenseDeviceRequest
+from nli_engine.client._generated.authoring_client.models.e_sense_device_request import ESenseDeviceRequest
 
 # TODO update the JSON string below
 json = "{}"

@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.triggers_api import TriggersApi
+from nli_engine.client._generated.authoring_client.api.triggers_api import TriggersApi
 
 
 class TestTriggersApi(unittest.TestCase):

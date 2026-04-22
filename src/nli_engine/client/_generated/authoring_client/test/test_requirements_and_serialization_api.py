@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.requirements_and_serialization_api import (
+from nli_engine.client._generated.authoring_client.api.requirements_and_serialization_api import (
     RequirementsAndSerializationApi,
 )
 

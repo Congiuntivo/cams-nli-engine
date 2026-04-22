@@ -1,4 +1,4 @@
-# authoring_client.RequirementsAndSerializationApi
+# nli_engine.client.\_generated.authoring_client.RequirementsAndSerializationApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -18,22 +18,22 @@ Returns the current unfulfilled requirements for the session.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.requirements_response import RequirementsResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.requirements_response import RequirementsResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.RequirementsAndSerializationApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.RequirementsAndSerializationApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:
@@ -85,22 +85,22 @@ Returns the serialized protocol for the session.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.serialize_response import SerializeResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.serialize_response import SerializeResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.RequirementsAndSerializationApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.RequirementsAndSerializationApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

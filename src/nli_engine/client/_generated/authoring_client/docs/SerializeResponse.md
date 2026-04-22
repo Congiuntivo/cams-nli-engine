@@ -20,7 +20,7 @@
 ## Example
 
 ```python
-from authoring_client.models.serialize_response import SerializeResponse
+from nli_engine.client._generated.authoring_client.models.serialize_response import SerializeResponse
 
 # TODO update the JSON string below
 json = "{}"

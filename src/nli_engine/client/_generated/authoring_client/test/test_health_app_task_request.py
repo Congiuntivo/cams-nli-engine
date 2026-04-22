@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.health_app_task_request import HealthAppTaskRequest
+from nli_engine.client._generated.authoring_client.models.health_app_task_request import (
+    HealthAppTaskRequest,
+)
 
 
 class TestHealthAppTaskRequest(unittest.TestCase):
@@ -38,18 +40,18 @@ class TestHealthAppTaskRequest(unittest.TestCase):
                 name = 'daily_health_assessment',
                 description = 'Collect daily health assessment in-app.',
                 measures = [
-                    authoring_client.models.task_measure_request.TaskMeasureRequest(
+                    nli_engine.client._generated.authoring_client.models.task_measure_request.TaskMeasureRequest(
                         measure_type = 'dk.cachet.carp.activity', 
-                        sampling_configuration = authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
+                        sampling_configuration = nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
                             sampling_type = 'none', 
-                            interval = authoring_client.models.duration_request.DurationRequest(
+                            interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
                                 seconds = 56, 
                                 milliseconds = 56, 
                                 microseconds = 56, ), 
-                            duration = authoring_client.models.duration_request.DurationRequest(
+                            duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
@@ -68,7 +70,7 @@ class TestHealthAppTaskRequest(unittest.TestCase):
                 title = 'Health Assessment',
                 instructions = 'Follow the health assessment steps.',
                 minutes_to_complete = 5,
-                expire = authoring_client.models.duration_request.DurationRequest(
+                expire = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -82,18 +84,18 @@ class TestHealthAppTaskRequest(unittest.TestCase):
                 name = 'daily_health_assessment',
                 description = 'Collect daily health assessment in-app.',
                 measures = [
-                    authoring_client.models.task_measure_request.TaskMeasureRequest(
+                    nli_engine.client._generated.authoring_client.models.task_measure_request.TaskMeasureRequest(
                         measure_type = 'dk.cachet.carp.activity', 
-                        sampling_configuration = authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
+                        sampling_configuration = nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
                             sampling_type = 'none', 
-                            interval = authoring_client.models.duration_request.DurationRequest(
+                            interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
                                 seconds = 56, 
                                 milliseconds = 56, 
                                 microseconds = 56, ), 
-                            duration = authoring_client.models.duration_request.DurationRequest(
+                            duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 

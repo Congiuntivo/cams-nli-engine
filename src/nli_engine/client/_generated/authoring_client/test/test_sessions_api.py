@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.sessions_api import SessionsApi
+from nli_engine.client._generated.authoring_client.api.sessions_api import SessionsApi
 
 
 class TestSessionsApi(unittest.TestCase):

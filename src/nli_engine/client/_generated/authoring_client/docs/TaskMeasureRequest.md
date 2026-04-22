@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.task_measure_request import TaskMeasureRequest
+from nli_engine.client._generated.authoring_client.models.task_measure_request import TaskMeasureRequest
 
 # TODO update the JSON string below
 json = "{}"

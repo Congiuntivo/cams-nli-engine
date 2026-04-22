@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.time_of_day_request import TimeOfDayRequest
+from nli_engine.client._generated.authoring_client.models.time_of_day_request import (
+    TimeOfDayRequest,
+)
 
 
 class TestTimeOfDayRequest(unittest.TestCase):

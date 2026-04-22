@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.duration_request import DurationRequest
+from nli_engine.client._generated.authoring_client.models.duration_request import (
+    DurationRequest,
+)
 
 
 class TestDurationRequest(unittest.TestCase):

@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.scheduled_trigger_request import ScheduledTriggerRequest
+from nli_engine.client._generated.authoring_client.models.scheduled_trigger_request import (
+    ScheduledTriggerRequest,
+)
 
 
 class TestScheduledTriggerRequest(unittest.TestCase):
@@ -36,16 +38,16 @@ class TestScheduledTriggerRequest(unittest.TestCase):
         if include_optional:
             return ScheduledTriggerRequest(
                 trigger_name = 'daily_checkin',
-                time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),
-                recurrence_rule = authoring_client.models.recurrence_rule_request.RecurrenceRuleRequest(
+                recurrence_rule = nli_engine.client._generated.authoring_client.models.recurrence_rule_request.RecurrenceRuleRequest(
                     frequency = 'daily', 
                     interval = 1, 
-                    end = authoring_client.models.recurrence_end_request.RecurrenceEndRequest(
+                    end = nli_engine.client._generated.authoring_client.models.recurrence_end_request.RecurrenceEndRequest(
                         type = 'never', 
-                        elapsed_time = authoring_client.models.duration_request.DurationRequest(
+                        elapsed_time = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                             days = 56, 
                             hours = 56, 
                             minutes = 56, 
@@ -57,16 +59,16 @@ class TestScheduledTriggerRequest(unittest.TestCase):
         else:
             return ScheduledTriggerRequest(
                 trigger_name = 'daily_checkin',
-                time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),
-                recurrence_rule = authoring_client.models.recurrence_rule_request.RecurrenceRuleRequest(
+                recurrence_rule = nli_engine.client._generated.authoring_client.models.recurrence_rule_request.RecurrenceRuleRequest(
                     frequency = 'daily', 
                     interval = 1, 
-                    end = authoring_client.models.recurrence_end_request.RecurrenceEndRequest(
+                    end = nli_engine.client._generated.authoring_client.models.recurrence_end_request.RecurrenceEndRequest(
                         type = 'never', 
-                        elapsed_time = authoring_client.models.duration_request.DurationRequest(
+                        elapsed_time = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                             days = 56, 
                             hours = 56, 
                             minutes = 56, 

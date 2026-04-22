@@ -13,16 +13,31 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.device_roles_response import DeviceRolesResponse
-from authoring_client.models.e_sense_device_request import ESenseDeviceRequest
-from authoring_client.models.movesense_device_request import MovesenseDeviceRequest
-from authoring_client.models.movisens_device_request import MovisensDeviceRequest
-from authoring_client.models.polar_device_request import PolarDeviceRequest
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
+    DataEndpointResponse,
+)
+from nli_engine.client._generated.authoring_client.models.device_roles_response import (
+    DeviceRolesResponse,
+)
+from nli_engine.client._generated.authoring_client.models.e_sense_device_request import (
+    ESenseDeviceRequest,
+)
+from nli_engine.client._generated.authoring_client.models.movesense_device_request import (
+    MovesenseDeviceRequest,
+)
+from nli_engine.client._generated.authoring_client.models.movisens_device_request import (
+    MovisensDeviceRequest,
+)
+from nli_engine.client._generated.authoring_client.models.polar_device_request import (
+    PolarDeviceRequest,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class DevicesApi:

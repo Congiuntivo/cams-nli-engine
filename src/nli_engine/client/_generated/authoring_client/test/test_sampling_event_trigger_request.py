@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.sampling_event_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.sampling_event_trigger_request import (
     SamplingEventTriggerRequest,
 )
 
@@ -39,7 +39,7 @@ class TestSamplingEventTriggerRequest(unittest.TestCase):
             return SamplingEventTriggerRequest(
                 trigger_name = 'after_completed_task',
                 measure_type = 'dk.cachet.carp.completed_task',
-                trigger_condition = authoring_client.models.serialized_carp_data_request.SerializedCarpDataRequest(
+                trigger_condition = nli_engine.client._generated.authoring_client.models.serialized_carp_data_request.SerializedCarpDataRequest(
                     __type = 'dk.cachet.carp.common.application.data.completedtask', )
             )
         else:

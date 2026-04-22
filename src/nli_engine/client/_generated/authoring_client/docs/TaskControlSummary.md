@@ -12,7 +12,7 @@
 ## Example
 
 ```python
-from authoring_client.models.task_control_summary import TaskControlSummary
+from nli_engine.client._generated.authoring_client.models.task_control_summary import TaskControlSummary
 
 # TODO update the JSON string below
 json = "{}"

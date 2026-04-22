@@ -13,12 +13,19 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.create_protocol_request import CreateProtocolRequest
-from authoring_client.models.create_session_response import CreateSessionResponse
+from nli_engine.client._generated.authoring_client.models.create_protocol_request import (
+    CreateProtocolRequest,
+)
+from nli_engine.client._generated.authoring_client.models.create_session_response import (
+    CreateSessionResponse,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class SessionsApi:

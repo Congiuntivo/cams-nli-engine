@@ -1,4 +1,4 @@
-# authoring_client.TaskControlsApi
+# nli_engine.client.\_generated.authoring_client.TaskControlsApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -18,23 +18,23 @@ Adds a task control that binds a trigger, task, and destination device role in t
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.models.task_control_request import TaskControlRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.models.task_control_request import TaskControlRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TaskControlsApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TaskControlsApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     task_control_request = {"taskName":"daily_survey","triggerName":"start_now","deviceRoleName":"User Phone"} # TaskControlRequest | Task control payload.
 
@@ -88,22 +88,22 @@ Returns configured task controls currently in the session protocol, including ta
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.task_controls_response import TaskControlsResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.task_controls_response import TaskControlsResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TaskControlsApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TaskControlsApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

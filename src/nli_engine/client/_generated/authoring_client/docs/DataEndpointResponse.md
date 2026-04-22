@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
 
 # TODO update the JSON string below
 json = "{}"

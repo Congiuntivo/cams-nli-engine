@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.recurrent_scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.recurrent_scheduled_trigger_request import (
     RecurrentScheduledTriggerRequest,
 )
 
@@ -39,7 +39,7 @@ class TestRecurrentScheduledTriggerRequest(unittest.TestCase):
             return RecurrentScheduledTriggerRequest(
                 trigger_name = 'weekday_checkin',
                 type = 'weekly',
-                time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),
@@ -49,7 +49,7 @@ class TestRecurrentScheduledTriggerRequest(unittest.TestCase):
                 day_of_week = 1,
                 week_of_month = 2,
                 day_of_month = 15,
-                duration = authoring_client.models.duration_request.DurationRequest(
+                duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -61,7 +61,7 @@ class TestRecurrentScheduledTriggerRequest(unittest.TestCase):
             return RecurrentScheduledTriggerRequest(
                 trigger_name = 'weekday_checkin',
                 type = 'weekly',
-                time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),

@@ -12,7 +12,7 @@
 ## Example
 
 ```python
-from authoring_client.models.web_task_request import WebTaskRequest
+from nli_engine.client._generated.authoring_client.models.web_task_request import WebTaskRequest
 
 # TODO update the JSON string below
 json = "{}"

@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.task_sampling_configuration_request import (
+from nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request import (
     TaskSamplingConfigurationRequest,
 )
 
@@ -38,14 +38,14 @@ class TestTaskSamplingConfigurationRequest(unittest.TestCase):
         if include_optional:
             return TaskSamplingConfigurationRequest(
                 sampling_type = 'none',
-                interval = authoring_client.models.duration_request.DurationRequest(
+                interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
                     seconds = 56, 
                     milliseconds = 56, 
                     microseconds = 56, ),
-                duration = authoring_client.models.duration_request.DurationRequest(
+                duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -56,7 +56,7 @@ class TestTaskSamplingConfigurationRequest(unittest.TestCase):
                 use_prior_contexts = True,
                 stop_radius = 25,
                 place_radius = 50,
-                stop_duration = authoring_client.models.duration_request.DurationRequest(
+                stop_duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 

@@ -18,7 +18,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from authoring_client.models.serialized_carp_data_request import (
+from nli_engine.client._generated.authoring_client.models.serialized_carp_data_request import (
     SerializedCarpDataRequest,
 )
 from typing import Set

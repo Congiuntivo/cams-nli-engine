@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.create_protocol_request import CreateProtocolRequest
+from nli_engine.client._generated.authoring_client.models.create_protocol_request import (
+    CreateProtocolRequest,
+)
 
 
 class TestCreateProtocolRequest(unittest.TestCase):

@@ -11,7 +11,7 @@
 ## Example
 
 ```python
-from authoring_client.models.sampling_event_trigger_request import SamplingEventTriggerRequest
+from nli_engine.client._generated.authoring_client.models.sampling_event_trigger_request import SamplingEventTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

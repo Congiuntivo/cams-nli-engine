@@ -1,4 +1,4 @@
-# authoring_client.TasksApi
+# nli_engine.client.\_generated.authoring_client.TasksApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -21,23 +21,23 @@ Adds an app task with one or more measures and an app task type to the current s
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.app_task_request import AppTaskRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.app_task_request import AppTaskRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TasksApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TasksApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     app_task_request = {"name":"daily_survey_app_task","description":"Run a survey task in the app.","type":"survey","title":"Daily Survey","instructions":"Answer the questionnaire in-app.","minutesToComplete":5,"expire":{"hours":2},"notification":true,"measures":[{"measureType":"dk.cachet.carp.activity"}]} # AppTaskRequest | App task payload.
 
@@ -91,23 +91,23 @@ Adds a background task with one or more measures to the current session protocol
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.background_task_request import BackgroundTaskRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.background_task_request import BackgroundTaskRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TasksApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TasksApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     background_task_request = {"name":"daily_context_collection","description":"Collect context snapshots during the day.","duration":{"minutes":30},"measures":[{"measureType":"dk.cachet.carp.activity"},{"measureType":"dk.cachet.carp.ambientlight","samplingConfiguration":{"samplingType":"periodic","interval":{"minutes":5},"duration":{"seconds":10}}}]} # BackgroundTaskRequest | Background task payload.
 
@@ -161,23 +161,23 @@ Adds a health app task with one or more measures and health data types to the cu
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.health_app_task_request import HealthAppTaskRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.health_app_task_request import HealthAppTaskRequest
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TasksApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TasksApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     health_app_task_request = {"name":"daily_health_assessment","description":"Collect daily health assessment in-app.","title":"Health Assessment","instructions":"Follow the health assessment steps.","minutesToComplete":5,"expire":{"hours":1},"notification":true,"types":["STEPS"],"measures":[{"measureType":"dk.cachet.carp.activity"}]} # HealthAppTaskRequest | Health app task payload.
 
@@ -231,23 +231,23 @@ Adds a web task with one or more measures and a valid URL to the current session
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.models.web_task_request import WebTaskRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.models.web_task_request import WebTaskRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TasksApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TasksApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     web_task_request = {"name":"daily_survey","description":"Open a daily web survey for participants.","url":"https://example.org/surveys/daily","measures":[{"measureType":"dk.cachet.carp.activity"}]} # WebTaskRequest | Web task payload.
 
@@ -301,22 +301,22 @@ Returns configured task names and serialized task configurations currently in th
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.tasks_response import TasksResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.tasks_response import TasksResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.TasksApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.TasksApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

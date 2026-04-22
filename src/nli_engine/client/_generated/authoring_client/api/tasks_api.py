@@ -13,16 +13,31 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.app_task_request import AppTaskRequest
-from authoring_client.models.background_task_request import BackgroundTaskRequest
-from authoring_client.models.health_app_task_request import HealthAppTaskRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.models.tasks_response import TasksResponse
-from authoring_client.models.web_task_request import WebTaskRequest
+from nli_engine.client._generated.authoring_client.models.app_task_request import (
+    AppTaskRequest,
+)
+from nli_engine.client._generated.authoring_client.models.background_task_request import (
+    BackgroundTaskRequest,
+)
+from nli_engine.client._generated.authoring_client.models.health_app_task_request import (
+    HealthAppTaskRequest,
+)
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
+    SessionMutationResponse,
+)
+from nli_engine.client._generated.authoring_client.models.tasks_response import (
+    TasksResponse,
+)
+from nli_engine.client._generated.authoring_client.models.web_task_request import (
+    WebTaskRequest,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class TasksApi:

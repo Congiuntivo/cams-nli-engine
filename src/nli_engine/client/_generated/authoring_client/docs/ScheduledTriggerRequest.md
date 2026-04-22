@@ -11,7 +11,7 @@
 ## Example
 
 ```python
-from authoring_client.models.scheduled_trigger_request import ScheduledTriggerRequest
+from nli_engine.client._generated.authoring_client.models.scheduled_trigger_request import ScheduledTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

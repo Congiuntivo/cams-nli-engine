@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.recurrence_end_request import RecurrenceEndRequest
+from nli_engine.client._generated.authoring_client.models.recurrence_end_request import (
+    RecurrenceEndRequest,
+)
 
 
 class TestRecurrenceEndRequest(unittest.TestCase):
@@ -36,7 +38,7 @@ class TestRecurrenceEndRequest(unittest.TestCase):
         if include_optional:
             return RecurrenceEndRequest(
                 type = 'never',
-                elapsed_time = authoring_client.models.duration_request.DurationRequest(
+                elapsed_time = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 

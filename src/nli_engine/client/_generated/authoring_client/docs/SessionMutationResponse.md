@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.session_mutation_response import SessionMutationResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
 
 # TODO update the JSON string below
 json = "{}"

@@ -18,8 +18,12 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from authoring_client.models.duration_request import DurationRequest
-from authoring_client.models.task_measure_request import TaskMeasureRequest
+from nli_engine.client._generated.authoring_client.models.duration_request import (
+    DurationRequest,
+)
+from nli_engine.client._generated.authoring_client.models.task_measure_request import (
+    TaskMeasureRequest,
+)
 from typing import Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python

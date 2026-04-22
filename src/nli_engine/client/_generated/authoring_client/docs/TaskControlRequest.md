@@ -11,7 +11,7 @@
 ## Example
 
 ```python
-from authoring_client.models.task_control_request import TaskControlRequest
+from nli_engine.client._generated.authoring_client.models.task_control_request import TaskControlRequest
 
 # TODO update the JSON string below
 json = "{}"

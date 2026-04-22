@@ -18,8 +18,12 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from authoring_client.models.duration_request import DurationRequest
-from authoring_client.models.time_of_day_request import TimeOfDayRequest
+from nli_engine.client._generated.authoring_client.models.duration_request import (
+    DurationRequest,
+)
+from nli_engine.client._generated.authoring_client.models.time_of_day_request import (
+    TimeOfDayRequest,
+)
 from typing import Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python

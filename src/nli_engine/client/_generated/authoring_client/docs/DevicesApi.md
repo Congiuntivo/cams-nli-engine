@@ -1,4 +1,4 @@
-# authoring_client.DevicesApi
+# nli_engine.client.\_generated.authoring_client.DevicesApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -21,23 +21,23 @@ Adds an eSense device as a connected device. Requires a configured primary devic
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.e_sense_device_request import ESenseDeviceRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.e_sense_device_request import ESenseDeviceRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.DevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.DevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     e_sense_device_request = {"roleName":"Left Earbud","primaryDeviceRoleName":"User Phone","isOptional":false,"samplingRate":10} # ESenseDeviceRequest | eSense device payload.
 
@@ -91,23 +91,23 @@ Adds a Movesense device as a connected device. Requires a configured primary dev
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.movesense_device_request import MovesenseDeviceRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.movesense_device_request import MovesenseDeviceRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.DevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.DevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     movesense_device_request = {"roleName":"Chest Sensor","primaryDeviceRoleName":"User Phone","isOptional":false} # MovesenseDeviceRequest | Movesense device payload.
 
@@ -161,23 +161,23 @@ Adds a Movisens device as a connected device. Requires a configured primary devi
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.movisens_device_request import MovisensDeviceRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.movisens_device_request import MovisensDeviceRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.DevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.DevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     movisens_device_request = {"roleName":"Torso Sensor","primaryDeviceRoleName":"User Phone","sensorLocation":"Chest","sex":"Male","height":178,"weight":78,"age":25} # MovisensDeviceRequest | Movisens device payload.
 
@@ -231,23 +231,23 @@ Adds a Polar device as a connected device. Requires a configured primary device.
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
-from authoring_client.models.polar_device_request import PolarDeviceRequest
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.polar_device_request import PolarDeviceRequest
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.DevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.DevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
     polar_device_request = {"roleName":"Polar Chest Sensor","primaryDeviceRoleName":"User Phone","isOptional":false,"namePrefix":"Polar"} # PolarDeviceRequest | Polar device payload.
 
@@ -301,22 +301,22 @@ Returns connected devices currently configured in the session protocol, includin
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.device_roles_response import DeviceRolesResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.device_roles_response import DeviceRolesResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.DevicesApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.DevicesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
 
     try:

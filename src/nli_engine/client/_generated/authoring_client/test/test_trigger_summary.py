@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.trigger_summary import TriggerSummary
+from nli_engine.client._generated.authoring_client.models.trigger_summary import (
+    TriggerSummary,
+)
 
 
 class TestTriggerSummary(unittest.TestCase):

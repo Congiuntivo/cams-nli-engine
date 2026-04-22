@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.immediate_trigger_request import ImmediateTriggerRequest
+from nli_engine.client._generated.authoring_client.models.immediate_trigger_request import (
+    ImmediateTriggerRequest,
+)
 
 
 class TestImmediateTriggerRequest(unittest.TestCase):

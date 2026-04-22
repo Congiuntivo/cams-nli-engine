@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.movisens_device_request import MovisensDeviceRequest
+from nli_engine.client._generated.authoring_client.models.movisens_device_request import (
+    MovisensDeviceRequest,
+)
 
 
 class TestMovisensDeviceRequest(unittest.TestCase):

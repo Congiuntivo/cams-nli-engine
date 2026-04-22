@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.expected_participant_data_api import (
+from nli_engine.client._generated.authoring_client.api.expected_participant_data_api import (
     ExpectedParticipantDataApi,
 )
 

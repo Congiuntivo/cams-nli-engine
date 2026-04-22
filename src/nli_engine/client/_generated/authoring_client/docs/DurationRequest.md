@@ -14,7 +14,7 @@
 ## Example
 
 ```python
-from authoring_client.models.duration_request import DurationRequest
+from nli_engine.client._generated.authoring_client.models.duration_request import DurationRequest
 
 # TODO update the JSON string below
 json = "{}"

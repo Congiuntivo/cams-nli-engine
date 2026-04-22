@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.task_control_summary import TaskControlSummary
+from nli_engine.client._generated.authoring_client.models.task_control_summary import (
+    TaskControlSummary,
+)
 
 
 class TestTaskControlSummary(unittest.TestCase):
@@ -35,17 +37,17 @@ class TestTaskControlSummary(unittest.TestCase):
         model = TaskControlSummary()
         if include_optional:
             return TaskControlSummary(
-                task_control = authoring_client.models.task_control.taskControl(),
-                trigger = authoring_client.models.trigger.trigger(),
-                task = authoring_client.models.task.task(),
-                target_device = authoring_client.models.target_device.targetDevice()
+                task_control = nli_engine.client._generated.authoring_client.models.task_control.taskControl(),
+                trigger = nli_engine.client._generated.authoring_client.models.trigger.trigger(),
+                task = nli_engine.client._generated.authoring_client.models.task.task(),
+                target_device = nli_engine.client._generated.authoring_client.models.target_device.targetDevice()
             )
         else:
             return TaskControlSummary(
-                task_control = authoring_client.models.task_control.taskControl(),
-                trigger = authoring_client.models.trigger.trigger(),
-                task = authoring_client.models.task.task(),
-                target_device = authoring_client.models.target_device.targetDevice(),
+                task_control = nli_engine.client._generated.authoring_client.models.task_control.taskControl(),
+                trigger = nli_engine.client._generated.authoring_client.models.trigger.trigger(),
+                task = nli_engine.client._generated.authoring_client.models.task.task(),
+                target_device = nli_engine.client._generated.authoring_client.models.target_device.targetDevice(),
         )
         """
 

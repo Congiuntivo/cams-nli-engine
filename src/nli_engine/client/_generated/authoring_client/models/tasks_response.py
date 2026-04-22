@@ -18,7 +18,9 @@ import json
 
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List
-from authoring_client.models.task_summary import TaskSummary
+from nli_engine.client._generated.authoring_client.models.task_summary import (
+    TaskSummary,
+)
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python

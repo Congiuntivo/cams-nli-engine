@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.primary_devices_api import PrimaryDevicesApi
+from nli_engine.client._generated.authoring_client.api.primary_devices_api import (
+    PrimaryDevicesApi,
+)
 
 
 class TestPrimaryDevicesApi(unittest.TestCase):

@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.elapsed_time_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.elapsed_time_trigger_request import (
     ElapsedTimeTriggerRequest,
 )
 
@@ -38,7 +38,7 @@ class TestElapsedTimeTriggerRequest(unittest.TestCase):
         if include_optional:
             return ElapsedTimeTriggerRequest(
                 trigger_name = 'elapsed_30_minutes',
-                elapsed_time = authoring_client.models.duration_request.DurationRequest(
+                elapsed_time = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -49,7 +49,7 @@ class TestElapsedTimeTriggerRequest(unittest.TestCase):
         else:
             return ElapsedTimeTriggerRequest(
                 trigger_name = 'elapsed_30_minutes',
-                elapsed_time = authoring_client.models.duration_request.DurationRequest(
+                elapsed_time = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 

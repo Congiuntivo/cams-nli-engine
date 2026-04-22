@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.service_roles_response import ServiceRolesResponse
+from nli_engine.client._generated.authoring_client.models.service_roles_response import (
+    ServiceRolesResponse,
+)
 
 
 class TestServiceRolesResponse(unittest.TestCase):
@@ -36,17 +38,17 @@ class TestServiceRolesResponse(unittest.TestCase):
         if include_optional:
             return ServiceRolesResponse(
                 services = [
-                    authoring_client.models.named_device.NamedDevice(
+                    nli_engine.client._generated.authoring_client.models.named_device.NamedDevice(
                         name = '', 
-                        device = authoring_client.models.device.device(), )
+                        device = nli_engine.client._generated.authoring_client.models.device.device(), )
                     ]
             )
         else:
             return ServiceRolesResponse(
                 services = [
-                    authoring_client.models.named_device.NamedDevice(
+                    nli_engine.client._generated.authoring_client.models.named_device.NamedDevice(
                         name = '', 
-                        device = authoring_client.models.device.device(), )
+                        device = nli_engine.client._generated.authoring_client.models.device.device(), )
                     ],
         )
         """

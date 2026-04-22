@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.participant_roles_api import ParticipantRolesApi
+from nli_engine.client._generated.authoring_client.api.participant_roles_api import (
+    ParticipantRolesApi,
+)
 
 
 class TestParticipantRolesApi(unittest.TestCase):

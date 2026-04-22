@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.random_recurrent_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.random_recurrent_trigger_request import (
     RandomRecurrentTriggerRequest,
 )
 
@@ -40,11 +40,11 @@ class TestRandomRecurrentTriggerRequest(unittest.TestCase):
                 trigger_name = 'random_daily_prompts',
                 min_number_of_triggers = 3,
                 max_number_of_triggers = 8,
-                start_time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                start_time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),
-                end_time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                end_time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, )
@@ -54,11 +54,11 @@ class TestRandomRecurrentTriggerRequest(unittest.TestCase):
                 trigger_name = 'random_daily_prompts',
                 min_number_of_triggers = 3,
                 max_number_of_triggers = 8,
-                start_time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                start_time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),
-                end_time = authoring_client.models.time_of_day_request.TimeOfDayRequest(
+                end_time = nli_engine.client._generated.authoring_client.models.time_of_day_request.TimeOfDayRequest(
                     hour = 8, 
                     minute = 30, 
                     second = 0, ),

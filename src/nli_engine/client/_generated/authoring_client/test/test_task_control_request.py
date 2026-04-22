@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.task_control_request import TaskControlRequest
+from nli_engine.client._generated.authoring_client.models.task_control_request import (
+    TaskControlRequest,
+)
 
 
 class TestTaskControlRequest(unittest.TestCase):

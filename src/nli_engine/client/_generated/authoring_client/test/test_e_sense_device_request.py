@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.e_sense_device_request import ESenseDeviceRequest
+from nli_engine.client._generated.authoring_client.models.e_sense_device_request import (
+    ESenseDeviceRequest,
+)
 
 
 class TestESenseDeviceRequest(unittest.TestCase):

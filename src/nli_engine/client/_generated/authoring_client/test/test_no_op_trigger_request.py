@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.no_op_trigger_request import NoOpTriggerRequest
+from nli_engine.client._generated.authoring_client.models.no_op_trigger_request import (
+    NoOpTriggerRequest,
+)
 
 
 class TestNoOpTriggerRequest(unittest.TestCase):

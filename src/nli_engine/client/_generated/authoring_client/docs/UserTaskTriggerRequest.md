@@ -11,7 +11,7 @@
 ## Example
 
 ```python
-from authoring_client.models.user_task_trigger_request import UserTaskTriggerRequest
+from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import UserTaskTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

@@ -1,4 +1,4 @@
-# authoring_client.SessionsApi
+# nli_engine.client.\_generated.authoring_client.SessionsApi
 
 All URIs are relative to _http://localhost:8080_
 
@@ -17,23 +17,23 @@ Creates an in-memory authoring session and returns a sessionId for subsequent re
 ### Example
 
 ```python
-import authoring_client
-from authoring_client.models.create_protocol_request import CreateProtocolRequest
-from authoring_client.models.create_session_response import CreateSessionResponse
-from authoring_client.rest import ApiException
+import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.create_protocol_request import CreateProtocolRequest
+from nli_engine.client._generated.authoring_client.models.create_session_response import CreateSessionResponse
+from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8080
 # See configuration.py for a list of all supported configuration parameters.
-configuration = authoring_client.Configuration(
+configuration = nli_engine.client._generated.authoring_client.Configuration(
     host = "http://localhost:8080"
 )
 
 
 # Enter a context with an instance of the API client
-with authoring_client.ApiClient(configuration) as api_client:
+with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = authoring_client.SessionsApi(api_client)
+    api_instance = nli_engine.client._generated.authoring_client.SessionsApi(api_client)
     create_protocol_request = {"name":"My Study Protocol","ownerId":"979b408d-784e-4b1b-bb1e-ff9204e072f3","protocolVersionTag":"v1.0.0","protocolApiLevel":"2.0","applicationName":"carp_study_app","privacySchemaName":"default-privacy-schema"} # CreateProtocolRequest | Protocol creation payload.
 
     try:

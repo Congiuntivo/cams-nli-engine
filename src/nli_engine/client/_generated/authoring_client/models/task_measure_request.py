@@ -18,7 +18,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from authoring_client.models.task_sampling_configuration_request import (
+from nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request import (
     TaskSamplingConfigurationRequest,
 )
 from typing import Set

@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
+    DataEndpointResponse,
+)
 
 
 class TestDataEndpointResponse(unittest.TestCase):

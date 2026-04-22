@@ -13,13 +13,22 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.models.task_control_request import TaskControlRequest
-from authoring_client.models.task_controls_response import TaskControlsResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
+    SessionMutationResponse,
+)
+from nli_engine.client._generated.authoring_client.models.task_control_request import (
+    TaskControlRequest,
+)
+from nli_engine.client._generated.authoring_client.models.task_controls_response import (
+    TaskControlsResponse,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class TaskControlsApi:

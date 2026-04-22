@@ -27,7 +27,9 @@ from pydantic import (
     field_validator,
 )
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from authoring_client.models.duration_request import DurationRequest
+from nli_engine.client._generated.authoring_client.models.duration_request import (
+    DurationRequest,
+)
 from typing import Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python

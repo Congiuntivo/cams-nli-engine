@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.no_user_task_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.no_user_task_trigger_request import (
     NoUserTaskTriggerRequest,
 )
 

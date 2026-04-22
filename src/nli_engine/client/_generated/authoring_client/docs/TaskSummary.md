@@ -10,7 +10,7 @@
 ## Example
 
 ```python
-from authoring_client.models.task_summary import TaskSummary
+from nli_engine.client._generated.authoring_client.models.task_summary import TaskSummary
 
 # TODO update the JSON string below
 json = "{}"

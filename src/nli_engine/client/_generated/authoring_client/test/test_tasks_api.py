@@ -13,7 +13,7 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.api.tasks_api import TasksApi
+from nli_engine.client._generated.authoring_client.api.tasks_api import TasksApi
 
 
 class TestTasksApi(unittest.TestCase):

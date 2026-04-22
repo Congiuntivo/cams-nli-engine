@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.background_task_request import BackgroundTaskRequest
+from nli_engine.client._generated.authoring_client.models.background_task_request import (
+    BackgroundTaskRequest,
+)
 
 
 class TestBackgroundTaskRequest(unittest.TestCase):
@@ -38,18 +40,18 @@ class TestBackgroundTaskRequest(unittest.TestCase):
                 name = 'daily_context_collection',
                 description = 'Collect context snapshots during the day.',
                 measures = [
-                    authoring_client.models.task_measure_request.TaskMeasureRequest(
+                    nli_engine.client._generated.authoring_client.models.task_measure_request.TaskMeasureRequest(
                         measure_type = 'dk.cachet.carp.activity', 
-                        sampling_configuration = authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
+                        sampling_configuration = nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
                             sampling_type = 'none', 
-                            interval = authoring_client.models.duration_request.DurationRequest(
+                            interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
                                 seconds = 56, 
                                 milliseconds = 56, 
                                 microseconds = 56, ), 
-                            duration = authoring_client.models.duration_request.DurationRequest(
+                            duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
@@ -62,7 +64,7 @@ class TestBackgroundTaskRequest(unittest.TestCase):
                             place_radius = 50, 
                             stop_duration = , ), )
                     ],
-                duration = authoring_client.models.duration_request.DurationRequest(
+                duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                     days = 56, 
                     hours = 56, 
                     minutes = 56, 
@@ -75,18 +77,18 @@ class TestBackgroundTaskRequest(unittest.TestCase):
                 name = 'daily_context_collection',
                 description = 'Collect context snapshots during the day.',
                 measures = [
-                    authoring_client.models.task_measure_request.TaskMeasureRequest(
+                    nli_engine.client._generated.authoring_client.models.task_measure_request.TaskMeasureRequest(
                         measure_type = 'dk.cachet.carp.activity', 
-                        sampling_configuration = authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
+                        sampling_configuration = nli_engine.client._generated.authoring_client.models.task_sampling_configuration_request.TaskSamplingConfigurationRequest(
                             sampling_type = 'none', 
-                            interval = authoring_client.models.duration_request.DurationRequest(
+                            interval = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 
                                 seconds = 56, 
                                 milliseconds = 56, 
                                 microseconds = 56, ), 
-                            duration = authoring_client.models.duration_request.DurationRequest(
+                            duration = nli_engine.client._generated.authoring_client.models.duration_request.DurationRequest(
                                 days = 56, 
                                 hours = 56, 
                                 minutes = 56, 

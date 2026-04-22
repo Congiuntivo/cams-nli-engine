@@ -13,40 +13,67 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.cron_scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.cron_scheduled_trigger_request import (
     CronScheduledTriggerRequest,
 )
-from authoring_client.models.date_time_trigger_request import DateTimeTriggerRequest
-from authoring_client.models.delayed_trigger_request import DelayedTriggerRequest
-from authoring_client.models.elapsed_time_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.date_time_trigger_request import (
+    DateTimeTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.delayed_trigger_request import (
+    DelayedTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.elapsed_time_trigger_request import (
     ElapsedTimeTriggerRequest,
 )
-from authoring_client.models.immediate_trigger_request import ImmediateTriggerRequest
-from authoring_client.models.manual_trigger_request import ManualTriggerRequest
-from authoring_client.models.no_op_trigger_request import NoOpTriggerRequest
-from authoring_client.models.no_user_task_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.immediate_trigger_request import (
+    ImmediateTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.manual_trigger_request import (
+    ManualTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.no_op_trigger_request import (
+    NoOpTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.no_user_task_trigger_request import (
     NoUserTaskTriggerRequest,
 )
-from authoring_client.models.one_time_trigger_request import OneTimeTriggerRequest
-from authoring_client.models.passive_trigger_request import PassiveTriggerRequest
-from authoring_client.models.periodic_trigger_request import PeriodicTriggerRequest
-from authoring_client.models.random_recurrent_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.one_time_trigger_request import (
+    OneTimeTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.passive_trigger_request import (
+    PassiveTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.periodic_trigger_request import (
+    PeriodicTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.random_recurrent_trigger_request import (
     RandomRecurrentTriggerRequest,
 )
-from authoring_client.models.recurrent_scheduled_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.recurrent_scheduled_trigger_request import (
     RecurrentScheduledTriggerRequest,
 )
-from authoring_client.models.sampling_event_trigger_request import (
+from nli_engine.client._generated.authoring_client.models.sampling_event_trigger_request import (
     SamplingEventTriggerRequest,
 )
-from authoring_client.models.scheduled_trigger_request import ScheduledTriggerRequest
-from authoring_client.models.session_mutation_response import SessionMutationResponse
-from authoring_client.models.triggers_response import TriggersResponse
-from authoring_client.models.user_task_trigger_request import UserTaskTriggerRequest
+from nli_engine.client._generated.authoring_client.models.scheduled_trigger_request import (
+    ScheduledTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
+    SessionMutationResponse,
+)
+from nli_engine.client._generated.authoring_client.models.triggers_response import (
+    TriggersResponse,
+)
+from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import (
+    UserTaskTriggerRequest,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class TriggersApi:

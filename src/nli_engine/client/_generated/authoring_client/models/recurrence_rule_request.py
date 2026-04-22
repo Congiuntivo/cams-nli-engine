@@ -18,7 +18,9 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from authoring_client.models.recurrence_end_request import RecurrenceEndRequest
+from nli_engine.client._generated.authoring_client.models.recurrence_end_request import (
+    RecurrenceEndRequest,
+)
 from typing import Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python

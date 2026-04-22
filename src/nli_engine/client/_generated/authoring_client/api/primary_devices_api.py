@@ -13,13 +13,22 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
-from authoring_client.models.primary_devices_response import PrimaryDevicesResponse
-from authoring_client.models.requirements_response import RequirementsResponse
+from nli_engine.client._generated.authoring_client.models.primary_device_role_request import (
+    PrimaryDeviceRoleRequest,
+)
+from nli_engine.client._generated.authoring_client.models.primary_devices_response import (
+    PrimaryDevicesResponse,
+)
+from nli_engine.client._generated.authoring_client.models.requirements_response import (
+    RequirementsResponse,
+)
 
-from authoring_client.api_client import ApiClient, RequestSerialized
-from authoring_client.api_response import ApiResponse
-from authoring_client.rest import RESTResponseType
+from nli_engine.client._generated.authoring_client.api_client import (
+    ApiClient,
+    RequestSerialized,
+)
+from nli_engine.client._generated.authoring_client.api_response import ApiResponse
+from nli_engine.client._generated.authoring_client.rest import RESTResponseType
 
 
 class PrimaryDevicesApi:

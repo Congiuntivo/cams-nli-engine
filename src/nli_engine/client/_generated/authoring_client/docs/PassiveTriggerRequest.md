@@ -9,7 +9,7 @@
 ## Example
 
 ```python
-from authoring_client.models.passive_trigger_request import PassiveTriggerRequest
+from nli_engine.client._generated.authoring_client.models.passive_trigger_request import PassiveTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

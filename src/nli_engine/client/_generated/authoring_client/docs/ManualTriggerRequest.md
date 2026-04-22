@@ -11,7 +11,7 @@
 ## Example
 
 ```python
-from authoring_client.models.manual_trigger_request import ManualTriggerRequest
+from nli_engine.client._generated.authoring_client.models.manual_trigger_request import ManualTriggerRequest
 
 # TODO update the JSON string below
 json = "{}"

@@ -13,7 +13,9 @@ Do not edit the class manually.
 
 import unittest
 
-from authoring_client.models.error_response import ErrorResponse
+from nli_engine.client._generated.authoring_client.models.error_response import (
+    ErrorResponse,
+)
 
 
 class TestErrorResponse(unittest.TestCase):
