@@ -1,0 +1,23 @@
+[project]
+name = "nli-engine"
+version = "0.1.0"
+description = "A natural language interface engine for authoring CAMS study protocols."
+readme = "README.md"
+authors = [{ name = "Congiuntivo", email = "simonedecarli19@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+nli-engine = "nli_engine:main"
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "openapi-generator-cli>=7.21.0",
+    "pre-commit>=4.6.0",
+    "pytest>=9.0.3",
+    "ruff>=0.15.11",
+]

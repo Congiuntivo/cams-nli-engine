@@ -1,0 +1,30 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+  - post-checkout
+  - post-merge
+  - post-rewrite
+repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.5.16
+    hooks:
+      - id: uv-lock
+      - id: uv-sync
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.0
+    hooks:
+      - id: ruff-check
+        args: [--fix-only]
+      - id: ruff-format
+        entry: sh -c 'ruff format --force-exclude && git add -u'
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [markdown, json]
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []

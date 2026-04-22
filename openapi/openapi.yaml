@@ -1,0 +1,2927 @@
+openapi: '3.0.3'
+info:
+  title: 'Study Protocol Authoring API'
+  version: '0.4.0'
+  description: 'Stateful API exposing session-scoped protocol state and serialization endpoints.'
+servers:
+  -
+    url: 'http://localhost:8080'
+paths:
+  /sessions/{sessionId}/requirements:
+    get:
+      summary: 'Get current unfulfilled requirements for the session'
+      operationId: 'getRequirements'
+      description: 'Returns the current unfulfilled requirements for the session.'
+      tags:
+        - 'Requirements and Serialization'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Current unfulfilled requirements for the session'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequirementsResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /protocol/new:
+    post:
+      summary: 'Create a new protocol authoring session'
+      operationId: 'createProtocolSession'
+      description: 'Creates an in-memory authoring session and returns a sessionId for subsequent requests.'
+      tags:
+        - 'Sessions'
+      requestBody:
+        description: 'Protocol creation payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProtocolRequest'
+            example:
+              name: 'My Study Protocol'
+              ownerId: '979b408d-784e-4b1b-bb1e-ff9204e072f3'
+              protocolVersionTag: 'v1.0.0'
+              protocolApiLevel: '2.0'
+              applicationName: 'carp_study_app'
+              privacySchemaName: 'default-privacy-schema'
+      responses:
+        201:
+          description: 'New authoring session created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSessionResponse'
+  /sessions/{sessionId}/serialize:
+    get:
+      summary: 'Return the serialized protocol for the session'
+      operationId: 'serializeProtocol'
+      description: 'Returns the serialized protocol for the session.'
+      tags:
+        - 'Requirements and Serialization'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Serialized protocol for the session'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializeResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        409:
+          description: 'Protocol cannot be serialized until critical requirements are fulfilled'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/data-endpoint:
+    post:
+      summary: 'Add a data endpoint to a protocol in the session'
+      operationId: 'addDataEndpoint'
+      description: 'Adds a data endpoint to the session protocol. Protocol must already be started with POST /protocol/new.'
+      tags:
+        - 'Data Endpoint'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Data endpoint configuration payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataEndpointRequest'
+            example:
+              endpointType: 'CAWS'
+              uploadMethod: 'stream'
+              name: 'CARP Web Services'
+              deleteWhenUploaded: true
+      responses:
+        200:
+          description: 'Data endpoint added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid query parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/primary-devices:
+    get:
+      summary: 'Get primary devices from the session protocol'
+      operationId: 'getPrimaryDevices'
+      description: 'Returns primary devices currently configured in the session protocol, including role name and serialized device payload.'
+      tags:
+        - 'Primary Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Primary devices returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrimaryDevicesResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/primary-devices/smartphone:
+    post:
+      summary: 'Add a smartphone primary device to the session protocol'
+      operationId: 'addSmartphonePrimaryDevice'
+      description: 'Adds a smartphone as a primary device in the session protocol.'
+      tags:
+        - 'Primary Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Optional role name for the primary smartphone.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrimaryDeviceRoleRequest'
+            example:
+              roleName: 'User Phone'
+      responses:
+        200:
+          description: 'Primary device added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequirementsResponse'
+        400:
+          description: 'Missing session id, invalid payload, or incompatible protocol type'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/primary-devices/web-browser:
+    post:
+      summary: 'Add a web browser primary device to the session protocol'
+      operationId: 'addWebBrowserPrimaryDevice'
+      description: 'Adds a web browser as a primary device in the session protocol.'
+      tags:
+        - 'Primary Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Optional role name for the primary web browser.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrimaryDeviceRoleRequest'
+            example:
+              roleName: 'Participant Browser'
+      responses:
+        200:
+          description: 'Primary device added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequirementsResponse'
+        400:
+          description: 'Missing session id, invalid payload, or incompatible protocol type'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/participant-roles:
+    get:
+      summary: 'Get participant role names from the session protocol'
+      operationId: 'getParticipantRoles'
+      description: 'Returns participant role names currently configured in the session protocol.'
+      tags:
+        - 'Participant Roles'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Participant role names returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantRolesResponse'
+        400:
+          description: 'Missing session id or protocol not started'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: 'Add a participant role to the protocol in the session'
+      operationId: 'addParticipantRole'
+      description: 'Adds a participant role. Protocol must already be started with POST /protocol/new.'
+      tags:
+        - 'Participant Roles'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+        -
+          name: 'roleName'
+          in: 'query'
+          required: true
+          description: 'Participant role name.'
+          schema:
+            type: 'string'
+            example: 'Patient'
+        -
+          name: 'isOptional'
+          in: 'query'
+          required: false
+          description: 'Whether the role is optional.'
+          schema:
+            type: 'boolean'
+            example: 'false'
+      responses:
+        200:
+          description: 'Participant role added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid query parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/participant-roles/{roleName}/expected-data:
+    post:
+      summary: 'Add expected participant data for a specific role'
+      operationId: 'addExpectedParticipantDataForRole'
+      description: 'Adds expected participant data assigned to a specific role.'
+      tags:
+        - 'Expected Participant Data'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+        -
+          name: 'roleName'
+          in: 'path'
+          required: true
+          description: 'Existing participant role name.'
+          schema:
+            type: 'string'
+            example: 'Patient'
+        -
+          name: 'dataType'
+          in: 'query'
+          required: true
+          description: 'Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom.'
+          schema:
+            type: 'string'
+            example: 'sex'
+            enum:
+              - 'sex'
+              - 'phone_number'
+              - 'ssn'
+              - 'full_name'
+              - 'informed_consent'
+              - 'address'
+              - 'diagnosis'
+              - 'note'
+              - 'educational_degree'
+              - 'onboarding_researcher'
+              - 'language'
+              - 'occupation'
+      responses:
+        200:
+          description: 'Expected participant data added for role'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid query parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/expected-data:
+    post:
+      summary: 'Add expected participant data for all roles'
+      operationId: 'addExpectedParticipantDataForAllRoles'
+      description: 'Adds expected participant data assigned to all roles.'
+      tags:
+        - 'Expected Participant Data'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+        -
+          name: 'dataType'
+          in: 'query'
+          required: true
+          description: 'Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom.'
+          schema:
+            type: 'string'
+            example: 'informed_consent'
+            enum:
+              - 'sex'
+              - 'phone_number'
+              - 'ssn'
+              - 'full_name'
+              - 'informed_consent'
+              - 'address'
+              - 'diagnosis'
+              - 'note'
+              - 'educational_degree'
+              - 'onboarding_researcher'
+              - 'language'
+              - 'occupation'
+      responses:
+        200:
+          description: 'Expected participant data added for all roles'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid query parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/services:
+    get:
+      summary: 'Get connected services from the session protocol'
+      operationId: 'getServiceRoles'
+      description: 'Returns connected services currently configured in the session protocol, including role name and serialized service payload.'
+      tags:
+        - 'Services'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Connected services returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRolesResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/services/weather:
+    post:
+      summary: 'Add weather service to the session protocol'
+      operationId: 'addWeatherService'
+      description: 'Adds weather service as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Services'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+        -
+          name: 'roleName'
+          in: 'query'
+          required: false
+          description: 'Optional role name for the weather service.'
+          schema:
+            type: 'string'
+            example: 'Local Weather'
+        -
+          name: 'primaryDeviceRoleName'
+          in: 'query'
+          required: true
+          description: 'Role name of the primary device this service is connected to.'
+          schema:
+            type: 'string'
+            example: 'User Phone'
+      responses:
+        200:
+          description: 'Weather service added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing query parameters or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/services/air-quality:
+    post:
+      summary: 'Add air quality service to the session protocol'
+      operationId: 'addAirQualityService'
+      description: 'Adds air quality service as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Services'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+        -
+          name: 'roleName'
+          in: 'query'
+          required: false
+          description: 'Optional role name for the air quality service.'
+          schema:
+            type: 'string'
+            example: 'Local Air Quality'
+        -
+          name: 'primaryDeviceRoleName'
+          in: 'query'
+          required: true
+          description: 'Role name of the primary device this service is connected to.'
+          schema:
+            type: 'string'
+            example: 'User Phone'
+      responses:
+        200:
+          description: 'Air quality service added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing query parameters or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/services/health:
+    post:
+      summary: 'Add health service to the session protocol'
+      operationId: 'addHealthService'
+      description: 'Adds health service as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Services'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+        -
+          name: 'roleName'
+          in: 'query'
+          required: false
+          description: 'Optional role name for the health service.'
+          schema:
+            type: 'string'
+            example: 'Device Health'
+        -
+          name: 'primaryDeviceRoleName'
+          in: 'query'
+          required: true
+          description: 'Role name of the primary device this service is connected to.'
+          schema:
+            type: 'string'
+            example: 'User Phone'
+      responses:
+        200:
+          description: 'Health service added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing query parameters or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/services/location:
+    post:
+      summary: 'Add location service to the session protocol'
+      operationId: 'addLocationService'
+      description: 'Adds location service as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Services'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Location service configuration payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationServiceRequest'
+            example:
+              roleName: 'User Location'
+              primaryDeviceRoleName: 'User Phone'
+              accuracy: 'balanced'
+              distance: 10.0
+              interval:
+                seconds: 60
+              notificationTitle: 'Tracking active'
+              notificationMessage: 'Location tracking is running.'
+              notificationDescription: 'Tap to return to the app.'
+              notificationIconName: 'ic_notification'
+              notificationOnTapBringToFront: false
+      responses:
+        200:
+          description: 'Location service added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing query parameters, invalid values, or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/devices:
+    get:
+      summary: 'Get connected devices from the session protocol'
+      operationId: 'getDeviceRoles'
+      description: 'Returns connected devices currently configured in the session protocol, including role name and serialized device payload.'
+      tags:
+        - 'Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Connected devices returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceRolesResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/devices/e-sense:
+    post:
+      summary: 'Add an eSense device to the session protocol'
+      operationId: 'addESenseDevice'
+      description: 'Adds an eSense device as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'eSense device payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ESenseDeviceRequest'
+            example:
+              roleName: 'Left Earbud'
+              primaryDeviceRoleName: 'User Phone'
+              isOptional: false
+              samplingRate: 10
+      responses:
+        200:
+          description: 'eSense device added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid request body values, or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/devices/movesense:
+    post:
+      summary: 'Add a Movesense device to the session protocol'
+      operationId: 'addMovesenseDevice'
+      description: 'Adds a Movesense device as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Movesense device payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovesenseDeviceRequest'
+            example:
+              roleName: 'Chest Sensor'
+              primaryDeviceRoleName: 'User Phone'
+              isOptional: false
+      responses:
+        200:
+          description: 'Movesense device added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid request body values, or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/devices/movisens:
+    post:
+      summary: 'Add a Movisens device to the session protocol'
+      operationId: 'addMovisensDevice'
+      description: 'Adds a Movisens device as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Movisens device payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovisensDeviceRequest'
+            example:
+              roleName: 'Torso Sensor'
+              primaryDeviceRoleName: 'User Phone'
+              sensorLocation: 'Chest'
+              sex: 'Male'
+              height: 178
+              weight: 78
+              age: 25
+      responses:
+        200:
+          description: 'Movisens device added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid request body values, or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/devices/polar:
+    post:
+      summary: 'Add a Polar device to the session protocol'
+      operationId: 'addPolarDevice'
+      description: 'Adds a Polar device as a connected device. Requires a configured primary device.'
+      tags:
+        - 'Devices'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Polar device payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolarDeviceRequest'
+            example:
+              roleName: 'Polar Chest Sensor'
+              primaryDeviceRoleName: 'User Phone'
+              isOptional: false
+              namePrefix: 'Polar'
+      responses:
+        200:
+          description: 'Polar device added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataEndpointResponse'
+        400:
+          description: 'Missing or invalid request body values, or primary device not configured'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/tasks:
+    get:
+      summary: 'Get task summaries from the session protocol'
+      operationId: 'getTasks'
+      description: 'Returns configured task names and serialized task configurations currently in the session protocol.'
+      tags:
+        - 'Tasks'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Task summaries returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TasksResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/tasks/background:
+    post:
+      summary: 'Add a background task to the session protocol'
+      operationId: 'addBackgroundTask'
+      description: 'Adds a background task with one or more measures to the current session protocol.'
+      tags:
+        - 'Tasks'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Background task payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundTaskRequest'
+            example:
+              name: 'daily_context_collection'
+              description: 'Collect context snapshots during the day.'
+              duration:
+                minutes: 30
+              measures:
+                -
+                  measureType: 'dk.cachet.carp.activity'
+                -
+                  measureType: 'dk.cachet.carp.ambientlight'
+                  samplingConfiguration:
+                    samplingType: 'periodic'
+                    interval:
+                      minutes: 5
+                    duration:
+                      seconds: 10
+      responses:
+        200:
+          description: 'Background task added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or unsupported measure/sampling'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/tasks/web:
+    post:
+      summary: 'Add a web task to the session protocol'
+      operationId: 'addWebTask'
+      description: 'Adds a web task with one or more measures and a valid URL to the current session protocol.'
+      tags:
+        - 'Tasks'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Web task payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebTaskRequest'
+            example:
+              name: 'daily_survey'
+              description: 'Open a daily web survey for participants.'
+              url: 'https://example.org/surveys/daily'
+              measures:
+                -
+                  measureType: 'dk.cachet.carp.activity'
+      responses:
+        200:
+          description: 'Web task added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload, invalid URL, or unsupported measure/sampling'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/tasks/app:
+    post:
+      summary: 'Add an app task to the session protocol'
+      operationId: 'addAppTask'
+      description: 'Adds an app task with one or more measures and an app task type to the current session protocol.'
+      tags:
+        - 'Tasks'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'App task payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppTaskRequest'
+            example:
+              name: 'daily_survey_app_task'
+              description: 'Run a survey task in the app.'
+              type: 'survey'
+              title: 'Daily Survey'
+              instructions: 'Answer the questionnaire in-app.'
+              minutesToComplete: 5
+              expire:
+                hours: 2
+              notification: true
+              measures:
+                -
+                  measureType: 'dk.cachet.carp.activity'
+      responses:
+        200:
+          description: 'App task added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload, unsupported app task type, or unsupported measure/sampling'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/tasks/health-app:
+    post:
+      summary: 'Add a health app task to the session protocol'
+      operationId: 'addHealthAppTask'
+      description: 'Adds a health app task with one or more measures and health data types to the current session protocol.'
+      tags:
+        - 'Tasks'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Health app task payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthAppTaskRequest'
+            example:
+              name: 'daily_health_assessment'
+              description: 'Collect daily health assessment in-app.'
+              title: 'Health Assessment'
+              instructions: 'Follow the health assessment steps.'
+              minutesToComplete: 5
+              expire:
+                hours: 1
+              notification: true
+              types:
+                - 'STEPS'
+              measures:
+                -
+                  measureType: 'dk.cachet.carp.activity'
+      responses:
+        200:
+          description: 'Health app task added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload, unsupported health data type, or unsupported measure/sampling'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/task-controls:
+    get:
+      summary: 'Get task controls from the session protocol'
+      operationId: 'getTaskControls'
+      description: 'Returns configured task controls currently in the session protocol, including taskControl, trigger, task, and targetDevice payloads for each entry.'
+      tags:
+        - 'Task Controls'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Expanded task control entries returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskControlsResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: 'Add a task control to the session protocol'
+      operationId: 'addTaskControl'
+      description: 'Adds a task control that binds a trigger, task, and destination device role in the session protocol.'
+      tags:
+        - 'Task Controls'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Task control payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskControlRequest'
+            example:
+              taskName: 'daily_survey'
+              triggerName: 'start_now'
+              deviceRoleName: 'User Phone'
+      responses:
+        200:
+          description: 'Task control added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or unresolved task/trigger/device role references'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers:
+    get:
+      summary: 'Get configured triggers from the session protocol'
+      operationId: 'getTriggers'
+      description: 'Returns configured trigger ids and serialized trigger configurations currently in the session protocol.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      responses:
+        200:
+          description: 'Trigger summaries returned'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggersResponse'
+        400:
+          description: 'Missing session id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/cron:
+    post:
+      summary: 'Add a cron scheduled trigger to the session protocol'
+      operationId: 'addCronScheduledTrigger'
+      description: 'Adds a cron scheduled trigger using optional cron fields. Null fields match all values.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Cron scheduled trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CronScheduledTriggerRequest'
+            example:
+              triggerName: 'daily_evening_prompt'
+              minute: 30
+              hour: 19
+      responses:
+        200:
+          description: 'Cron scheduled trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload, cron field range, or trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/date-time:
+    post:
+      summary: 'Add a date-time trigger to the session protocol'
+      operationId: 'addDateTimeTrigger'
+      description: 'Adds a trigger that fires once at the specified ISO-8601 date-time.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Date-time trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DateTimeTriggerRequest'
+            example:
+              triggerName: 'enrollment_follow_up'
+              schedule: '2026-10-01T09:30:00Z'
+      responses:
+        200:
+          description: 'Date-time trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/delayed:
+    post:
+      summary: 'Add a delayed trigger to the session protocol'
+      operationId: 'addDelayedTrigger'
+      description: 'Adds a trigger that fires after a delay from sensing start.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Delayed trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DelayedTriggerRequest'
+            example:
+              triggerName: 'delayed_prompt'
+              delay:
+                minutes: 15
+      responses:
+        200:
+          description: 'Delayed trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/elapsed-time:
+    post:
+      summary: 'Add an elapsed-time trigger to the session protocol'
+      operationId: 'addElapsedTimeTrigger'
+      description: 'Adds a trigger that fires when elapsed time from sensing start is reached.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Elapsed-time trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElapsedTimeTriggerRequest'
+            example:
+              triggerName: 'elapsed_30_minutes'
+              elapsedTime:
+                minutes: 30
+      responses:
+        200:
+          description: 'Elapsed-time trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/immediate:
+    post:
+      summary: 'Add an immediate trigger to the session protocol'
+      operationId: 'addImmediateTrigger'
+      description: 'Adds a trigger that fires immediately when sensing starts.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Immediate trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImmediateTriggerRequest'
+            example:
+              triggerName: 'start_now'
+      responses:
+        200:
+          description: 'Immediate trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/manual:
+    post:
+      summary: 'Add a manual trigger to the session protocol'
+      operationId: 'addManualTrigger'
+      description: 'Adds a manual trigger with optional label and description.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Manual trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualTriggerRequest'
+            example:
+              triggerName: 'manual_daily_prompt'
+              label: 'Daily prompt'
+              description: 'Shown manually by the participant.'
+      responses:
+        200:
+          description: 'Manual trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/no-op:
+    post:
+      summary: 'Add a no-op trigger to the session protocol'
+      operationId: 'addNoOpTrigger'
+      description: 'Adds a trigger that starts immediately and never stops.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'No-op trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoOpTriggerRequest'
+            example:
+              triggerName: 'always_on'
+      responses:
+        200:
+          description: 'No-op trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/no-user-task:
+    post:
+      summary: 'Add a no-user-task trigger to the session protocol'
+      operationId: 'addNoUserTaskTrigger'
+      description: 'Adds a trigger that fires when the specified task is not on the task list.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'No-user-task trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoUserTaskTriggerRequest'
+            example:
+              triggerName: 'ensure_survey_task'
+              taskName: 'daily_survey'
+      responses:
+        200:
+          description: 'No-user-task trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/one-time:
+    post:
+      summary: 'Add a one-time trigger to the session protocol'
+      operationId: 'addOneTimeTrigger'
+      description: 'Adds a trigger that can only be fired once during deployment.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'One-time trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OneTimeTriggerRequest'
+            example:
+              triggerName: 'show_demographics_once'
+      responses:
+        200:
+          description: 'One-time trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/passive:
+    post:
+      summary: 'Add a passive trigger to the session protocol'
+      operationId: 'addPassiveTrigger'
+      description: 'Adds a trigger that fires only when manually triggered from code.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Passive trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PassiveTriggerRequest'
+            example:
+              triggerName: 'manual_code_trigger'
+      responses:
+        200:
+          description: 'Passive trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/periodic:
+    post:
+      summary: 'Add a periodic trigger to the session protocol'
+      operationId: 'addPeriodicTrigger'
+      description: 'Adds a trigger that repeats with a fixed period.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Periodic trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PeriodicTriggerRequest'
+            example:
+              triggerName: 'periodic_prompt'
+              period:
+                minutes: 20
+      responses:
+        200:
+          description: 'Periodic trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/random-recurrent:
+    post:
+      summary: 'Add a random recurrent trigger to the session protocol'
+      operationId: 'addRandomRecurrentTrigger'
+      description: 'Adds a random recurrent trigger with time window and trigger count bounds.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Random recurrent trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RandomRecurrentTriggerRequest'
+            example:
+              triggerName: 'random_daily_prompts'
+              minNumberOfTriggers: 3
+              maxNumberOfTriggers: 8
+              startTime:
+                hour: 8
+                minute: 0
+              endTime:
+                hour: 20
+                minute: 0
+      responses:
+        200:
+          description: 'Random recurrent trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/recurrent-scheduled:
+    post:
+      summary: 'Add a recurrent scheduled trigger to the session protocol'
+      operationId: 'addRecurrentScheduledTrigger'
+      description: 'Adds a recurrent scheduled trigger with daily, weekly, or monthly recurrence.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Recurrent scheduled trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecurrentScheduledTriggerRequest'
+            example:
+              triggerName: 'weekday_checkin'
+              type: 'weekly'
+              time:
+                hour: 9
+                minute: 30
+              dayOfWeek: 1
+      responses:
+        200:
+          description: 'Recurrent scheduled trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/scheduled:
+    post:
+      summary: 'Add a scheduled trigger to the session protocol'
+      operationId: 'addScheduledTrigger'
+      description: 'Adds a scheduled trigger with a recurrence rule based on RFC-5545 concepts.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Scheduled trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledTriggerRequest'
+            example:
+              triggerName: 'daily_checkin'
+              time:
+                hour: 9
+                minute: 0
+              recurrenceRule:
+                frequency: 'daily'
+                interval: 1
+                end:
+                  type: 'never'
+      responses:
+        200:
+          description: 'Scheduled trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/user-task:
+    post:
+      summary: 'Add a user-task trigger to the session protocol'
+      operationId: 'addUserTaskTrigger'
+      description: 'Adds a trigger that fires when a named user task reaches the specified state.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'User-task trigger payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserTaskTriggerRequest'
+            example:
+              triggerName: 'survey_completion_trigger'
+              taskName: 'daily_survey'
+              triggerCondition: 'done'
+      responses:
+        200:
+          description: 'User-task trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{sessionId}/triggers/sampling-event:
+    post:
+      summary: 'Add a sampling-event trigger to the session protocol'
+      operationId: 'addSamplingEventTrigger'
+      description: 'Adds a trigger that fires when data of a specific measure type is sampled. Optional triggerCondition must be a serialized CARP Data object containing a __type field and any matching data fields.'
+      tags:
+        - 'Triggers'
+      parameters:
+        -
+          name: 'sessionId'
+          in: 'path'
+          required: true
+          description: 'Session id returned by POST /protocol/new.'
+          schema:
+            type: 'string'
+            example: 'session_1234567890_1'
+      requestBody:
+        description: 'Sampling-event trigger payload. triggerCondition is optional and should follow serialized CARP Data format.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SamplingEventTriggerRequest'
+            example:
+              triggerName: 'after_completed_task'
+              measureType: 'dk.cachet.carp.completed_task'
+              triggerCondition:
+                __type: 'dk.cachet.carp.common.application.data.completedtask'
+      responses:
+        200:
+          description: 'Sampling-event trigger added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        400:
+          description: 'Invalid request payload or duplicate trigger name'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: 'Session id not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CreateSessionResponse:
+      type: 'object'
+      required:
+        - 'sessionId'
+      properties:
+        sessionId:
+          type: 'string'
+    CreateProtocolRequest:
+      type: 'object'
+      required:
+        - 'name'
+      properties:
+        name:
+          type: 'string'
+          example: 'My Study Protocol'
+        ownerId:
+          type: 'string'
+          example: '979b408d-784e-4b1b-bb1e-ff9204e072f3'
+        protocolVersionTag:
+          type: 'string'
+          example: 'v1.0.0'
+        protocolApiLevel:
+          type: 'string'
+          example: '2.0'
+        applicationName:
+          type: 'string'
+          example: 'carp_study_app'
+        privacySchemaName:
+          type: 'string'
+          enum:
+            - 'default-privacy-schema'
+          example: 'default-privacy-schema'
+    SessionMutationResponse:
+      type: 'object'
+      required:
+        - 'sessionId'
+        - 'unfulfilledRequirements'
+      properties:
+        sessionId:
+          type: 'string'
+        unfulfilledRequirements:
+          type: 'object'
+    RequirementsResponse:
+      type: 'object'
+      required:
+        - 'unfulfilledRequirements'
+      properties:
+        unfulfilledRequirements:
+          type: 'object'
+    NamedDevice:
+      type: 'object'
+      required:
+        - 'name'
+        - 'device'
+      properties:
+        name:
+          type: 'string'
+        device:
+          type: 'object'
+    DurationRequest:
+      type: 'object'
+      properties:
+        days:
+          type: 'integer'
+        hours:
+          type: 'integer'
+        minutes:
+          type: 'integer'
+        seconds:
+          type: 'integer'
+        milliseconds:
+          type: 'integer'
+        microseconds:
+          type: 'integer'
+    SerializeResponse:
+      type: 'object'
+      required:
+        - 'name'
+        - 'ownerId'
+        - 'version'
+      properties:
+        name:
+          type: 'string'
+          example: 'My Study Protocol'
+        ownerId:
+          type: 'string'
+          example: '979b408d-784e-4b1b-bb1e-ff9204e072f3'
+        version:
+          type: 'integer'
+          example: 0
+        id:
+          type: 'string'
+        createdOn:
+          type: 'string'
+        description:
+          type: 'string'
+        participantRoles:
+          type: 'array'
+          items:
+            type: 'object'
+        primaryDevices:
+          type: 'array'
+          items:
+            type: 'object'
+        connectedDevices:
+          type: 'array'
+          items:
+            type: 'object'
+        tasks:
+          type: 'array'
+          items:
+            type: 'object'
+        triggers:
+          type: 'array'
+          items:
+            type: 'object'
+        taskControls:
+          type: 'array'
+          items:
+            type: 'object'
+    ErrorResponse:
+      type: 'object'
+      required:
+        - 'error'
+      properties:
+        error:
+          type: 'string'
+    DataEndpointResponse:
+      type: 'object'
+      required:
+        - 'sessionId'
+        - 'unfulfilledRequirements'
+      properties:
+        sessionId:
+          type: 'string'
+        unfulfilledRequirements:
+          type: 'object'
+    DataEndpointRequest:
+      type: 'object'
+      required:
+        - 'endpointType'
+      properties:
+        endpointType:
+          type: 'string'
+          enum:
+            - 'CAWS'
+            - 'SQLITE'
+            - 'FILE'
+          example: 'CAWS'
+        uploadMethod:
+          type: 'string'
+          enum:
+            - 'stream'
+            - 'datapoint'
+            - 'file'
+          example: 'stream'
+        name:
+          type: 'string'
+          example: 'CARP Web Services'
+        deleteWhenUploaded:
+          type: 'boolean'
+          example: true
+        bufferSize:
+          type: 'integer'
+          example: 500000
+        zip:
+          type: 'boolean'
+          example: true
+        encrypt:
+          type: 'boolean'
+          example: false
+        publicKey:
+          type: 'string'
+          example: '-----BEGIN PUBLIC KEY-----...-----END PUBLIC KEY-----'
+    PrimaryDevicesResponse:
+      type: 'object'
+      required:
+        - 'primaryDevices'
+      properties:
+        primaryDevices:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/NamedDevice'
+    PrimaryDeviceRoleRequest:
+      type: 'object'
+      properties:
+        roleName:
+          type: 'string'
+          example: 'User Phone'
+    ParticipantRolesResponse:
+      type: 'object'
+      required:
+        - 'roleNames'
+      properties:
+        roleNames:
+          type: 'array'
+          items:
+            type: 'string'
+    ServiceRolesResponse:
+      type: 'object'
+      required:
+        - 'services'
+      properties:
+        services:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/NamedDevice'
+    LocationServiceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+        accuracy:
+          type: 'string'
+          enum:
+            - 'powerSave'
+            - 'low'
+            - 'balanced'
+            - 'high'
+            - 'navigation'
+            - 'reduced'
+        distance:
+          type: 'number'
+        interval:
+          $ref: '#/components/schemas/DurationRequest'
+        notificationTitle:
+          type: 'string'
+        notificationMessage:
+          type: 'string'
+        notificationDescription:
+          type: 'string'
+        notificationIconName:
+          type: 'string'
+        notificationOnTapBringToFront:
+          type: 'boolean'
+    DeviceRolesResponse:
+      type: 'object'
+      required:
+        - 'devices'
+      properties:
+        devices:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/NamedDevice'
+    ESenseDeviceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+        isOptional:
+          type: 'boolean'
+        samplingRate:
+          type: 'integer'
+    MovesenseDeviceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+        isOptional:
+          type: 'boolean'
+    MovisensDeviceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+        sensorLocation:
+          type: 'string'
+          enum:
+            - 'RightSideHip'
+            - 'Chest'
+            - 'RightWrist'
+            - 'LeftWrist'
+            - 'LeftAnkle'
+            - 'RightAnkle'
+            - 'RightThigh'
+            - 'LeftThigh'
+            - 'RightUpperArm'
+            - 'LeftUpperArm'
+            - 'LeftSideHip'
+        sex:
+          type: 'string'
+          enum:
+            - 'Male'
+            - 'Female'
+            - 'Intersex'
+        height:
+          type: 'integer'
+        weight:
+          type: 'integer'
+        age:
+          type: 'integer'
+    PolarDeviceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+        isOptional:
+          type: 'boolean'
+        namePrefix:
+          type: 'string'
+    TaskSummary:
+      type: 'object'
+      required:
+        - 'name'
+        - 'serializedObj'
+      properties:
+        name:
+          type: 'string'
+          example: 'daily_survey'
+        serializedObj:
+          type: 'object'
+    TasksResponse:
+      type: 'object'
+      required:
+        - 'tasks'
+      properties:
+        tasks:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TaskSummary'
+    TaskSamplingConfigurationRequest:
+      type: 'object'
+      required:
+        - 'samplingType'
+      properties:
+        samplingType:
+          type: 'string'
+          enum:
+            - 'none'
+            - 'interval'
+            - 'periodic'
+            - 'location'
+            - 'mobility'
+        interval:
+          $ref: '#/components/schemas/DurationRequest'
+        duration:
+          $ref: '#/components/schemas/DurationRequest'
+        once:
+          type: 'boolean'
+          example: false
+        usePriorContexts:
+          type: 'boolean'
+          example: true
+        stopRadius:
+          type: 'number'
+          example: 25
+        placeRadius:
+          type: 'number'
+          example: 50
+        stopDuration:
+          $ref: '#/components/schemas/DurationRequest'
+    TaskMeasureRequest:
+      type: 'object'
+      required:
+        - 'measureType'
+      properties:
+        measureType:
+          type: 'string'
+          example: 'dk.cachet.carp.activity'
+        samplingConfiguration:
+          $ref: '#/components/schemas/TaskSamplingConfigurationRequest'
+    BackgroundTaskRequest:
+      type: 'object'
+      required:
+        - 'name'
+        - 'description'
+        - 'measures'
+      properties:
+        name:
+          type: 'string'
+          example: 'daily_context_collection'
+        description:
+          type: 'string'
+          example: 'Collect context snapshots during the day.'
+        measures:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TaskMeasureRequest'
+        duration:
+          $ref: '#/components/schemas/DurationRequest'
+    WebTaskRequest:
+      type: 'object'
+      required:
+        - 'name'
+        - 'description'
+        - 'measures'
+        - 'url'
+      properties:
+        name:
+          type: 'string'
+          example: 'daily_survey'
+        description:
+          type: 'string'
+          example: 'Open a daily web survey for participants.'
+        measures:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TaskMeasureRequest'
+        url:
+          type: 'string'
+          example: 'https://example.org/surveys/daily'
+    AppTaskRequest:
+      type: 'object'
+      required:
+        - 'name'
+        - 'description'
+        - 'measures'
+        - 'type'
+      properties:
+        name:
+          type: 'string'
+          example: 'daily_survey_app_task'
+        description:
+          type: 'string'
+          example: 'Run a survey task in the app.'
+        measures:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TaskMeasureRequest'
+        type:
+          type: 'string'
+          example: 'survey'
+        title:
+          type: 'string'
+          example: 'Daily Survey'
+        instructions:
+          type: 'string'
+          example: 'Answer the questionnaire in-app.'
+        minutesToComplete:
+          type: 'integer'
+          example: 5
+        expire:
+          $ref: '#/components/schemas/DurationRequest'
+        notification:
+          type: 'boolean'
+          example: true
+    HealthAppTaskRequest:
+      type: 'object'
+      required:
+        - 'name'
+        - 'description'
+        - 'measures'
+        - 'types'
+      properties:
+        name:
+          type: 'string'
+          example: 'daily_health_assessment'
+        description:
+          type: 'string'
+          example: 'Collect daily health assessment in-app.'
+        measures:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TaskMeasureRequest'
+        types:
+          type: 'array'
+          items:
+            type: 'string'
+        title:
+          type: 'string'
+          example: 'Health Assessment'
+        instructions:
+          type: 'string'
+          example: 'Follow the health assessment steps.'
+        minutesToComplete:
+          type: 'integer'
+          example: 5
+        expire:
+          $ref: '#/components/schemas/DurationRequest'
+        notification:
+          type: 'boolean'
+          example: true
+    TaskControlsResponse:
+      type: 'object'
+      required:
+        - 'taskControls'
+      properties:
+        taskControls:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TaskControlSummary'
+    TaskControlSummary:
+      type: 'object'
+      required:
+        - 'taskControl'
+        - 'trigger'
+        - 'task'
+        - 'targetDevice'
+      properties:
+        taskControl:
+          type: 'object'
+        trigger:
+          type: 'object'
+        task:
+          type: 'object'
+        targetDevice:
+          type: 'object'
+    TaskControlRequest:
+      type: 'object'
+      required:
+        - 'taskName'
+        - 'triggerName'
+        - 'deviceRoleName'
+      properties:
+        taskName:
+          type: 'string'
+          example: 'daily_survey'
+        triggerName:
+          type: 'string'
+          example: 'start_now'
+        deviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+    TriggerSummary:
+      type: 'object'
+      required:
+        - 'name'
+        - 'trigger'
+      properties:
+        name:
+          type: 'string'
+          example: '0'
+        trigger:
+          type: 'object'
+    TriggersResponse:
+      type: 'object'
+      required:
+        - 'triggers'
+      properties:
+        triggers:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/TriggerSummary'
+    CronScheduledTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'daily_evening_prompt'
+        minute:
+          type: 'integer'
+          example: 30
+        hour:
+          type: 'integer'
+          example: 19
+        day:
+          type: 'integer'
+          example: 1
+        month:
+          type: 'integer'
+          example: 1
+        weekday:
+          type: 'integer'
+          example: 1
+    DateTimeTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'schedule'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'enrollment_follow_up'
+        schedule:
+          type: 'string'
+          example: '2026-10-01T09:30:00Z'
+    DelayedTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'delay'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'delayed_prompt'
+        delay:
+          $ref: '#/components/schemas/DurationRequest'
+    ElapsedTimeTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'elapsedTime'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'elapsed_30_minutes'
+        elapsedTime:
+          $ref: '#/components/schemas/DurationRequest'
+    ImmediateTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'start_now'
+    ManualTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'manual_daily_prompt'
+        label:
+          type: 'string'
+          example: 'Daily prompt'
+        description:
+          type: 'string'
+          example: 'Shown manually by the participant.'
+    NoOpTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'always_on'
+    NoUserTaskTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'taskName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'ensure_survey_task'
+        taskName:
+          type: 'string'
+          example: 'daily_survey'
+    OneTimeTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'show_demographics_once'
+    PassiveTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'manual_code_trigger'
+    PeriodicTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'period'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'periodic_prompt'
+        period:
+          $ref: '#/components/schemas/DurationRequest'
+    TimeOfDayRequest:
+      type: 'object'
+      required:
+        - 'hour'
+        - 'minute'
+      properties:
+        hour:
+          type: 'integer'
+          example: 8
+        minute:
+          type: 'integer'
+          example: 30
+        second:
+          type: 'integer'
+          example: 0
+    RandomRecurrentTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'minNumberOfTriggers'
+        - 'maxNumberOfTriggers'
+        - 'startTime'
+        - 'endTime'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'random_daily_prompts'
+        minNumberOfTriggers:
+          type: 'integer'
+          example: 3
+        maxNumberOfTriggers:
+          type: 'integer'
+          example: 8
+        startTime:
+          $ref: '#/components/schemas/TimeOfDayRequest'
+        endTime:
+          $ref: '#/components/schemas/TimeOfDayRequest'
+    RecurrentScheduledTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'type'
+        - 'time'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'weekday_checkin'
+        type:
+          type: 'string'
+          enum:
+            - 'daily'
+            - 'weekly'
+            - 'monthly'
+          example: 'weekly'
+        time:
+          $ref: '#/components/schemas/TimeOfDayRequest'
+        end:
+          type: 'string'
+          example: '2026-12-31T23:59:59Z'
+        separationCount:
+          type: 'integer'
+          example: 1
+        maxNumberOfSampling:
+          type: 'integer'
+          example: 10
+        dayOfWeek:
+          type: 'integer'
+          example: 1
+        weekOfMonth:
+          type: 'integer'
+          example: 2
+        dayOfMonth:
+          type: 'integer'
+          example: 15
+        duration:
+          $ref: '#/components/schemas/DurationRequest'
+    RecurrenceEndRequest:
+      type: 'object'
+      required:
+        - 'type'
+      properties:
+        type:
+          type: 'string'
+          enum:
+            - 'until'
+            - 'count'
+            - 'never'
+          example: 'never'
+        elapsedTime:
+          $ref: '#/components/schemas/DurationRequest'
+        count:
+          type: 'integer'
+          example: 10
+    RecurrenceRuleRequest:
+      type: 'object'
+      required:
+        - 'frequency'
+      properties:
+        frequency:
+          type: 'string'
+          enum:
+            - 'secondly'
+            - 'minutely'
+            - 'hourly'
+            - 'daily'
+            - 'weekly'
+            - 'monthly'
+            - 'yearly'
+          example: 'daily'
+        interval:
+          type: 'integer'
+          example: 1
+        end:
+          $ref: '#/components/schemas/RecurrenceEndRequest'
+    ScheduledTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'time'
+        - 'recurrenceRule'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'daily_checkin'
+        time:
+          $ref: '#/components/schemas/TimeOfDayRequest'
+        recurrenceRule:
+          $ref: '#/components/schemas/RecurrenceRuleRequest'
+    UserTaskTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'taskName'
+        - 'triggerCondition'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'survey_completion_trigger'
+        taskName:
+          type: 'string'
+          example: 'daily_survey'
+        triggerCondition:
+          type: 'string'
+          enum:
+            - 'initialized'
+            - 'enqueued'
+            - 'dequeued'
+            - 'notified'
+            - 'started'
+            - 'canceled'
+            - 'done'
+            - 'expired'
+            - 'undefined'
+          example: 'done'
+    SamplingEventTriggerRequest:
+      type: 'object'
+      required:
+        - 'triggerName'
+        - 'measureType'
+      properties:
+        triggerName:
+          type: 'string'
+          example: 'after_completed_task'
+        measureType:
+          type: 'string'
+          example: 'dk.cachet.carp.completed_task'
+        triggerCondition:
+          $ref: '#/components/schemas/SerializedCarpDataRequest'
+    SerializedCarpDataRequest:
+      type: 'object'
+      required:
+        - '__type'
+      properties:
+        __type:
+          type: 'string'
+          example: 'dk.cachet.carp.common.application.data.completedtask'

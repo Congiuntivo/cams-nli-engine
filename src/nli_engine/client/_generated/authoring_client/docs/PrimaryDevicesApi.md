@@ -1,0 +1,216 @@
+# authoring_client.PrimaryDevicesApi
+
+All URIs are relative to _http://localhost:8080_
+
+| Method                                                                                    | HTTP request                                               | Description                                              |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------- |
+| [**add_smartphone_primary_device**](PrimaryDevicesApi.md#add_smartphone_primary_device)   | **POST** /sessions/{sessionId}/primary-devices/smartphone  | Add a smartphone primary device to the session protocol  |
+| [**add_web_browser_primary_device**](PrimaryDevicesApi.md#add_web_browser_primary_device) | **POST** /sessions/{sessionId}/primary-devices/web-browser | Add a web browser primary device to the session protocol |
+| [**get_primary_devices**](PrimaryDevicesApi.md#get_primary_devices)                       | **GET** /sessions/{sessionId}/primary-devices              | Get primary devices from the session protocol            |
+
+# **add_smartphone_primary_device**
+
+> RequirementsResponse add_smartphone_primary_device(session_id, primary_device_role_request)
+
+Add a smartphone primary device to the session protocol
+
+Adds a smartphone as a primary device in the session protocol.
+
+### Example
+
+```python
+import authoring_client
+from authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
+from authoring_client.models.requirements_response import RequirementsResponse
+from authoring_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8080
+# See configuration.py for a list of all supported configuration parameters.
+configuration = authoring_client.Configuration(
+    host = "http://localhost:8080"
+)
+
+
+# Enter a context with an instance of the API client
+with authoring_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = authoring_client.PrimaryDevicesApi(api_client)
+    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    primary_device_role_request = {"roleName":"User Phone"} # PrimaryDeviceRoleRequest | Optional role name for the primary smartphone.
+
+    try:
+        # Add a smartphone primary device to the session protocol
+        api_response = api_instance.add_smartphone_primary_device(session_id, primary_device_role_request)
+        print("The response of PrimaryDevicesApi->add_smartphone_primary_device:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrimaryDevicesApi->add_smartphone_primary_device: %s\n" % e)
+```
+
+### Parameters
+
+| Name                            | Type                                                        | Description                                    | Notes |
+| ------------------------------- | ----------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                  | **str**                                                     | Session id returned by POST /protocol/new.     |
+| **primary_device_role_request** | [**PrimaryDeviceRoleRequest**](PrimaryDeviceRoleRequest.md) | Optional role name for the primary smartphone. |
+
+### Return type
+
+[**RequirementsResponse**](RequirementsResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description                                                        | Response headers |
+| ----------- | ------------------------------------------------------------------ | ---------------- |
+| **200**     | Primary device added                                               | -                |
+| **400**     | Missing session id, invalid payload, or incompatible protocol type | -                |
+| **404**     | Session id not found                                               | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **add_web_browser_primary_device**
+
+> RequirementsResponse add_web_browser_primary_device(session_id, primary_device_role_request)
+
+Add a web browser primary device to the session protocol
+
+Adds a web browser as a primary device in the session protocol.
+
+### Example
+
+```python
+import authoring_client
+from authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
+from authoring_client.models.requirements_response import RequirementsResponse
+from authoring_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8080
+# See configuration.py for a list of all supported configuration parameters.
+configuration = authoring_client.Configuration(
+    host = "http://localhost:8080"
+)
+
+
+# Enter a context with an instance of the API client
+with authoring_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = authoring_client.PrimaryDevicesApi(api_client)
+    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    primary_device_role_request = {"roleName":"Participant Browser"} # PrimaryDeviceRoleRequest | Optional role name for the primary web browser.
+
+    try:
+        # Add a web browser primary device to the session protocol
+        api_response = api_instance.add_web_browser_primary_device(session_id, primary_device_role_request)
+        print("The response of PrimaryDevicesApi->add_web_browser_primary_device:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrimaryDevicesApi->add_web_browser_primary_device: %s\n" % e)
+```
+
+### Parameters
+
+| Name                            | Type                                                        | Description                                     | Notes |
+| ------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ----- |
+| **session_id**                  | **str**                                                     | Session id returned by POST /protocol/new.      |
+| **primary_device_role_request** | [**PrimaryDeviceRoleRequest**](PrimaryDeviceRoleRequest.md) | Optional role name for the primary web browser. |
+
+### Return type
+
+[**RequirementsResponse**](RequirementsResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description                                                        | Response headers |
+| ----------- | ------------------------------------------------------------------ | ---------------- |
+| **200**     | Primary device added                                               | -                |
+| **400**     | Missing session id, invalid payload, or incompatible protocol type | -                |
+| **404**     | Session id not found                                               | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_primary_devices**
+
+> PrimaryDevicesResponse get_primary_devices(session_id)
+
+Get primary devices from the session protocol
+
+Returns primary devices currently configured in the session protocol, including role name and serialized device payload.
+
+### Example
+
+```python
+import authoring_client
+from authoring_client.models.primary_devices_response import PrimaryDevicesResponse
+from authoring_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8080
+# See configuration.py for a list of all supported configuration parameters.
+configuration = authoring_client.Configuration(
+    host = "http://localhost:8080"
+)
+
+
+# Enter a context with an instance of the API client
+with authoring_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = authoring_client.PrimaryDevicesApi(api_client)
+    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+
+    try:
+        # Get primary devices from the session protocol
+        api_response = api_instance.get_primary_devices(session_id)
+        print("The response of PrimaryDevicesApi->get_primary_devices:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrimaryDevicesApi->get_primary_devices: %s\n" % e)
+```
+
+### Parameters
+
+| Name           | Type    | Description                                | Notes |
+| -------------- | ------- | ------------------------------------------ | ----- |
+| **session_id** | **str** | Session id returned by POST /protocol/new. |
+
+### Return type
+
+[**PrimaryDevicesResponse**](PrimaryDevicesResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description              | Response headers |
+| ----------- | ------------------------ | ---------------- |
+| **200**     | Primary devices returned | -                |
+| **400**     | Missing session id       | -                |
+| **404**     | Session id not found     | -                |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
