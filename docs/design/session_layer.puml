@@ -1,0 +1,76 @@
+@startuml session_layer
+title NLI Engine — Session Layer
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+package "engine" {
+
+    class "build_client(base_url)" as build_client <<function>>
+
+    class ProtocolSession {
+        + session_id: str
+        --
+        + __init__(client, name, **kwargs)
+        + tools(): list[BoundTool]
+        + get_requirements(): list[str]
+        + serialize(): dict
+    }
+
+    package "tools/" {
+        class ToolSpec <<dataclass, frozen>> {
+            + name: str
+            + api_class: type
+            + method: str
+            + description: str
+            + request_model: BaseModel?
+        }
+
+        class BoundTool <<dataclass>> {
+            + name: str
+            + description: str
+            + request_model: BaseModel?
+            + call: Callable
+        }
+
+        object "TOOL_REGISTRY\n32 entries\n(25 mutations + 7 read-only)" as REGISTRY
+    }
+}
+
+package "client._generated.authoring_client" {
+    class ApiClient
+    class "SessionsApi\nDevicesApi\nTriggersApi\n... (11 groups)" as APIs
+    class "ImmediateTriggerRequest\nAppTaskRequest\n... (pydantic models)" as Models
+}
+
+package "planner" {
+    class Planner
+}
+
+build_client ..> ApiClient
+
+ProtocolSession ..> ApiClient
+ProtocolSession ..> APIs      : lazily instantiates
+ProtocolSession ..> REGISTRY  : reads on tools()
+ProtocolSession *-- BoundTool : produces
+
+REGISTRY o-- ToolSpec
+ToolSpec ..> Models      : request_model (optional)
+BoundTool ..> Models     : exposes schema to LLM
+BoundTool ..> APIs       : call = bound method\n(session_id pre-filled)
+
+Planner ..> build_client
+Planner ..> ProtocolSession
+Planner ..> BoundTool : dispatches by name
+
+note right of ProtocolSession
+  session_id never reaches the LLM
+end note
+
+note right of BoundTool
+  request_model = None → call()
+  request_model set    → call(req)
+end note
+
+@enduml
