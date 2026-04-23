@@ -13,7 +13,9 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictBool
+from nli_engine.client._generated.authoring_client.models.add_participant_role_request import (
+    AddParticipantRoleRequest,
+)
 from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
     DataEndpointResponse,
 )
@@ -47,10 +49,10 @@ class ParticipantRolesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        role_name: Annotated[StrictStr, Field(description="Participant role name.")],
-        is_optional: Annotated[
-            Optional[StrictBool], Field(description="Whether the role is optional.")
-        ] = None,
+        add_participant_role_request: Annotated[
+            AddParticipantRoleRequest,
+            Field(description="Participant role configuration payload."),
+        ],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -69,10 +71,8 @@ class ParticipantRolesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param role_name: Participant role name. (required)
-        :type role_name: str
-        :param is_optional: Whether the role is optional.
-        :type is_optional: bool
+        :param add_participant_role_request: Participant role configuration payload. (required)
+        :type add_participant_role_request: AddParticipantRoleRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -97,8 +97,7 @@ class ParticipantRolesApi:
 
         _param = self._add_participant_role_serialize(
             session_id=session_id,
-            role_name=role_name,
-            is_optional=is_optional,
+            add_participant_role_request=add_participant_role_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -125,10 +124,10 @@ class ParticipantRolesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        role_name: Annotated[StrictStr, Field(description="Participant role name.")],
-        is_optional: Annotated[
-            Optional[StrictBool], Field(description="Whether the role is optional.")
-        ] = None,
+        add_participant_role_request: Annotated[
+            AddParticipantRoleRequest,
+            Field(description="Participant role configuration payload."),
+        ],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -147,10 +146,8 @@ class ParticipantRolesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param role_name: Participant role name. (required)
-        :type role_name: str
-        :param is_optional: Whether the role is optional.
-        :type is_optional: bool
+        :param add_participant_role_request: Participant role configuration payload. (required)
+        :type add_participant_role_request: AddParticipantRoleRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -175,8 +172,7 @@ class ParticipantRolesApi:
 
         _param = self._add_participant_role_serialize(
             session_id=session_id,
-            role_name=role_name,
-            is_optional=is_optional,
+            add_participant_role_request=add_participant_role_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -203,10 +199,10 @@ class ParticipantRolesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        role_name: Annotated[StrictStr, Field(description="Participant role name.")],
-        is_optional: Annotated[
-            Optional[StrictBool], Field(description="Whether the role is optional.")
-        ] = None,
+        add_participant_role_request: Annotated[
+            AddParticipantRoleRequest,
+            Field(description="Participant role configuration payload."),
+        ],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -225,10 +221,8 @@ class ParticipantRolesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param role_name: Participant role name. (required)
-        :type role_name: str
-        :param is_optional: Whether the role is optional.
-        :type is_optional: bool
+        :param add_participant_role_request: Participant role configuration payload. (required)
+        :type add_participant_role_request: AddParticipantRoleRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -253,8 +247,7 @@ class ParticipantRolesApi:
 
         _param = self._add_participant_role_serialize(
             session_id=session_id,
-            role_name=role_name,
-            is_optional=is_optional,
+            add_participant_role_request=add_participant_role_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -274,8 +267,7 @@ class ParticipantRolesApi:
     def _add_participant_role_serialize(
         self,
         session_id,
-        role_name,
-        is_optional,
+        add_participant_role_request,
         _request_auth,
         _content_type,
         _headers,
@@ -298,21 +290,27 @@ class ParticipantRolesApi:
         if session_id is not None:
             _path_params["sessionId"] = session_id
         # process the query parameters
-        if role_name is not None:
-            _query_params.append(("roleName", role_name))
-
-        if is_optional is not None:
-            _query_params.append(("isOptional", is_optional))
-
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if add_participant_role_request is not None:
+            _body_params = add_participant_role_request
 
         # set the HTTP header `Accept`
         if "Accept" not in _header_params:
             _header_params["Accept"] = self.api_client.select_header_accept(
                 ["application/json"]
             )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = []

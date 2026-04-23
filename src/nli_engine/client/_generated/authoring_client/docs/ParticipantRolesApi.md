@@ -9,7 +9,7 @@ All URIs are relative to _http://localhost:8080_
 
 # **add_participant_role**
 
-> DataEndpointResponse add_participant_role(session_id, role_name, is_optional=is_optional)
+> DataEndpointResponse add_participant_role(session_id, add_participant_role_request)
 
 Add a participant role to the protocol in the session
 
@@ -19,6 +19,7 @@ Adds a participant role. Protocol must already be started with POST /protocol/ne
 
 ```python
 import nli_engine.client._generated.authoring_client
+from nli_engine.client._generated.authoring_client.models.add_participant_role_request import AddParticipantRoleRequest
 from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
 from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
@@ -35,12 +36,11 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.ParticipantRolesApi(api_client)
     session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
-    role_name = 'Patient' # str | Participant role name.
-    is_optional = false # bool | Whether the role is optional. (optional)
+    add_participant_role_request = {"roleName":"Patient","isOptional":false} # AddParticipantRoleRequest | Participant role configuration payload.
 
     try:
         # Add a participant role to the protocol in the session
-        api_response = api_instance.add_participant_role(session_id, role_name, is_optional=is_optional)
+        api_response = api_instance.add_participant_role(session_id, add_participant_role_request)
         print("The response of ParticipantRolesApi->add_participant_role:\n")
         pprint(api_response)
     except Exception as e:
@@ -49,11 +49,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name            | Type     | Description                                | Notes      |
-| --------------- | -------- | ------------------------------------------ | ---------- |
-| **session_id**  | **str**  | Session id returned by POST /protocol/new. |
-| **role_name**   | **str**  | Participant role name.                     |
-| **is_optional** | **bool** | Whether the role is optional.              | [optional] |
+| Name                             | Type                                                          | Description                                | Notes |
+| -------------------------------- | ------------------------------------------------------------- | ------------------------------------------ | ----- |
+| **session_id**                   | **str**                                                       | Session id returned by POST /protocol/new. |
+| **add_participant_role_request** | [**AddParticipantRoleRequest**](AddParticipantRoleRequest.md) | Participant role configuration payload.    |
 
 ### Return type
 
@@ -65,16 +64,16 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 ### HTTP response details
 
-| Status code | Description                         | Response headers |
-| ----------- | ----------------------------------- | ---------------- |
-| **200**     | Participant role added              | -                |
-| **400**     | Missing or invalid query parameters | -                |
-| **404**     | Session id not found                | -                |
+| Status code | Description                     | Response headers |
+| ----------- | ------------------------------- | ---------------- |
+| **200**     | Participant role added          | -                |
+| **400**     | Missing or invalid request body | -                |
+| **404**     | Session id not found            | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

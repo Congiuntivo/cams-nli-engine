@@ -37,6 +37,10 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
+    "AddExpectedParticipantDataForRoleRequest",
+    "AddExpectedParticipantDataRequest",
+    "AddParticipantRoleRequest",
+    "AirQualityServiceRequest",
     "AppTaskRequest",
     "BackgroundTaskRequest",
     "CreateProtocolRequest",
@@ -52,6 +56,7 @@ __all__ = [
     "ElapsedTimeTriggerRequest",
     "ErrorResponse",
     "HealthAppTaskRequest",
+    "HealthServiceRequest",
     "ImmediateTriggerRequest",
     "LocationServiceRequest",
     "ManualTriggerRequest",
@@ -89,6 +94,7 @@ __all__ = [
     "TriggerSummary",
     "TriggersResponse",
     "UserTaskTriggerRequest",
+    "WeatherServiceRequest",
     "WebTaskRequest",
 ]
 
@@ -157,6 +163,18 @@ from nli_engine.client._generated.authoring_client.exceptions import (
 )
 
 # import models into sdk package
+from nli_engine.client._generated.authoring_client.models.add_expected_participant_data_for_role_request import (
+    AddExpectedParticipantDataForRoleRequest as AddExpectedParticipantDataForRoleRequest,
+)
+from nli_engine.client._generated.authoring_client.models.add_expected_participant_data_request import (
+    AddExpectedParticipantDataRequest as AddExpectedParticipantDataRequest,
+)
+from nli_engine.client._generated.authoring_client.models.add_participant_role_request import (
+    AddParticipantRoleRequest as AddParticipantRoleRequest,
+)
+from nli_engine.client._generated.authoring_client.models.air_quality_service_request import (
+    AirQualityServiceRequest as AirQualityServiceRequest,
+)
 from nli_engine.client._generated.authoring_client.models.app_task_request import (
     AppTaskRequest as AppTaskRequest,
 )
@@ -201,6 +219,9 @@ from nli_engine.client._generated.authoring_client.models.error_response import 
 )
 from nli_engine.client._generated.authoring_client.models.health_app_task_request import (
     HealthAppTaskRequest as HealthAppTaskRequest,
+)
+from nli_engine.client._generated.authoring_client.models.health_service_request import (
+    HealthServiceRequest as HealthServiceRequest,
 )
 from nli_engine.client._generated.authoring_client.models.immediate_trigger_request import (
     ImmediateTriggerRequest as ImmediateTriggerRequest,
@@ -312,6 +333,9 @@ from nli_engine.client._generated.authoring_client.models.triggers_response impo
 )
 from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import (
     UserTaskTriggerRequest as UserTaskTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.weather_service_request import (
+    WeatherServiceRequest as WeatherServiceRequest,
 )
 from nli_engine.client._generated.authoring_client.models.web_task_request import (
     WebTaskRequest as WebTaskRequest,

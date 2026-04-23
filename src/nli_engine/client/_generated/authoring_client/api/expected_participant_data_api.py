@@ -13,6 +13,12 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
+from nli_engine.client._generated.authoring_client.models.add_expected_participant_data_for_role_request import (
+    AddExpectedParticipantDataForRoleRequest,
+)
+from nli_engine.client._generated.authoring_client.models.add_expected_participant_data_request import (
+    AddExpectedParticipantDataRequest,
+)
 from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
     DataEndpointResponse,
 )
@@ -43,11 +49,9 @@ class ExpectedParticipantDataApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        data_type: Annotated[
-            StrictStr,
-            Field(
-                description="Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom."
-            ),
+        add_expected_participant_data_request: Annotated[
+            AddExpectedParticipantDataRequest,
+            Field(description="Expected participant data type payload."),
         ],
         _request_timeout: Union[
             None,
@@ -67,8 +71,8 @@ class ExpectedParticipantDataApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param data_type: Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom. (required)
-        :type data_type: str
+        :param add_expected_participant_data_request: Expected participant data type payload. (required)
+        :type add_expected_participant_data_request: AddExpectedParticipantDataRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -93,7 +97,7 @@ class ExpectedParticipantDataApi:
 
         _param = self._add_expected_participant_data_for_all_roles_serialize(
             session_id=session_id,
-            data_type=data_type,
+            add_expected_participant_data_request=add_expected_participant_data_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -120,11 +124,9 @@ class ExpectedParticipantDataApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        data_type: Annotated[
-            StrictStr,
-            Field(
-                description="Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom."
-            ),
+        add_expected_participant_data_request: Annotated[
+            AddExpectedParticipantDataRequest,
+            Field(description="Expected participant data type payload."),
         ],
         _request_timeout: Union[
             None,
@@ -144,8 +146,8 @@ class ExpectedParticipantDataApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param data_type: Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom. (required)
-        :type data_type: str
+        :param add_expected_participant_data_request: Expected participant data type payload. (required)
+        :type add_expected_participant_data_request: AddExpectedParticipantDataRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -170,7 +172,7 @@ class ExpectedParticipantDataApi:
 
         _param = self._add_expected_participant_data_for_all_roles_serialize(
             session_id=session_id,
-            data_type=data_type,
+            add_expected_participant_data_request=add_expected_participant_data_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -197,11 +199,9 @@ class ExpectedParticipantDataApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        data_type: Annotated[
-            StrictStr,
-            Field(
-                description="Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom."
-            ),
+        add_expected_participant_data_request: Annotated[
+            AddExpectedParticipantDataRequest,
+            Field(description="Expected participant data type payload."),
         ],
         _request_timeout: Union[
             None,
@@ -221,8 +221,8 @@ class ExpectedParticipantDataApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param data_type: Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom. (required)
-        :type data_type: str
+        :param add_expected_participant_data_request: Expected participant data type payload. (required)
+        :type add_expected_participant_data_request: AddExpectedParticipantDataRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -247,7 +247,7 @@ class ExpectedParticipantDataApi:
 
         _param = self._add_expected_participant_data_for_all_roles_serialize(
             session_id=session_id,
-            data_type=data_type,
+            add_expected_participant_data_request=add_expected_participant_data_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -267,7 +267,7 @@ class ExpectedParticipantDataApi:
     def _add_expected_participant_data_for_all_roles_serialize(
         self,
         session_id,
-        data_type,
+        add_expected_participant_data_request,
         _request_auth,
         _content_type,
         _headers,
@@ -290,18 +290,27 @@ class ExpectedParticipantDataApi:
         if session_id is not None:
             _path_params["sessionId"] = session_id
         # process the query parameters
-        if data_type is not None:
-            _query_params.append(("dataType", data_type))
-
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if add_expected_participant_data_request is not None:
+            _body_params = add_expected_participant_data_request
 
         # set the HTTP header `Accept`
         if "Accept" not in _header_params:
             _header_params["Accept"] = self.api_client.select_header_accept(
                 ["application/json"]
             )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = []
@@ -327,14 +336,9 @@ class ExpectedParticipantDataApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        role_name: Annotated[
-            StrictStr, Field(description="Existing participant role name.")
-        ],
-        data_type: Annotated[
-            StrictStr,
-            Field(
-                description="Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom."
-            ),
+        add_expected_participant_data_for_role_request: Annotated[
+            AddExpectedParticipantDataForRoleRequest,
+            Field(description="Expected participant data payload for a specific role."),
         ],
         _request_timeout: Union[
             None,
@@ -354,10 +358,8 @@ class ExpectedParticipantDataApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param role_name: Existing participant role name. (required)
-        :type role_name: str
-        :param data_type: Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom. (required)
-        :type data_type: str
+        :param add_expected_participant_data_for_role_request: Expected participant data payload for a specific role. (required)
+        :type add_expected_participant_data_for_role_request: AddExpectedParticipantDataForRoleRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -382,8 +384,7 @@ class ExpectedParticipantDataApi:
 
         _param = self._add_expected_participant_data_for_role_serialize(
             session_id=session_id,
-            role_name=role_name,
-            data_type=data_type,
+            add_expected_participant_data_for_role_request=add_expected_participant_data_for_role_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -410,14 +411,9 @@ class ExpectedParticipantDataApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        role_name: Annotated[
-            StrictStr, Field(description="Existing participant role name.")
-        ],
-        data_type: Annotated[
-            StrictStr,
-            Field(
-                description="Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom."
-            ),
+        add_expected_participant_data_for_role_request: Annotated[
+            AddExpectedParticipantDataForRoleRequest,
+            Field(description="Expected participant data payload for a specific role."),
         ],
         _request_timeout: Union[
             None,
@@ -437,10 +433,8 @@ class ExpectedParticipantDataApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param role_name: Existing participant role name. (required)
-        :type role_name: str
-        :param data_type: Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom. (required)
-        :type data_type: str
+        :param add_expected_participant_data_for_role_request: Expected participant data payload for a specific role. (required)
+        :type add_expected_participant_data_for_role_request: AddExpectedParticipantDataForRoleRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -465,8 +459,7 @@ class ExpectedParticipantDataApi:
 
         _param = self._add_expected_participant_data_for_role_serialize(
             session_id=session_id,
-            role_name=role_name,
-            data_type=data_type,
+            add_expected_participant_data_for_role_request=add_expected_participant_data_for_role_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -493,14 +486,9 @@ class ExpectedParticipantDataApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        role_name: Annotated[
-            StrictStr, Field(description="Existing participant role name.")
-        ],
-        data_type: Annotated[
-            StrictStr,
-            Field(
-                description="Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom."
-            ),
+        add_expected_participant_data_for_role_request: Annotated[
+            AddExpectedParticipantDataForRoleRequest,
+            Field(description="Expected participant data payload for a specific role."),
         ],
         _request_timeout: Union[
             None,
@@ -520,10 +508,8 @@ class ExpectedParticipantDataApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param role_name: Existing participant role name. (required)
-        :type role_name: str
-        :param data_type: Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom. (required)
-        :type data_type: str
+        :param add_expected_participant_data_for_role_request: Expected participant data payload for a specific role. (required)
+        :type add_expected_participant_data_for_role_request: AddExpectedParticipantDataForRoleRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -548,8 +534,7 @@ class ExpectedParticipantDataApi:
 
         _param = self._add_expected_participant_data_for_role_serialize(
             session_id=session_id,
-            role_name=role_name,
-            data_type=data_type,
+            add_expected_participant_data_for_role_request=add_expected_participant_data_for_role_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -569,8 +554,7 @@ class ExpectedParticipantDataApi:
     def _add_expected_participant_data_for_role_serialize(
         self,
         session_id,
-        role_name,
-        data_type,
+        add_expected_participant_data_for_role_request,
         _request_auth,
         _content_type,
         _headers,
@@ -592,15 +576,12 @@ class ExpectedParticipantDataApi:
         # process the path parameters
         if session_id is not None:
             _path_params["sessionId"] = session_id
-        if role_name is not None:
-            _path_params["roleName"] = role_name
         # process the query parameters
-        if data_type is not None:
-            _query_params.append(("dataType", data_type))
-
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if add_expected_participant_data_for_role_request is not None:
+            _body_params = add_expected_participant_data_for_role_request
 
         # set the HTTP header `Accept`
         if "Accept" not in _header_params:
@@ -608,12 +589,22 @@ class ExpectedParticipantDataApi:
                 ["application/json"]
             )
 
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
         # authentication setting
         _auth_settings: List[str] = []
 
         return self.api_client.param_serialize(
             method="POST",
-            resource_path="/sessions/{sessionId}/participant-roles/{roleName}/expected-data",
+            resource_path="/sessions/{sessionId}/participant-roles/expected-data",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

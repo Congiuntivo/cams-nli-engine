@@ -13,14 +13,23 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
+from nli_engine.client._generated.authoring_client.models.air_quality_service_request import (
+    AirQualityServiceRequest,
+)
 from nli_engine.client._generated.authoring_client.models.data_endpoint_response import (
     DataEndpointResponse,
+)
+from nli_engine.client._generated.authoring_client.models.health_service_request import (
+    HealthServiceRequest,
 )
 from nli_engine.client._generated.authoring_client.models.location_service_request import (
     LocationServiceRequest,
 )
 from nli_engine.client._generated.authoring_client.models.service_roles_response import (
     ServiceRolesResponse,
+)
+from nli_engine.client._generated.authoring_client.models.weather_service_request import (
+    WeatherServiceRequest,
 )
 
 from nli_engine.client._generated.authoring_client.api_client import (
@@ -49,16 +58,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        air_quality_service_request: Annotated[
+            AirQualityServiceRequest,
+            Field(description="Air quality service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the air quality service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -77,10 +80,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the air quality service.
-        :type role_name: str
+        :param air_quality_service_request: Air quality service configuration payload. (required)
+        :type air_quality_service_request: AirQualityServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -105,8 +106,7 @@ class ServicesApi:
 
         _param = self._add_air_quality_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            air_quality_service_request=air_quality_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -133,16 +133,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        air_quality_service_request: Annotated[
+            AirQualityServiceRequest,
+            Field(description="Air quality service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the air quality service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -161,10 +155,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the air quality service.
-        :type role_name: str
+        :param air_quality_service_request: Air quality service configuration payload. (required)
+        :type air_quality_service_request: AirQualityServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -189,8 +181,7 @@ class ServicesApi:
 
         _param = self._add_air_quality_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            air_quality_service_request=air_quality_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -217,16 +208,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        air_quality_service_request: Annotated[
+            AirQualityServiceRequest,
+            Field(description="Air quality service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the air quality service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -245,10 +230,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the air quality service.
-        :type role_name: str
+        :param air_quality_service_request: Air quality service configuration payload. (required)
+        :type air_quality_service_request: AirQualityServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -273,8 +256,7 @@ class ServicesApi:
 
         _param = self._add_air_quality_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            air_quality_service_request=air_quality_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -294,8 +276,7 @@ class ServicesApi:
     def _add_air_quality_service_serialize(
         self,
         session_id,
-        primary_device_role_name,
-        role_name,
+        air_quality_service_request,
         _request_auth,
         _content_type,
         _headers,
@@ -318,21 +299,27 @@ class ServicesApi:
         if session_id is not None:
             _path_params["sessionId"] = session_id
         # process the query parameters
-        if role_name is not None:
-            _query_params.append(("roleName", role_name))
-
-        if primary_device_role_name is not None:
-            _query_params.append(("primaryDeviceRoleName", primary_device_role_name))
-
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if air_quality_service_request is not None:
+            _body_params = air_quality_service_request
 
         # set the HTTP header `Accept`
         if "Accept" not in _header_params:
             _header_params["Accept"] = self.api_client.select_header_accept(
                 ["application/json"]
             )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = []
@@ -358,16 +345,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        health_service_request: Annotated[
+            HealthServiceRequest,
+            Field(description="Health service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the health service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -386,10 +367,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the health service.
-        :type role_name: str
+        :param health_service_request: Health service configuration payload. (required)
+        :type health_service_request: HealthServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -414,8 +393,7 @@ class ServicesApi:
 
         _param = self._add_health_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            health_service_request=health_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -442,16 +420,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        health_service_request: Annotated[
+            HealthServiceRequest,
+            Field(description="Health service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the health service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -470,10 +442,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the health service.
-        :type role_name: str
+        :param health_service_request: Health service configuration payload. (required)
+        :type health_service_request: HealthServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -498,8 +468,7 @@ class ServicesApi:
 
         _param = self._add_health_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            health_service_request=health_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -526,16 +495,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        health_service_request: Annotated[
+            HealthServiceRequest,
+            Field(description="Health service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the health service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -554,10 +517,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the health service.
-        :type role_name: str
+        :param health_service_request: Health service configuration payload. (required)
+        :type health_service_request: HealthServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -582,8 +543,7 @@ class ServicesApi:
 
         _param = self._add_health_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            health_service_request=health_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -603,8 +563,7 @@ class ServicesApi:
     def _add_health_service_serialize(
         self,
         session_id,
-        primary_device_role_name,
-        role_name,
+        health_service_request,
         _request_auth,
         _content_type,
         _headers,
@@ -627,21 +586,27 @@ class ServicesApi:
         if session_id is not None:
             _path_params["sessionId"] = session_id
         # process the query parameters
-        if role_name is not None:
-            _query_params.append(("roleName", role_name))
-
-        if primary_device_role_name is not None:
-            _query_params.append(("primaryDeviceRoleName", primary_device_role_name))
-
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if health_service_request is not None:
+            _body_params = health_service_request
 
         # set the HTTP header `Accept`
         if "Accept" not in _header_params:
             _header_params["Accept"] = self.api_client.select_header_accept(
                 ["application/json"]
             )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = []
@@ -954,16 +919,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        weather_service_request: Annotated[
+            WeatherServiceRequest,
+            Field(description="Weather service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the weather service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -982,10 +941,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the weather service.
-        :type role_name: str
+        :param weather_service_request: Weather service configuration payload. (required)
+        :type weather_service_request: WeatherServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1010,8 +967,7 @@ class ServicesApi:
 
         _param = self._add_weather_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            weather_service_request=weather_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1038,16 +994,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        weather_service_request: Annotated[
+            WeatherServiceRequest,
+            Field(description="Weather service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the weather service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1066,10 +1016,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the weather service.
-        :type role_name: str
+        :param weather_service_request: Weather service configuration payload. (required)
+        :type weather_service_request: WeatherServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1094,8 +1042,7 @@ class ServicesApi:
 
         _param = self._add_weather_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            weather_service_request=weather_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1122,16 +1069,10 @@ class ServicesApi:
         session_id: Annotated[
             StrictStr, Field(description="Session id returned by POST /protocol/new.")
         ],
-        primary_device_role_name: Annotated[
-            StrictStr,
-            Field(
-                description="Role name of the primary device this service is connected to."
-            ),
+        weather_service_request: Annotated[
+            WeatherServiceRequest,
+            Field(description="Weather service configuration payload."),
         ],
-        role_name: Annotated[
-            Optional[StrictStr],
-            Field(description="Optional role name for the weather service."),
-        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1150,10 +1091,8 @@ class ServicesApi:
 
         :param session_id: Session id returned by POST /protocol/new. (required)
         :type session_id: str
-        :param primary_device_role_name: Role name of the primary device this service is connected to. (required)
-        :type primary_device_role_name: str
-        :param role_name: Optional role name for the weather service.
-        :type role_name: str
+        :param weather_service_request: Weather service configuration payload. (required)
+        :type weather_service_request: WeatherServiceRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1178,8 +1117,7 @@ class ServicesApi:
 
         _param = self._add_weather_service_serialize(
             session_id=session_id,
-            primary_device_role_name=primary_device_role_name,
-            role_name=role_name,
+            weather_service_request=weather_service_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1199,8 +1137,7 @@ class ServicesApi:
     def _add_weather_service_serialize(
         self,
         session_id,
-        primary_device_role_name,
-        role_name,
+        weather_service_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1223,21 +1160,27 @@ class ServicesApi:
         if session_id is not None:
             _path_params["sessionId"] = session_id
         # process the query parameters
-        if role_name is not None:
-            _query_params.append(("roleName", role_name))
-
-        if primary_device_role_name is not None:
-            _query_params.append(("primaryDeviceRoleName", primary_device_role_name))
-
         # process the header parameters
         # process the form parameters
         # process the body parameter
+        if weather_service_request is not None:
+            _body_params = weather_service_request
 
         # set the HTTP header `Accept`
         if "Accept" not in _header_params:
             _header_params["Accept"] = self.api_client.select_header_accept(
                 ["application/json"]
             )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = []

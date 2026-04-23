@@ -13,6 +13,18 @@ Do not edit the class manually.
 """  # noqa: E501
 
 # import models into model package
+from nli_engine.client._generated.authoring_client.models.add_expected_participant_data_for_role_request import (
+    AddExpectedParticipantDataForRoleRequest,
+)
+from nli_engine.client._generated.authoring_client.models.add_expected_participant_data_request import (
+    AddExpectedParticipantDataRequest,
+)
+from nli_engine.client._generated.authoring_client.models.add_participant_role_request import (
+    AddParticipantRoleRequest,
+)
+from nli_engine.client._generated.authoring_client.models.air_quality_service_request import (
+    AirQualityServiceRequest,
+)
 from nli_engine.client._generated.authoring_client.models.app_task_request import (
     AppTaskRequest,
 )
@@ -57,6 +69,9 @@ from nli_engine.client._generated.authoring_client.models.error_response import 
 )
 from nli_engine.client._generated.authoring_client.models.health_app_task_request import (
     HealthAppTaskRequest,
+)
+from nli_engine.client._generated.authoring_client.models.health_service_request import (
+    HealthServiceRequest,
 )
 from nli_engine.client._generated.authoring_client.models.immediate_trigger_request import (
     ImmediateTriggerRequest,
@@ -168,6 +183,9 @@ from nli_engine.client._generated.authoring_client.models.triggers_response impo
 )
 from nli_engine.client._generated.authoring_client.models.user_task_trigger_request import (
     UserTaskTriggerRequest,
+)
+from nli_engine.client._generated.authoring_client.models.weather_service_request import (
+    WeatherServiceRequest,
 )
 from nli_engine.client._generated.authoring_client.models.web_task_request import (
     WebTaskRequest,

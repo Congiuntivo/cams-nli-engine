@@ -52,19 +52,19 @@ class ProtocolSession:
                 and param.kind
                 not in (inspect.Parameter.VAR_KEYWORD, inspect.Parameter.VAR_POSITIONAL)
             ]
-            if len(non_session) == 1:
-                # Single named request-object parameter.
-                req_kwarg = non_session[0]
+            if len(non_session) != 1:
+                raise ValueError(
+                    f"{spec.api_class.__name__}.{spec.method} must expose exactly "
+                    f"one non-session parameter, found: {non_session}"
+                )
 
-                def call(
-                    req: Any, _m: Any = method, _sid: str = sid, _kw: str = req_kwarg
-                ) -> Any:  # type: ignore[misc]
-                    return _m(session_id=_sid, **{_kw: req})
+            # Single named request-object parameter.
+            req_kwarg = non_session[0]
 
-            else:
-                # Multiple flat parameters; unpack the local model.
-                def call(req: Any, _m: Any = method, _sid: str = sid) -> Any:  # type: ignore[misc]
-                    return _m(session_id=_sid, **req.model_dump(exclude_none=True))
+            def call(
+                req: Any, _m: Any = method, _sid: str = sid, _kw: str = req_kwarg
+            ) -> Any:  # type: ignore[misc]
+                return _m(session_id=_sid, **{_kw: req})
 
         return BoundTool(
             name=spec.name,

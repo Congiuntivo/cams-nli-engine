@@ -1,269 +1,63 @@
-from nli_engine.client._generated.authoring_client import (
-    AppTaskRequest,
-    BackgroundTaskRequest,
-    CronScheduledTriggerRequest,
-    DataEndpointApi,
-    DataEndpointRequest,
-    DelayedTriggerRequest,
-    DevicesApi,
-    ESenseDeviceRequest,
-    ExpectedParticipantDataApi,
-    HealthAppTaskRequest,
-    ImmediateTriggerRequest,
-    LocationServiceRequest,
-    ManualTriggerRequest,
-    MovesenseDeviceRequest,
-    MovisensDeviceRequest,
-    NoOpTriggerRequest,
-    ParticipantRolesApi,
-    PeriodicTriggerRequest,
-    PolarDeviceRequest,
-    PrimaryDeviceRoleRequest,
-    PrimaryDevicesApi,
-    RequirementsAndSerializationApi,
-    ServicesApi,
-    TaskControlRequest,
-    TaskControlsApi,
-    TasksApi,
-    TriggersApi,
-    WebTaskRequest,
-)
-
-from nli_engine.engine.tools.models import (
-    AddExpectedDataAllRolesRequest,
-    AddExpectedDataForRoleRequest,
-    AddParticipantRoleRequest,
-    AddSimpleServiceRequest,
-)
 from nli_engine.engine.tools.spec import ToolSpec
+from nli_engine.engine.tools.registries.data_endpoint import DATA_ENDPOINT_TOOLS
+from nli_engine.engine.tools.registries.devices import (
+    DEVICES_MUTATION_TOOLS,
+    DEVICES_READ_ONLY_TOOLS,
+)
+from nli_engine.engine.tools.registries.expected_participant_data import (
+    EXPECTED_PARTICIPANT_DATA_TOOLS,
+)
+from nli_engine.engine.tools.registries.participant_roles import (
+    PARTICIPANT_ROLES_MUTATION_TOOLS,
+    PARTICIPANT_ROLES_READ_ONLY_TOOLS,
+)
+from nli_engine.engine.tools.registries.primary_devices import (
+    PRIMARY_DEVICES_MUTATION_TOOLS,
+    PRIMARY_DEVICES_READ_ONLY_TOOLS,
+)
+from nli_engine.engine.tools.registries.requirements_and_serialization import (
+    REQUIREMENTS_AND_SERIALIZATION_READ_ONLY_TOOLS,
+)
+from nli_engine.engine.tools.registries.services import SERVICES_TOOLS
+from nli_engine.engine.tools.registries.task_controls import (
+    TASK_CONTROLS_MUTATION_TOOLS,
+    TASK_CONTROLS_READ_ONLY_TOOLS,
+)
+from nli_engine.engine.tools.registries.tasks import (
+    TASKS_MUTATION_TOOLS,
+    TASKS_READ_ONLY_TOOLS,
+)
+from nli_engine.engine.tools.registries.triggers import (
+    TRIGGERS_MUTATION_TOOLS,
+    TRIGGERS_READ_ONLY_TOOLS,
+)
 
 TOOL_REGISTRY: list[ToolSpec] = [
     # Devices — primary
-    ToolSpec(
-        name="add_primary_smartphone",
-        api_class=PrimaryDevicesApi,
-        method="add_smartphone_primary_device",
-        request_model=PrimaryDeviceRoleRequest,
-        description="Add a smartphone as a primary device role.",
-    ),
-    ToolSpec(
-        name="add_primary_web_browser",
-        api_class=PrimaryDevicesApi,
-        method="add_web_browser_primary_device",
-        request_model=PrimaryDeviceRoleRequest,
-        description="Add a web browser as a primary device role.",
-    ),
+    *PRIMARY_DEVICES_MUTATION_TOOLS,
     # Devices — connected wearables
-    ToolSpec(
-        name="add_esense",
-        api_class=DevicesApi,
-        method="add_e_sense_device",
-        request_model=ESenseDeviceRequest,
-        description="Add an eSense earbud device.",
-    ),
-    ToolSpec(
-        name="add_movesense",
-        api_class=DevicesApi,
-        method="add_movesense_device",
-        request_model=MovesenseDeviceRequest,
-        description="Add a Movesense device.",
-    ),
-    ToolSpec(
-        name="add_movisens",
-        api_class=DevicesApi,
-        method="add_movisens_device",
-        request_model=MovisensDeviceRequest,
-        description="Add a Movisens device.",
-    ),
-    ToolSpec(
-        name="add_polar",
-        api_class=DevicesApi,
-        method="add_polar_device",
-        request_model=PolarDeviceRequest,
-        description="Add a Polar heart-rate device.",
-    ),
+    *DEVICES_MUTATION_TOOLS,
     # Participants
-    ToolSpec(
-        name="add_participant_role",
-        api_class=ParticipantRolesApi,
-        method="add_participant_role",
-        request_model=AddParticipantRoleRequest,
-        description="Add a participant role to the protocol.",
-    ),
-    ToolSpec(
-        name="add_expected_data_all_roles",
-        api_class=ExpectedParticipantDataApi,
-        method="add_expected_participant_data_for_all_roles",
-        request_model=AddExpectedDataAllRolesRequest,
-        description="Declare expected participant data for all roles.",
-    ),
-    ToolSpec(
-        name="add_expected_data_for_role",
-        api_class=ExpectedParticipantDataApi,
-        method="add_expected_participant_data_for_role",
-        request_model=AddExpectedDataForRoleRequest,
-        description="Declare expected participant data for a specific role.",
-    ),
+    *PARTICIPANT_ROLES_MUTATION_TOOLS,
+    *EXPECTED_PARTICIPANT_DATA_TOOLS,
     # Services
-    ToolSpec(
-        name="add_air_quality_service",
-        api_class=ServicesApi,
-        method="add_air_quality_service",
-        request_model=AddSimpleServiceRequest,
-        description="Add an air quality sensor service.",
-    ),
-    ToolSpec(
-        name="add_health_service",
-        api_class=ServicesApi,
-        method="add_health_service",
-        request_model=AddSimpleServiceRequest,
-        description="Add a health data service.",
-    ),
-    ToolSpec(
-        name="add_weather_service",
-        api_class=ServicesApi,
-        method="add_weather_service",
-        request_model=AddSimpleServiceRequest,
-        description="Add a weather data service.",
-    ),
-    ToolSpec(
-        name="add_location_service",
-        api_class=ServicesApi,
-        method="add_location_service",
-        request_model=LocationServiceRequest,
-        description="Add a GPS/location service.",
-    ),
+    *SERVICES_TOOLS,
     # Data endpoint
-    ToolSpec(
-        name="add_data_endpoint",
-        api_class=DataEndpointApi,
-        method="add_data_endpoint",
-        request_model=DataEndpointRequest,
-        description="Configure a data upload endpoint (CAWS, SQLITE, or FILE).",
-    ),
+    *DATA_ENDPOINT_TOOLS,
     # Tasks
-    ToolSpec(
-        name="add_background_task",
-        api_class=TasksApi,
-        method="add_background_task",
-        request_model=BackgroundTaskRequest,
-        description="Add a passive background data-collection task.",
-    ),
-    ToolSpec(
-        name="add_app_task",
-        api_class=TasksApi,
-        method="add_app_task",
-        request_model=AppTaskRequest,
-        description="Add an active app-based task (survey, cognitive test, etc.).",
-    ),
-    ToolSpec(
-        name="add_health_app_task",
-        api_class=TasksApi,
-        method="add_health_app_task",
-        request_model=HealthAppTaskRequest,
-        description="Add a health app task (step count, heart rate, etc.).",
-    ),
-    ToolSpec(
-        name="add_web_task",
-        api_class=TasksApi,
-        method="add_web_task",
-        request_model=WebTaskRequest,
-        description="Add a web-based task with a URL.",
-    ),
+    *TASKS_MUTATION_TOOLS,
     # Triggers
-    ToolSpec(
-        name="add_immediate_trigger",
-        api_class=TriggersApi,
-        method="add_immediate_trigger",
-        request_model=ImmediateTriggerRequest,
-        description="Add a trigger that fires immediately when the study starts.",
-    ),
-    ToolSpec(
-        name="add_delayed_trigger",
-        api_class=TriggersApi,
-        method="add_delayed_trigger",
-        request_model=DelayedTriggerRequest,
-        description="Add a trigger that fires once after a fixed delay.",
-    ),
-    ToolSpec(
-        name="add_periodic_trigger",
-        api_class=TriggersApi,
-        method="add_periodic_trigger",
-        request_model=PeriodicTriggerRequest,
-        description="Add a trigger that fires repeatedly at a fixed interval.",
-    ),
-    ToolSpec(
-        name="add_cron_trigger",
-        api_class=TriggersApi,
-        method="add_cron_scheduled_trigger",
-        request_model=CronScheduledTriggerRequest,
-        description="Add a cron-scheduled trigger (minute/hour/day/month/weekday).",
-    ),
-    ToolSpec(
-        name="add_manual_trigger",
-        api_class=TriggersApi,
-        method="add_manual_trigger",
-        request_model=ManualTriggerRequest,
-        description="Add a trigger that fires when manually activated by the researcher.",
-    ),
-    ToolSpec(
-        name="add_no_op_trigger",
-        api_class=TriggersApi,
-        method="add_no_op_trigger",
-        request_model=NoOpTriggerRequest,
-        description="Add a no-op placeholder trigger.",
-    ),
+    *TRIGGERS_MUTATION_TOOLS,
     # Task controls
-    ToolSpec(
-        name="add_task_control",
-        api_class=TaskControlsApi,
-        method="add_task_control",
-        description="Bind a task to a trigger on a specific device role.",
-        request_model=TaskControlRequest,
-    ),
+    *TASK_CONTROLS_MUTATION_TOOLS,
     # ------------------------------------------------------------------ #
     # Read-only inspection tools
     # ------------------------------------------------------------------ #
-    ToolSpec(
-        name="get_requirements",
-        api_class=RequirementsAndSerializationApi,
-        method="get_requirements",
-        description="Return the list of currently unfulfilled protocol requirements.",
-    ),
-    ToolSpec(
-        name="get_primary_devices",
-        api_class=PrimaryDevicesApi,
-        method="get_primary_devices",
-        description="Return all primary device roles added so far.",
-    ),
-    ToolSpec(
-        name="get_connected_devices",
-        api_class=DevicesApi,
-        method="get_device_roles",
-        description="Return all connected (wearable) device roles added so far.",
-    ),
-    ToolSpec(
-        name="get_participant_roles",
-        api_class=ParticipantRolesApi,
-        method="get_participant_roles",
-        description="Return all participant roles added so far.",
-    ),
-    ToolSpec(
-        name="get_tasks",
-        api_class=TasksApi,
-        method="get_tasks",
-        description="Return all tasks added so far.",
-    ),
-    ToolSpec(
-        name="get_triggers",
-        api_class=TriggersApi,
-        method="get_triggers",
-        description="Return all triggers added so far.",
-    ),
-    ToolSpec(
-        name="get_task_controls",
-        api_class=TaskControlsApi,
-        method="get_task_controls",
-        description="Return all task-trigger bindings added so far.",
-    ),
+    *REQUIREMENTS_AND_SERIALIZATION_READ_ONLY_TOOLS,
+    *PRIMARY_DEVICES_READ_ONLY_TOOLS,
+    *DEVICES_READ_ONLY_TOOLS,
+    *PARTICIPANT_ROLES_READ_ONLY_TOOLS,
+    *TASKS_READ_ONLY_TOOLS,
+    *TRIGGERS_READ_ONLY_TOOLS,
+    *TASK_CONTROLS_READ_ONLY_TOOLS,
 ]

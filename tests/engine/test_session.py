@@ -1,9 +1,13 @@
+import inspect
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from nli_engine.client._generated.authoring_client import (
+    AddExpectedParticipantDataForRoleRequest,
+    AddParticipantRoleRequest,
     ApiClient,
+    ExpectedParticipantDataApi,
     ImmediateTriggerRequest,
     ParticipantRolesApi,
     TriggersApi,
@@ -11,7 +15,6 @@ from nli_engine.client._generated.authoring_client import (
 from nli_engine.engine.client import build_client
 from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.tools import TOOL_REGISTRY, BoundTool
-from nli_engine.engine.tools.models import AddParticipantRoleRequest
 
 SESSION_ID = "sess-test-42"
 
@@ -98,7 +101,7 @@ def test_call_passes_session_id_and_request_kwarg(session):
 
 
 # ------------------------------------------------------------------ #
-# BoundTool.call — flat-kwarg path (model unpacked via model_dump)
+# BoundTool.call — read-only path
 # ------------------------------------------------------------------ #
 
 
@@ -112,7 +115,7 @@ def test_read_only_tool_calls_with_no_args(session):
     mock_triggers.get_triggers.assert_called_once_with(session_id=SESSION_ID)
 
 
-def test_call_unpacks_flat_kwarg_model(session):
+def test_call_passes_participant_role_request_kwarg(session):
     mock_participants = MagicMock()
     session._apis[ParticipantRolesApi] = mock_participants
 
@@ -122,6 +125,46 @@ def test_call_unpacks_flat_kwarg_model(session):
 
     mock_participants.add_participant_role.assert_called_once_with(
         session_id=SESSION_ID,
-        role_name="participant",
-        is_optional=False,
+        add_participant_role_request=req,
     )
+
+
+def test_call_passes_route_and_body_for_role_scoped_request(session):
+    mock_expected_data = MagicMock()
+    session._apis[ExpectedParticipantDataApi] = mock_expected_data
+
+    tools = {t.name: t for t in session.tools()}
+    req = AddExpectedParticipantDataForRoleRequest(
+        role_name="participant",
+        data_type="sex",
+    )
+    tools["add_expected_data_for_role"].call(req)
+
+    mock_expected_data.add_expected_participant_data_for_role.assert_called_once_with(
+        session_id=SESSION_ID,
+        add_expected_participant_data_for_role_request=req,
+    )
+
+
+def test_mutation_tools_bind_supported_non_session_shapes():
+    for spec in TOOL_REGISTRY:
+        if spec.request_model is None:
+            continue
+
+        non_session = [
+            name
+            for name, param in inspect.signature(
+                getattr(spec.api_class, spec.method)
+            ).parameters.items()
+            if name not in ("self", "session_id")
+            and not name.startswith("_")
+            and param.kind
+            not in (
+                inspect.Parameter.VAR_KEYWORD,
+                inspect.Parameter.VAR_POSITIONAL,
+            )
+        ]
+        assert len(non_session) == 1, (
+            f"{spec.api_class.__name__}.{spec.method} exposes {len(non_session)} "
+            f"non-session params: {non_session}"
+        )

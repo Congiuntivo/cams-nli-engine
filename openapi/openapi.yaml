@@ -331,22 +331,16 @@ paths:
           schema:
             type: 'string'
             example: 'session_1234567890_1'
-        -
-          name: 'roleName'
-          in: 'query'
-          required: true
-          description: 'Participant role name.'
-          schema:
-            type: 'string'
-            example: 'Patient'
-        -
-          name: 'isOptional'
-          in: 'query'
-          required: false
-          description: 'Whether the role is optional.'
-          schema:
-            type: 'boolean'
-            example: 'false'
+      requestBody:
+        description: 'Participant role configuration payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddParticipantRoleRequest'
+            example:
+              roleName: 'Patient'
+              isOptional: false
       responses:
         200:
           description: 'Participant role added'
@@ -355,7 +349,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DataEndpointResponse'
         400:
-          description: 'Missing or invalid query parameters'
+          description: 'Missing or invalid request body'
           content:
             application/json:
               schema:
@@ -366,7 +360,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /sessions/{sessionId}/participant-roles/{roleName}/expected-data:
+  /sessions/{sessionId}/participant-roles/expected-data:
     post:
       summary: 'Add expected participant data for a specific role'
       operationId: 'addExpectedParticipantDataForRole'
@@ -382,35 +376,16 @@ paths:
           schema:
             type: 'string'
             example: 'session_1234567890_1'
-        -
-          name: 'roleName'
-          in: 'path'
-          required: true
-          description: 'Existing participant role name.'
-          schema:
-            type: 'string'
-            example: 'Patient'
-        -
-          name: 'dataType'
-          in: 'query'
-          required: true
-          description: 'Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom.'
-          schema:
-            type: 'string'
-            example: 'sex'
-            enum:
-              - 'sex'
-              - 'phone_number'
-              - 'ssn'
-              - 'full_name'
-              - 'informed_consent'
-              - 'address'
-              - 'diagnosis'
-              - 'note'
-              - 'educational_degree'
-              - 'onboarding_researcher'
-              - 'language'
-              - 'occupation'
+      requestBody:
+        description: 'Expected participant data payload for a specific role.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddExpectedParticipantDataForRoleRequest'
+            example:
+              roleName: 'Patient'
+              dataType: 'sex'
       responses:
         200:
           description: 'Expected participant data added for role'
@@ -419,7 +394,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DataEndpointResponse'
         400:
-          description: 'Missing or invalid query parameters'
+          description: 'Missing or invalid request body'
           content:
             application/json:
               schema:
@@ -446,27 +421,15 @@ paths:
           schema:
             type: 'string'
             example: 'session_1234567890_1'
-        -
-          name: 'dataType'
-          in: 'query'
-          required: true
-          description: 'Participant input data type. Supported values: sex, phone_number, ssn, full_name, informed_consent, address, diagnosis, custom.'
-          schema:
-            type: 'string'
-            example: 'informed_consent'
-            enum:
-              - 'sex'
-              - 'phone_number'
-              - 'ssn'
-              - 'full_name'
-              - 'informed_consent'
-              - 'address'
-              - 'diagnosis'
-              - 'note'
-              - 'educational_degree'
-              - 'onboarding_researcher'
-              - 'language'
-              - 'occupation'
+      requestBody:
+        description: 'Expected participant data type payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddExpectedParticipantDataRequest'
+            example:
+              dataType: 'informed_consent'
       responses:
         200:
           description: 'Expected participant data added for all roles'
@@ -475,7 +438,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DataEndpointResponse'
         400:
-          description: 'Missing or invalid query parameters'
+          description: 'Missing or invalid request body'
           content:
             application/json:
               schema:
@@ -537,22 +500,16 @@ paths:
           schema:
             type: 'string'
             example: 'session_1234567890_1'
-        -
-          name: 'roleName'
-          in: 'query'
-          required: false
-          description: 'Optional role name for the weather service.'
-          schema:
-            type: 'string'
-            example: 'Local Weather'
-        -
-          name: 'primaryDeviceRoleName'
-          in: 'query'
-          required: true
-          description: 'Role name of the primary device this service is connected to.'
-          schema:
-            type: 'string'
-            example: 'User Phone'
+      requestBody:
+        description: 'Weather service configuration payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeatherServiceRequest'
+            example:
+              roleName: 'Local Weather'
+              primaryDeviceRoleName: 'User Phone'
       responses:
         200:
           description: 'Weather service added'
@@ -561,7 +518,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DataEndpointResponse'
         400:
-          description: 'Missing query parameters or primary device not configured'
+          description: 'Missing or invalid request body, or primary device not configured'
           content:
             application/json:
               schema:
@@ -588,22 +545,16 @@ paths:
           schema:
             type: 'string'
             example: 'session_1234567890_1'
-        -
-          name: 'roleName'
-          in: 'query'
-          required: false
-          description: 'Optional role name for the air quality service.'
-          schema:
-            type: 'string'
-            example: 'Local Air Quality'
-        -
-          name: 'primaryDeviceRoleName'
-          in: 'query'
-          required: true
-          description: 'Role name of the primary device this service is connected to.'
-          schema:
-            type: 'string'
-            example: 'User Phone'
+      requestBody:
+        description: 'Air quality service configuration payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirQualityServiceRequest'
+            example:
+              roleName: 'Local Air Quality'
+              primaryDeviceRoleName: 'User Phone'
       responses:
         200:
           description: 'Air quality service added'
@@ -612,7 +563,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DataEndpointResponse'
         400:
-          description: 'Missing query parameters or primary device not configured'
+          description: 'Missing or invalid request body, or primary device not configured'
           content:
             application/json:
               schema:
@@ -639,22 +590,16 @@ paths:
           schema:
             type: 'string'
             example: 'session_1234567890_1'
-        -
-          name: 'roleName'
-          in: 'query'
-          required: false
-          description: 'Optional role name for the health service.'
-          schema:
-            type: 'string'
-            example: 'Device Health'
-        -
-          name: 'primaryDeviceRoleName'
-          in: 'query'
-          required: true
-          description: 'Role name of the primary device this service is connected to.'
-          schema:
-            type: 'string'
-            example: 'User Phone'
+      requestBody:
+        description: 'Health service configuration payload.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthServiceRequest'
+            example:
+              roleName: 'Device Health'
+              primaryDeviceRoleName: 'User Phone'
       responses:
         200:
           description: 'Health service added'
@@ -663,7 +608,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DataEndpointResponse'
         400:
-          description: 'Missing query parameters or primary device not configured'
+          description: 'Missing or invalid request body, or primary device not configured'
           content:
             application/json:
               schema:
@@ -2254,6 +2199,16 @@ components:
         roleName:
           type: 'string'
           example: 'User Phone'
+    AddParticipantRoleRequest:
+      type: 'object'
+      required:
+        - 'roleName'
+      properties:
+        roleName:
+          type: 'string'
+          example: 'Patient'
+        isOptional:
+          type: 'boolean'
     ParticipantRolesResponse:
       type: 'object'
       required:
@@ -2263,6 +2218,52 @@ components:
           type: 'array'
           items:
             type: 'string'
+    AddExpectedParticipantDataForRoleRequest:
+      type: 'object'
+      required:
+        - 'roleName'
+        - 'dataType'
+      properties:
+        roleName:
+          type: 'string'
+          example: 'Patient'
+        dataType:
+          type: 'string'
+          enum:
+            - 'sex'
+            - 'phone_number'
+            - 'ssn'
+            - 'full_name'
+            - 'informed_consent'
+            - 'address'
+            - 'diagnosis'
+            - 'note'
+            - 'educational_degree'
+            - 'onboarding_researcher'
+            - 'language'
+            - 'occupation'
+          example: 'sex'
+    AddExpectedParticipantDataRequest:
+      type: 'object'
+      required:
+        - 'dataType'
+      properties:
+        dataType:
+          type: 'string'
+          enum:
+            - 'sex'
+            - 'phone_number'
+            - 'ssn'
+            - 'full_name'
+            - 'informed_consent'
+            - 'address'
+            - 'diagnosis'
+            - 'note'
+            - 'educational_degree'
+            - 'onboarding_researcher'
+            - 'language'
+            - 'occupation'
+          example: 'sex'
     ServiceRolesResponse:
       type: 'object'
       required:
@@ -2272,6 +2273,36 @@ components:
           type: 'array'
           items:
             $ref: '#/components/schemas/NamedDevice'
+    WeatherServiceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+    AirQualityServiceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
+    HealthServiceRequest:
+      type: 'object'
+      required:
+        - 'primaryDeviceRoleName'
+      properties:
+        roleName:
+          type: 'string'
+        primaryDeviceRoleName:
+          type: 'string'
+          example: 'User Phone'
     LocationServiceRequest:
       type: 'object'
       required:
