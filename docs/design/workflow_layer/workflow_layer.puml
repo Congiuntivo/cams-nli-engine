@@ -32,6 +32,13 @@ package "engine/workflow" {
         + extra: dict[str, Any]
     }
 
+    class TurnResult <<Pydantic, frozen>> {
+        + message: str
+        + logs: list[StepLog]
+        + done: bool
+        + protocol: dict | None
+    }
+
     abstract class Step {
         + name: str
         + tool_names: list[str]
@@ -44,9 +51,19 @@ package "engine/workflow" {
         - _all_tools: dict[str, BoundTool]
         --
         + __init__(config, session)
-        + {abstract} run_turn(user_input, context: C): (str, list[StepLog])
+        + {abstract} run_turn(user_input, context: C): TurnResult
         # _resolve_tools(step): list[BoundTool]
     }
+
+    class WorkflowSpec <<dataclass, frozen>> {
+        + id: str
+        + name: str
+        + description: str
+        + workflow_class: type[Workflow]
+        + context_class: type[WorkflowContext]
+    }
+
+    object "WORKFLOW_REGISTRY\ndict[str, WorkflowSpec]" as REGISTRY
 
     package "steps/" {
         class LLMStep {
@@ -67,12 +84,22 @@ package "engine/workflow" {
 
     package "workflows/" {
         class MultiTurnWorkflow {
-            + run_turn(user_input, context): (str, list[StepLog])
+            + run_turn(user_input, context): TurnResult
         }
 
         class SingleTurnWorkflow {
-            + run_turn(user_input, context): (str, list[StepLog])
+            + run_turn(user_input, context): TurnResult
         }
+    }
+}
+
+package "engine" {
+    class Conversation {
+        - _workflow: Workflow
+        - _context: WorkflowContext
+        --
+        + __init__(spec, config, session)
+        + turn(user_input): TurnResult
     }
 }
 
@@ -82,11 +109,20 @@ package "engine (session layer)" {
 }
 
 WorkflowContext *-- Message
+TurnResult *-- StepLog
 Workflow *-- WorkflowConfig
 Workflow ..> ProtocolSession : owns
 Workflow ..> BoundTool : resolves from session
 Workflow ..> Step : orchestrates
+Workflow ..> TurnResult : produces
 Step ..> StepLog : produces
+
+REGISTRY o-- WorkflowSpec
+WorkflowSpec ..> Workflow : workflow_class
+WorkflowSpec ..> WorkflowContext : context_class
+
+Conversation ..> WorkflowSpec : constructed from
+Conversation ..> TurnResult : returns
 
 LLMStep --|> Step
 MultiTurnWorkflow --|> Workflow
@@ -107,11 +143,16 @@ note right of Workflow
   step.run(). Empty list = no tools.
 end note
 
-note right of MultiTurnWorkflow
-  Caller drives the loop.
-  Done signal comes from outside
-  (button / CLI option) — not from
-  an LLM output.
+note right of TurnResult
+  done=True → caller must not call
+  run_turn() again. The workflow
+  decides when it is finished.
+end note
+
+note right of Conversation
+  GUI-agnostic driver shared by CLI
+  and GUI. Holds the workflow instance
+  and its context across turns.
 end note
 
 @enduml

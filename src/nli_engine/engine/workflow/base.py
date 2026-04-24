@@ -7,6 +7,7 @@ from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.tools import BoundTool
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.log import StepLog
+from nli_engine.engine.workflow.result import TurnResult
 
 
 class Message(BaseModel):
@@ -45,7 +46,7 @@ class Workflow(ABC, Generic[C]):
         self._all_tools: dict[str, BoundTool] = {t.name: t for t in session.tools()}
 
     @abstractmethod
-    def run_turn(self, user_input: str, context: C) -> tuple[str, list[StepLog]]: ...
+    def run_turn(self, user_input: str, context: C) -> TurnResult: ...
 
     def _resolve_tools(self, step: Step) -> list[BoundTool]:
         missing = [n for n in step.tool_names if n not in self._all_tools]
