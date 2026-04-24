@@ -19,7 +19,7 @@ package "engine/workflow" {
         + content: str | list
     }
 
-    class WorkflowContext <<Pydantic>> {
+    abstract class WorkflowContext <<Pydantic, abstract>> {
         + history: list[Message]
     }
 
@@ -39,12 +39,12 @@ package "engine/workflow" {
         + {abstract} run(context, tools): (Any, StepLog)
     }
 
-    abstract class Workflow {
+    abstract class "Workflow<C: WorkflowContext>" as Workflow {
         + config: WorkflowConfig
         - _all_tools: dict[str, BoundTool]
         --
         + __init__(config, session)
-        + {abstract} run_turn(user_input, context): (str, list[StepLog])
+        + {abstract} run_turn(user_input, context: C): (str, list[StepLog])
         # _resolve_tools(step): list[BoundTool]
     }
 
@@ -57,6 +57,12 @@ package "engine/workflow" {
             --
             + run(context, tools): (str, StepLog)
         }
+
+        note bottom of LLMStep
+          Non-LLM steps (RAG retrieval,
+          formatting, …) subclass Step
+          directly — no intermediate base.
+        end note
     }
 
     package "workflows/" {
@@ -87,12 +93,15 @@ MultiTurnWorkflow --|> Workflow
 SingleTurnWorkflow --|> Workflow
 
 note right of WorkflowContext
-  Base class carries only history.
-  Subclass to add pipeline-specific
-  fields (e.g. retrieved_chunks).
+  Abstract. Every concrete workflow
+  defines its own subclass and adds
+  the fields its steps need.
 end note
 
 note right of Workflow
+  Generic over C (bound to WorkflowContext).
+  run_turn signature is typed to C so
+  subclasses never need to cast.
   _resolve_tools filters _all_tools
   by step.tool_names before calling
   step.run(). Empty list = no tools.

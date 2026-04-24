@@ -49,7 +49,7 @@ parameters:
 
 ### `engine/workflow/base.py`
 
-Three abstractions live here.
+Four abstractions live here.
 
 **`Message`** — one message in LLM API format.
 
@@ -58,13 +58,13 @@ Three abstractions live here.
 | `role`    | `Literal["user", "assistant", "tool"]` |
 | `content` | `str \| list`                          |
 
-**`WorkflowContext`** — Pydantic model; the shared mutable state. The base class carries only `history`. Subclasses add pipeline-specific fields (e.g. `retrieved_chunks: list[str]` for a RAG workflow).
+**`WorkflowContext`** — abstract Pydantic model; the shared mutable state. Never instantiated directly. Every concrete workflow defines its own subclass and adds the fields its steps need (e.g. `retrieved_chunks: list[str]` for a RAG workflow). The base carries only `history`.
 
 | field     | type            | meaning                                         |
 | --------- | --------------- | ----------------------------------------------- |
 | `history` | `list[Message]` | full conversation history, never truncated here |
 
-**`Step`** — abstract base. Steps receive the full context and only the tools they declared.
+**`Step`** — abstract base for all step types. Steps receive the full context and only the tools they declared. Non-LLM steps (retrieval, formatting, validation, …) subclass `Step` directly. `LLMStep` (see below) is one concrete specialisation — there is no intermediate `DeterministicStep` base because it would add no shared behaviour.
 
 | member                | type        | meaning                                         |
 | --------------------- | ----------- | ----------------------------------------------- |
@@ -72,20 +72,20 @@ Three abstractions live here.
 | `tool_names`          | `list[str]` | tools this step may call; empty list = no tools |
 | `run(context, tools)` | abstract    | returns `(output, StepLog)`                     |
 
-**`Workflow`** — abstract base. Owns `WorkflowConfig` and a reference to `ProtocolSession`.
+**`Workflow[C]`** — abstract base, generic over `C` (bound to `WorkflowContext`). The type parameter lets each concrete workflow declare its own context type in the signature of `run_turn`, so subclasses never need to cast.
 
-| member                          | type                   | meaning                                   |
-| ------------------------------- | ---------------------- | ----------------------------------------- |
-| `config`                        | `WorkflowConfig`       | validated at construction                 |
-| `_all_tools`                    | `dict[str, BoundTool]` | all tools from the session, keyed by name |
-| `run_turn(user_input, context)` | abstract               | returns `(response_text, list[StepLog])`  |
-| `_resolve_tools(step)`          | protected              | filters `_all_tools` by `step.tool_names` |
+| member                             | type                   | meaning                                   |
+| ---------------------------------- | ---------------------- | ----------------------------------------- |
+| `config`                           | `WorkflowConfig`       | validated at construction                 |
+| `_all_tools`                       | `dict[str, BoundTool]` | all tools from the session, keyed by name |
+| `run_turn(user_input, context: C)` | abstract               | returns `(response_text, list[StepLog])`  |
+| `_resolve_tools(step)`             | protected              | filters `_all_tools` by `step.tool_names` |
 
 ### `engine/workflow/steps/`
 
-| file     | class     | role                                                                                                   |
-| -------- | --------- | ------------------------------------------------------------------------------------------------------ |
-| `llm.py` | `LLMStep` | calls an LLM with a prompt template and a tool subset; the step decides which history slice to forward |
+| file     | class     | role                                                                                                                      |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `llm.py` | `LLMStep` | subclasses `Step`; calls an LLM with a prompt template and a tool subset; the step decides which history slice to forward |
 
 ### `engine/workflow/workflows/`
 
@@ -93,6 +93,15 @@ Three abstractions live here.
 | ---------------- | -------------------- | ------------------------------------------------------------------------ |
 | `multi_turn.py`  | `MultiTurnWorkflow`  | runs the step sequence on every `run_turn` call; caller loops until done |
 | `single_turn.py` | `SingleTurnWorkflow` | runs the step sequence once and is not called again                      |
+
+## Step hierarchy
+
+```
+Step  (abstract — all step types)
+ ├── LLMStep          calls an LLM; has model + prompt_template
+ ├── RAGStep          retrieval; subclasses Step directly
+ └── …                any other deterministic step
+```
 
 ## Tool visibility
 
@@ -115,7 +124,7 @@ config  = WorkflowConfig.from_yaml("workflow.yaml")
 session = ProtocolSession(build_client(), name="My Study")
 wf      = MultiTurnWorkflow(config, session)
 
-context = WorkflowContext(history=[])
+context = MultiTurnContext(history=[])
 while not done:
     user_input = input("> ")
     response, logs = wf.run_turn(user_input, context)

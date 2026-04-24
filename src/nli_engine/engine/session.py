@@ -73,10 +73,6 @@ class ProtocolSession:
             call=call,
         )
 
-    # ------------------------------------------------------------------ #
-    # Inspection — used by planner/conversation loop, not LLM tools
-    # ------------------------------------------------------------------ #
-
     def get_requirements(self) -> list[str]:
         """Return currently unfulfilled requirement strings."""
         api = self._apis.setdefault(
