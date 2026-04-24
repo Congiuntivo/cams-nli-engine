@@ -1,0 +1,108 @@
+@startuml workflow_layer
+title NLI Engine — Workflow Layer
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+package "engine/workflow" {
+
+    class WorkflowConfig <<Pydantic>> {
+        + models: dict[str, str]
+        + parameters: dict[str, Any]
+        --
+        + from_yaml(path): WorkflowConfig
+    }
+
+    class Message <<Pydantic>> {
+        + role: Literal["user", "assistant", "tool"]
+        + content: str | list
+    }
+
+    class WorkflowContext <<Pydantic>> {
+        + history: list[Message]
+    }
+
+    class StepLog <<Pydantic, frozen>> {
+        + step_name: str
+        + model: str | None
+        + input_tokens: int
+        + output_tokens: int
+        + latency_ms: float
+        + extra: dict[str, Any]
+    }
+
+    abstract class Step {
+        + name: str
+        + tool_names: list[str]
+        --
+        + {abstract} run(context, tools): (Any, StepLog)
+    }
+
+    abstract class Workflow {
+        + config: WorkflowConfig
+        - _all_tools: dict[str, BoundTool]
+        --
+        + __init__(config, session)
+        + {abstract} run_turn(user_input, context): (str, list[StepLog])
+        # _resolve_tools(step): list[BoundTool]
+    }
+
+    package "steps/" {
+        class LLMStep {
+            + name: str
+            + tool_names: list[str]
+            + model: str
+            + prompt_template: str
+            --
+            + run(context, tools): (str, StepLog)
+        }
+    }
+
+    package "workflows/" {
+        class MultiTurnWorkflow {
+            + run_turn(user_input, context): (str, list[StepLog])
+        }
+
+        class SingleTurnWorkflow {
+            + run_turn(user_input, context): (str, list[StepLog])
+        }
+    }
+}
+
+package "engine (session layer)" {
+    class ProtocolSession
+    class BoundTool <<dataclass>>
+}
+
+WorkflowContext *-- Message
+Workflow *-- WorkflowConfig
+Workflow ..> ProtocolSession : owns
+Workflow ..> BoundTool : resolves from session
+Workflow ..> Step : orchestrates
+Step ..> StepLog : produces
+
+LLMStep --|> Step
+MultiTurnWorkflow --|> Workflow
+SingleTurnWorkflow --|> Workflow
+
+note right of WorkflowContext
+  Base class carries only history.
+  Subclass to add pipeline-specific
+  fields (e.g. retrieved_chunks).
+end note
+
+note right of Workflow
+  _resolve_tools filters _all_tools
+  by step.tool_names before calling
+  step.run(). Empty list = no tools.
+end note
+
+note right of MultiTurnWorkflow
+  Caller drives the loop.
+  Done signal comes from outside
+  (button / CLI option) — not from
+  an LLM output.
+end note
+
+@enduml
