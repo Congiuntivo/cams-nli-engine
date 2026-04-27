@@ -36,8 +36,9 @@ uv run nli-engine
 # Skip the workflow selector
 uv run nli-engine --workflow dummy_llm --config workflow.yaml
 
-# Print live LLM trace (requests, tool calls, responses)
-uv run nli-engine --workflow dummy_llm --config workflow.yaml --verbose
+# Minimal one-line trace (-v) or full debug trace (-vv)
+uv run nli-engine --workflow dummy_llm --config workflow.yaml -v
+uv run nli-engine --workflow dummy_llm --config workflow.yaml -vv
 
 # Custom server
 uv run nli-engine --server http://my-server:8080 --config workflow.yaml

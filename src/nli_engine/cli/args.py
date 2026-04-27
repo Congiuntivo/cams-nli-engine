@@ -36,8 +36,9 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-v",
         "--verbose",
-        action="store_true",
-        help="Print LLM trace (requests, tool calls, responses) as they occur.",
+        action="count",
+        default=0,
+        help="-v for minimal trace, -vv for full debug trace.",
     )
     return parser
 

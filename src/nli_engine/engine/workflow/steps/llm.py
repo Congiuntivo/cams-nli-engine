@@ -82,6 +82,10 @@ class LLMStep(Step):
             executed.append(
                 {"name": tc.name, "arguments": tc.arguments, "result": result}
             )
+            _log.info(
+                "tool_call",
+                extra={"event": "tool_call", "tool_name": tc.name},
+            )
         return executed
 
     def _append_to_history(
@@ -107,6 +111,10 @@ class LLMStep(Step):
 
         for _ in range(self._max_iterations):
             all_messages = messages + new_messages
+            _log.info(
+                "llm_call",
+                extra={"event": "llm_call", "model": self._client.model},
+            )
             _log.debug(
                 "llm_request",
                 extra={
@@ -143,6 +151,10 @@ class LLMStep(Step):
                 _log.debug(
                     "llm_text_response",
                     extra={"event": "llm_text_response", "text": final_text},
+                )
+                _log.info(
+                    "text_response",
+                    extra={"event": "text_response", "text": final_text},
                 )
                 break
         else:
