@@ -17,3 +17,9 @@ CLAUDE.md
 
 # VSCode settings
 .vscode/
+
+# Environment variables
+.env
+
+# Local configuration files
+config.yaml

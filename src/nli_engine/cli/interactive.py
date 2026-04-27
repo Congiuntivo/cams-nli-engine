@@ -62,6 +62,11 @@ def _show_logs(logs: list) -> None:
 
 
 def run_interactive(args: argparse.Namespace) -> None:
+    if getattr(args, "verbose", False):
+        from nli_engine.cli.logging import configure_verbose_logging
+
+        configure_verbose_logging(console)
+
     config = WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
 
     try:

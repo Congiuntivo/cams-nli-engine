@@ -33,6 +33,12 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Path to a workflow YAML config file. Uses defaults if omitted.",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Print LLM trace (requests, tool calls, responses) as they occur.",
+    )
     return parser
 
 

@@ -1,0 +1,101 @@
+@startuml llm_layer
+title NLI Engine — LLM Layer
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+package "engine/llm" {
+
+    class LLMClient <<dataclass, frozen>> {
+        + model: str
+        + api_base: str | None
+        --
+        + complete(messages, tools): LLMResponse
+    }
+
+    class LLMResponse <<dataclass, frozen>> {
+        + text: str | None
+        + tool_calls: list[ToolCall]
+        + input_tokens: int
+        + output_tokens: int
+    }
+
+    class ToolCall <<dataclass, frozen>> {
+        + id: str
+        + name: str
+        + arguments: dict
+    }
+
+    class schema <<module>> {
+        + {static} bound_tool_to_schema(tool: BoundTool): dict
+    }
+
+    class dispatch <<module>> {
+        + {static} call_tool(tool: BoundTool, arguments: dict): str
+    }
+
+    note bottom of schema
+      Mutation tools: parameters derived
+      from request_model.model_json_schema().
+      Read-only tools: empty parameters schema.
+    end note
+
+    note bottom of dispatch
+      Branches on request_model is None
+      to distinguish read-only from
+      mutation tools.
+    end note
+}
+
+package "engine/workflow/steps" {
+    class LLMStep {
+        + name: str
+        + tool_names: list[str]
+        - _client: LLMClient
+        - _system_prompt: str
+        - _max_iterations: int
+        --
+        + run(context, tools): (str, StepLog)
+    }
+}
+
+package "engine (session layer)" {
+    class BoundTool <<dataclass>> {
+        + name: str
+        + description: str
+        + request_model: type[BaseModel] | None
+        + call: Callable
+    }
+}
+
+LLMResponse *-- ToolCall
+LLMClient ..> LLMResponse : returns
+
+LLMStep ..> LLMClient : calls complete()
+LLMStep ..> schema : uses
+LLMStep ..> dispatch : uses
+
+schema ..> BoundTool : reads
+dispatch ..> BoundTool : executes
+
+note right of LLMClient
+  Thin LiteLLM wrapper.
+  Provider is encoded in the model
+  identifier: "ollama/qwen3.5:4b",
+  "gpt-4o", "anthropic/claude-...".
+  api_base overrides the default
+  endpoint (required for Ollama).
+end note
+
+note right of LLMStep
+  Agentic loop: calls complete(),
+  dispatches tool calls, repeats
+  until no tool calls remain.
+  Persists all intermediate messages
+  into context.history.
+  Aggregates token counts across
+  all iterations into one StepLog.
+end note
+
+@enduml

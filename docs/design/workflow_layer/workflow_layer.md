@@ -67,10 +67,12 @@ Four abstractions live here.
 
 **`Message`** — one message in LLM API format.
 
-| field     | type                                   |
-| --------- | -------------------------------------- |
-| `role`    | `Literal["user", "assistant", "tool"]` |
-| `content` | `str \| list`                          |
+| field          | type                                   | meaning                                                         |
+| -------------- | -------------------------------------- | --------------------------------------------------------------- |
+| `role`         | `Literal["user", "assistant", "tool"]` |                                                                 |
+| `content`      | `str \| list \| None`                  | `None` for assistant turns that contain only tool calls         |
+| `tool_calls`   | `list[dict] \| None`                   | set on assistant turns with tool calls; `None` otherwise        |
+| `tool_call_id` | `str \| None`                          | set on tool-result turns; matches the originating `ToolCall.id` |
 
 **`WorkflowContext`** — abstract Pydantic model; the shared mutable state. Never instantiated directly. Every concrete workflow defines its own subclass and adds the fields its steps need (e.g. `retrieved_chunks: list[str]` for a RAG workflow). The base carries only `history`.
 
@@ -121,16 +123,28 @@ Neither the CLI nor the GUI ever touches `Workflow` or `WorkflowContext` directl
 
 ### `engine/workflow/steps/`
 
-| file     | class     | role                                                                                                                      |
-| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `llm.py` | `LLMStep` | subclasses `Step`; calls an LLM with a prompt template and a tool subset; the step decides which history slice to forward |
+| file     | class     | role                                                                                                                                           |
+| -------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `llm.py` | `LLMStep` | subclasses `Step`; runs the agentic loop — calls `LLMClient.complete()`, dispatches tool calls, repeats until the LLM produces a text response |
+
+`LLMStep` constructor parameters:
+
+| parameter        | type        | meaning                                            |
+| ---------------- | ----------- | -------------------------------------------------- |
+| `name`           | `str`       | step name (appears in `StepLog`)                   |
+| `tool_names`     | `list[str]` | tools this step may call                           |
+| `client`         | `LLMClient` | configured transport (model + optional `api_base`) |
+| `system_prompt`  | `str`       | system message prepended before history            |
+| `max_iterations` | `int`       | safety limit on tool-call rounds (default: 10)     |
+
+See the [LLM layer design](../llm_layer/llm_layer.md) for `LLMClient`, schema conversion, and tool dispatch.
 
 ### `engine/workflow/workflows/`
 
-| file             | class                | behaviour                                                        |
-| ---------------- | -------------------- | ---------------------------------------------------------------- |
-| `multi_turn.py`  | `MultiTurnWorkflow`  | returns `done=False` until the workflow reaches a terminal state |
-| `single_turn.py` | `SingleTurnWorkflow` | always returns `done=True` — runs once and signals completion    |
+| file           | class              | behaviour                                                                           |
+| -------------- | ------------------ | ----------------------------------------------------------------------------------- |
+| `dummy.py`     | `DummyWorkflow`    | deterministic baseline — hard-codes the three tool calls; no LLM involved           |
+| `dummy_llm.py` | `DummyLLMWorkflow` | LLM-driven version — instructs the model to call the same three tools via `LLMStep` |
 
 ## Step hierarchy
 

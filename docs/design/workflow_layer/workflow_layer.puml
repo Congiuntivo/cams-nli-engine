@@ -16,7 +16,9 @@ package "engine/workflow" {
 
     class Message <<Pydantic>> {
         + role: Literal["user", "assistant", "tool"]
-        + content: str | list
+        + content: str | list | None
+        + tool_calls: list[dict] | None
+        + tool_call_id: str | None
     }
 
     abstract class WorkflowContext <<Pydantic, abstract>> {
@@ -69,25 +71,28 @@ package "engine/workflow" {
         class LLMStep {
             + name: str
             + tool_names: list[str]
-            + model: str
-            + prompt_template: str
+            - _client: LLMClient
+            - _system_prompt: str
+            - _max_iterations: int
             --
             + run(context, tools): (str, StepLog)
         }
 
         note bottom of LLMStep
-          Non-LLM steps (RAG retrieval,
-          formatting, …) subclass Step
-          directly — no intermediate base.
+          Agentic loop: calls LLMClient.complete(),
+          dispatches tool calls, repeats until
+          the LLM produces a text response.
+          Non-LLM steps subclass Step directly —
+          no intermediate base.
         end note
     }
 
     package "workflows/" {
-        class MultiTurnWorkflow {
+        class DummyWorkflow {
             + run_turn(user_input, context): TurnResult
         }
 
-        class SingleTurnWorkflow {
+        class DummyLLMWorkflow {
             + run_turn(user_input, context): TurnResult
         }
     }
@@ -125,8 +130,8 @@ Conversation ..> WorkflowSpec : constructed from
 Conversation ..> TurnResult : returns
 
 LLMStep --|> Step
-MultiTurnWorkflow --|> Workflow
-SingleTurnWorkflow --|> Workflow
+DummyWorkflow --|> Workflow
+DummyLLMWorkflow --|> Workflow
 
 note right of WorkflowContext
   Abstract. Every concrete workflow

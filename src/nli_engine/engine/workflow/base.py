@@ -12,7 +12,9 @@ from nli_engine.engine.workflow.result import TurnResult
 
 class Message(BaseModel):
     role: Literal["user", "assistant", "tool"]
-    content: str | list[Any]
+    content: str | list[Any] | None = None
+    tool_calls: list[dict[str, Any]] | None = None
+    tool_call_id: str | None = None
 
 
 class WorkflowContext(BaseModel, ABC):
