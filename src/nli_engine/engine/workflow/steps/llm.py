@@ -5,7 +5,7 @@ import logging
 import time
 from typing import Any
 
-from nli_engine.engine.llm.client import LLMClient
+from nli_engine.engine.llm.client import LLMClient, LLMResponse
 from nli_engine.engine.llm.dispatch import call_tool
 from nli_engine.engine.llm.schema import bound_tool_to_schema
 from nli_engine.engine.tools import BoundTool
@@ -71,18 +71,71 @@ class LLMStep(Step):
         messages.extend(_message_to_dict(m) for m in context.history)
         return messages
 
-    def _build_tool_calls_payload(self, response: Any) -> list[dict[str, Any]]:
-        return [
+    def _build_tool_context(
+        self, tools: list[BoundTool]
+    ) -> tuple[list[dict[str, Any]], dict[str, BoundTool]]:
+        """Return tool schemas for the LLM and a name→tool map for dispatch."""
+        schemas = [bound_tool_to_schema(t) for t in tools]
+        tool_map = {t.name: t for t in tools}
+        return schemas, tool_map
+
+    def _log_request(
+        self, messages: list[dict[str, Any]], tool_schemas: list[dict[str, Any]]
+    ) -> None:
+        """Emit INFO and DEBUG log records for an outgoing LLM request."""
+        _log.info("llm_call", extra={"event": "llm_call", "model": self._client.model})
+        _log.debug(
+            "llm_request",
+            extra={
+                "event": "llm_request",
+                "model": self._client.model,
+                "messages": messages,
+                "n_tools": len(tool_schemas),
+            },
+        )
+
+    def _handle_tool_response(
+        self,
+        response: LLMResponse,
+        tool_map: dict[str, BoundTool],
+        new_messages: list[dict[str, Any]],
+    ) -> None:
+        """Append the assistant tool-call message, execute tools, and log the round."""
+        tool_calls_raw = [
             {
                 "id": tc.id,
                 "type": "function",
-                "function": {
-                    "name": tc.name,
-                    "arguments": json.dumps(tc.arguments),
-                },
+                "function": {"name": tc.name, "arguments": json.dumps(tc.arguments)},
             }
             for tc in response.tool_calls
         ]
+        new_messages.append(
+            {
+                "role": "assistant",
+                "content": response.text,
+                "tool_calls": tool_calls_raw,
+            }
+        )
+        executed = self._execute_tool_calls(response.tool_calls, tool_map, new_messages)
+        _log.debug(
+            "llm_tool_round",
+            extra={"event": "llm_tool_round", "tool_calls": executed},
+        )
+
+    def _handle_text_response(
+        self,
+        response: LLMResponse,
+        new_messages: list[dict[str, Any]],
+    ) -> str:
+        """Append the final assistant message, log it, and return the text."""
+        final_text = response.text or ""
+        new_messages.append({"role": "assistant", "content": final_text})
+        _log.debug(
+            "llm_text_response",
+            extra={"event": "llm_text_response", "text": final_text},
+        )
+        _log.info("text_response", extra={"event": "text_response", "text": final_text})
+        return final_text
 
     def _execute_tool_calls(
         self,
@@ -99,10 +152,7 @@ class LLMStep(Step):
             executed.append(
                 {"name": tc.name, "arguments": tc.arguments, "result": result}
             )
-            _log.info(
-                "tool_call",
-                extra={"event": "tool_call", "tool_name": tc.name},
-            )
+            _log.info("tool_call", extra={"event": "tool_call", "tool_name": tc.name})
         return executed
 
     def _append_to_history(
@@ -128,78 +178,40 @@ class LLMStep(Step):
             A tuple of ``(final text response, StepLog)`` with aggregated
             token counts across all iterations.
         """
-        tool_schemas = [bound_tool_to_schema(t) for t in tools]
-        tool_map = {t.name: t for t in tools}
-
+        tool_schemas, tool_map = self._build_tool_context(tools)
         messages = self._build_messages(context)
 
         new_messages: list[dict[str, Any]] = []
         total_input = 0
         total_output = 0
         final_text = ""
-
         start = time.monotonic()
 
+        # Agentic loop: call the LLM, dispatch any tool calls, then repeat.
+        # The loop exits as soon as the model returns a plain text response.
         for _ in range(self._max_iterations):
-            all_messages = messages + new_messages
-            _log.info(
-                "llm_call",
-                extra={"event": "llm_call", "model": self._client.model},
-            )
-            _log.debug(
-                "llm_request",
-                extra={
-                    "event": "llm_request",
-                    "model": self._client.model,
-                    "messages": all_messages,
-                    "n_tools": len(tool_schemas),
-                },
-            )
-
-            response = self._client.complete(all_messages, tool_schemas)
+            self._log_request(messages + new_messages, tool_schemas)
+            response = self._client.complete(messages + new_messages, tool_schemas)
             total_input += response.input_tokens
             total_output += response.output_tokens
 
             if response.tool_calls:
-                tool_calls_raw = self._build_tool_calls_payload(response)
-                new_messages.append(
-                    {
-                        "role": "assistant",
-                        "content": response.text,
-                        "tool_calls": tool_calls_raw,
-                    }
-                )
-                executed = self._execute_tool_calls(
-                    response.tool_calls, tool_map, new_messages
-                )
-                _log.debug(
-                    "llm_tool_round",
-                    extra={"event": "llm_tool_round", "tool_calls": executed},
-                )
+                self._handle_tool_response(response, tool_map, new_messages)
             else:
-                final_text = response.text or ""
-                new_messages.append({"role": "assistant", "content": final_text})
-                _log.debug(
-                    "llm_text_response",
-                    extra={"event": "llm_text_response", "text": final_text},
-                )
-                _log.info(
-                    "text_response",
-                    extra={"event": "text_response", "text": final_text},
-                )
+                final_text = self._handle_text_response(response, new_messages)
                 break
         else:
+            # Safety valve: model kept calling tools past the iteration limit.
             final_text = "Reached maximum tool-call iterations without completing."
             new_messages.append({"role": "assistant", "content": final_text})
 
+        # Persist the full exchange to context so future turns have complete history.
         self._append_to_history(context, new_messages)
 
-        latency_ms = (time.monotonic() - start) * 1000
-        log = StepLog(
+        return final_text, StepLog(
             step_name=self.name,
             model=self._client.model,
             input_tokens=total_input,
             output_tokens=total_output,
-            latency_ms=latency_ms,
+            latency_ms=(time.monotonic() - start) * 1000,
         )
-        return final_text, log
