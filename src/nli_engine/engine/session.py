@@ -18,6 +18,12 @@ class ProtocolSession:
     """
 
     def __init__(self, client: ApiClient, name: str, **create_kwargs: Any) -> None:
+        """
+        Args:
+            client: Configured API client pointing at the authoring server.
+            name: Human-readable protocol name sent to the server on creation.
+            **create_kwargs: Additional fields forwarded to CreateProtocolRequest.
+        """
         self._client = client
         self._apis: dict[type, Any] = {}
         resp = SessionsApi(client).create_protocol_session(

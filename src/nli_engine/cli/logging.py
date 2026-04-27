@@ -12,7 +12,20 @@ def _truncate(s: str, n: int = 200) -> str:
 
 
 class LLMTraceHandler(logging.Handler):
+    """Logging handler that renders structured LLM trace events to a Rich console.
+
+    Handles six trace events emitted by LLMStep: ``llm_call``, ``tool_call``,
+    and ``text_response`` at INFO level (one-liners), and ``llm_request``,
+    ``llm_tool_round``, and ``llm_text_response`` at DEBUG level (full blocks).
+    """
+
     def __init__(self, console: Console, level: int = logging.DEBUG) -> None:
+        """
+        Args:
+            console: Rich console used for output.
+            level: Minimum log level to handle. Use ``logging.INFO`` for
+                one-line events or ``logging.DEBUG`` for full trace blocks.
+        """
         super().__init__(level=level)
         self._console = console
 
@@ -90,6 +103,13 @@ class LLMTraceHandler(logging.Handler):
 
 
 def configure_verbose_logging(console: Console, level: int = logging.DEBUG) -> None:
+    """Attach an LLMTraceHandler to the ``nli_engine.llm`` logger.
+
+    Args:
+        console: Rich console for trace output.
+        level: ``logging.INFO`` for one-line events, ``logging.DEBUG`` for
+            full trace blocks.
+    """
     logger = logging.getLogger("nli_engine.llm")
     logger.addHandler(LLMTraceHandler(console, level=level))
     logger.setLevel(level)

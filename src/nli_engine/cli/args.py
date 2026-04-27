@@ -44,6 +44,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def run() -> None:
+    """Parse CLI arguments and dispatch to the appropriate run mode."""
     parser = _build_parser()
     args = parser.parse_args()
 

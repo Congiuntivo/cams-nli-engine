@@ -1,13 +1,21 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 
-import json
 import litellm
 
 
 @dataclass(frozen=True)
 class ToolCall:
+    """A single tool invocation returned by the LLM.
+
+    Attributes:
+        id: Opaque call identifier used to match tool results back to calls.
+        name: Function name; matches a BoundTool.name in the tool map.
+        arguments: Decoded JSON arguments ready to pass to the tool's request_model.
+    """
+
     id: str
     name: str
     arguments: dict
@@ -15,6 +23,15 @@ class ToolCall:
 
 @dataclass(frozen=True)
 class LLMResponse:
+    """Typed return value of LLMClient.complete().
+
+    Attributes:
+        text: LLM text output; None when the response consists solely of tool calls.
+        tool_calls: Parsed tool invocations; empty list when the LLM produced text.
+        input_tokens: Prompt token count.
+        output_tokens: Completion token count.
+    """
+
     text: str | None
     tool_calls: list[ToolCall]
     input_tokens: int
@@ -23,10 +40,28 @@ class LLMResponse:
 
 @dataclass(frozen=True)
 class LLMClient:
+    """Provider-agnostic LLM client backed by LiteLLM.
+
+    Attributes:
+        model: LiteLLM model identifier, e.g. ``"ollama/qwen2.5:7b"`` or ``"gpt-4o"``.
+        api_base: Custom API endpoint; None uses the provider default.
+            Required for Ollama (e.g. ``"http://localhost:11434"``).
+    """
+
     model: str
     api_base: str | None = field(default=None)
 
     def complete(self, messages: list[dict], tools: list[dict]) -> LLMResponse:
+        """Send a chat completion request and return the parsed response.
+
+        Args:
+            messages: Conversation history in OpenAI message-dict format.
+            tools: Tool schemas in OpenAI function-calling format.
+                Passed to the provider only when non-empty.
+
+        Returns:
+            Parsed LLMResponse with text, tool calls, and token counts.
+        """
         kwargs: dict = {"model": self.model, "messages": messages}
         if self.api_base is not None:
             kwargs["api_base"] = self.api_base

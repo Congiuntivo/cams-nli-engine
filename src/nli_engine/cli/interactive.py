@@ -62,6 +62,15 @@ def _show_logs(logs: list) -> None:
 
 
 def run_interactive(args: argparse.Namespace) -> None:
+    """Run the interactive CLI session.
+
+    Configures logging verbosity, creates the workflow session, and drives the
+    prompt-response loop until the user exits or the workflow signals completion.
+
+    Args:
+        args: Parsed CLI arguments. Relevant fields: ``workflow``, ``server``,
+            ``config``, and ``verbose`` (0 = silent, 1 = INFO trace, 2 = DEBUG trace).
+    """
     verbosity: int = getattr(args, "verbose", 0)
     if verbosity >= 1:
         import logging

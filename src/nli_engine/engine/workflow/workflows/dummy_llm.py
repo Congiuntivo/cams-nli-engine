@@ -16,11 +16,27 @@ def _load_prompt(filename: str) -> str:
 
 
 class DummyLLMWorkflowContext(WorkflowContext):
-    pass
+    """Workflow context for DummyLLMWorkflow."""
 
 
 class DummyLLMWorkflow(Workflow[DummyLLMWorkflowContext]):
+    """LLM-driven workflow that validates tool-calling by instructing the model
+    to add a smartphone, CAWS endpoint, and participant role autonomously.
+
+    Reads ``models["planner"]`` from WorkflowConfig and optionally
+    ``parameters["api_base"]`` for non-default provider endpoints (e.g. Ollama).
+    """
+
     def __init__(self, config: WorkflowConfig, session: ProtocolSession) -> None:
+        """
+        Args:
+            config: Must contain ``models["planner"]``; may contain
+                ``parameters["api_base"]`` for custom provider endpoints.
+            session: Live authoring session used to bind and dispatch tools.
+
+        Raises:
+            KeyError: If ``config.models["planner"]`` is not set.
+        """
         super().__init__(config, session)
         model = config.models["planner"]
         api_base: str | None = config.parameters.get("api_base")
@@ -38,6 +54,17 @@ class DummyLLMWorkflow(Workflow[DummyLLMWorkflowContext]):
         )
 
     def run_turn(self, user_input: str, context: DummyLLMWorkflowContext) -> TurnResult:
+        """Append the user message, run the LLM step, and serialise the protocol.
+
+        Args:
+            user_input: Free-text instruction from the user.
+            context: Mutable workflow state; the user message is appended before
+                the step runs.
+
+        Returns:
+            TurnResult with ``done=True``, the LLM's text response, and the
+            serialised protocol dict.
+        """
         context.history.append(Message(role="user", content=user_input))
         tools = self._resolve_tools(self._step)
         text, log = self._step.run(context, tools)

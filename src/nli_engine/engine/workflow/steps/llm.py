@@ -34,6 +34,13 @@ def _dict_to_message(d: dict[str, Any]) -> Message:
 
 
 class LLMStep(Step):
+    """Workflow step that runs an agentic LLM loop until the model stops calling tools.
+
+    On each ``run()`` call the step sends the conversation history to the LLM,
+    dispatches any tool calls, feeds results back, and repeats until the model
+    produces a plain text response or ``max_iterations`` is reached.
+    """
+
     def __init__(
         self,
         name: str,
@@ -42,6 +49,16 @@ class LLMStep(Step):
         system_prompt: str,
         max_iterations: int = 10,
     ) -> None:
+        """
+        Args:
+            name: Step name; appears in StepLog.
+            tool_names: Names of the BoundTools this step may call.
+            client: Configured LLM transport.
+            system_prompt: System message prepended before the conversation history
+                on every LLM call.
+            max_iterations: Maximum number of tool-call rounds before aborting
+                with an error message.
+        """
         super().__init__(name, tool_names)
         self._client = client
         self._system_prompt = system_prompt
@@ -97,6 +114,20 @@ class LLMStep(Step):
     def run(
         self, context: WorkflowContext, tools: list[BoundTool]
     ) -> tuple[str, StepLog]:
+        """Run the agentic loop and return the final text response and log entry.
+
+        Appends all intermediate messages (assistant tool-call turns and tool
+        results) to ``context.history`` before returning so future turns carry
+        full context.
+
+        Args:
+            context: Shared workflow state; history is read and extended in place.
+            tools: BoundTools this step may invoke during the loop.
+
+        Returns:
+            A tuple of ``(final text response, StepLog)`` with aggregated
+            token counts across all iterations.
+        """
         tool_schemas = [bound_tool_to_schema(t) for t in tools]
         tool_map = {t.name: t for t in tools}
 
