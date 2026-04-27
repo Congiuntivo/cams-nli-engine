@@ -64,8 +64,12 @@ def _show_logs(logs: list) -> None:
 def run_interactive(args: argparse.Namespace) -> None:
     config = WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
 
-    spec = _select_workflow(args.workflow)
-    protocol_name = Prompt.ask("[bold]Protocol name[/bold]")
+    try:
+        spec = _select_workflow(args.workflow)
+        protocol_name = Prompt.ask("[bold]Protocol name[/bold]")
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]Bye.[/dim]")
+        return
 
     session = ProtocolSession(build_client(args.server), name=protocol_name)
     conversation = Conversation(spec, config, session)
