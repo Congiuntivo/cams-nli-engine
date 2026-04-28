@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import Any, Generic, Literal, TypeVar
 
@@ -27,6 +29,23 @@ class Message(BaseModel):
     content: str | list[Any] | None = None
     tool_calls: list[dict[str, Any]] | None = None
     tool_call_id: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        d: dict[str, Any] = {"role": self.role, "content": self.content}
+        if self.tool_calls is not None:
+            d["tool_calls"] = self.tool_calls
+        if self.tool_call_id is not None:
+            d["tool_call_id"] = self.tool_call_id
+        return d
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> Message:
+        return cls(
+            role=d["role"],
+            content=d.get("content"),
+            tool_calls=d.get("tool_calls"),
+            tool_call_id=d.get("tool_call_id"),
+        )
 
 
 class WorkflowContext(BaseModel, ABC):

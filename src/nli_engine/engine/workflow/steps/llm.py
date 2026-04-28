@@ -15,24 +15,6 @@ from nli_engine.engine.workflow.log import StepLog
 _log = logging.getLogger("nli_engine.llm")
 
 
-def _message_to_dict(msg: Message) -> dict[str, Any]:
-    d: dict[str, Any] = {"role": msg.role, "content": msg.content}
-    if msg.tool_calls is not None:
-        d["tool_calls"] = msg.tool_calls
-    if msg.tool_call_id is not None:
-        d["tool_call_id"] = msg.tool_call_id
-    return d
-
-
-def _dict_to_message(d: dict[str, Any]) -> Message:
-    return Message(
-        role=d["role"],
-        content=d.get("content"),
-        tool_calls=d.get("tool_calls"),
-        tool_call_id=d.get("tool_call_id"),
-    )
-
-
 class LLMStep(Step):
     """Workflow step that runs an agentic LLM loop until the model stops calling tools.
 
@@ -65,10 +47,11 @@ class LLMStep(Step):
         self._max_iterations = max_iterations
 
     def _build_messages(self, context: WorkflowContext) -> list[dict[str, Any]]:
+        """Construct the messages list for the LLM, system prompt + conversation history."""
         messages: list[dict[str, Any]] = [
             {"role": "system", "content": self._system_prompt}
         ]
-        messages.extend(_message_to_dict(m) for m in context.history)
+        messages.extend(m.to_dict() for m in context.history)
         return messages
 
     def _build_tool_context(
@@ -158,13 +141,14 @@ class LLMStep(Step):
     def _append_to_history(
         self, context: WorkflowContext, new_messages: list[dict[str, Any]]
     ) -> None:
+        """Append all the new messages from this step's run to the context history for future turns."""
         for d in new_messages:
-            context.history.append(_dict_to_message(d))
+            context.history.append(Message.from_dict(d))
 
     def run(
         self, context: WorkflowContext, tools: list[BoundTool]
     ) -> tuple[str, StepLog]:
-        """Run the agentic loop and return the final text response and log entry.
+        """Run the loop and return the final text response and log entry.
 
         Appends all intermediate messages (assistant tool-call turns and tool
         results) to ``context.history`` before returning so future turns carry
@@ -181,16 +165,17 @@ class LLMStep(Step):
         tool_schemas, tool_map = self._build_tool_context(tools)
         messages = self._build_messages(context)
 
+        # Iteration variables
         new_messages: list[dict[str, Any]] = []
-        total_input = 0
-        total_output = 0
+        total_input, total_output = 0, 0
         final_text = ""
         start = time.monotonic()
 
-        # Agentic loop: call the LLM, dispatch any tool calls, then repeat.
-        # The loop exits as soon as the model returns a plain text response.
+        # Tool loop: call the LLM, dispatch any tool calls, then repeat.
+        #   - The loop exits as soon as the model returns a plain text response.
         for _ in range(self._max_iterations):
             self._log_request(messages + new_messages, tool_schemas)
+
             response = self._client.complete(messages + new_messages, tool_schemas)
             total_input += response.input_tokens
             total_output += response.output_tokens
