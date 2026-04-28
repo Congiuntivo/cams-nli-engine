@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.resources
+from pathlib import Path
 
 from nli_engine.engine.llm import LLMClient
 from nli_engine.engine.session import ProtocolSession
@@ -10,7 +11,7 @@ from nli_engine.engine.workflow.result import TurnResult
 from nli_engine.engine.workflow.steps.llm import LLMStep
 
 
-def _load_prompt(filename: str) -> str:
+def _load_prompt(filename: Path) -> str:
     ref = importlib.resources.files("nli_engine.engine.prompts") / filename
     return ref.read_text(encoding="utf-8")
 

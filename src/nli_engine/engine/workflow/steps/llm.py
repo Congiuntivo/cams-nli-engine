@@ -26,18 +26,18 @@ class LLMStep(Step):
     def __init__(
         self,
         name: str,
-        tool_names: list[str],
         client: LLMClient,
         system_prompt: str,
+        tool_names: list[str] = [],
         max_iterations: int = 10,
     ) -> None:
         """
         Args:
             name: Step name; appears in StepLog.
-            tool_names: Names of the BoundTools this step may call.
             client: Configured LLM transport.
             system_prompt: System message prepended before the conversation history
                 on every LLM call.
+            tool_names: Names of the BoundTools this step may call.
             max_iterations: Maximum number of tool-call rounds before aborting
                 with an error message.
         """
@@ -146,7 +146,7 @@ class LLMStep(Step):
             context.history.append(Message.from_dict(d))
 
     def run(
-        self, context: WorkflowContext, tools: list[BoundTool]
+        self, context: WorkflowContext, tools: list[BoundTool] = []
     ) -> tuple[str, StepLog]:
         """Run the loop and return the final text response and log entry.
 
