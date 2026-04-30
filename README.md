@@ -26,46 +26,48 @@ pre-filled and a Pydantic schema the LLM can use for structured output.
 
 ## Usage
 
+### Install with CLI extras
+
 ```bash
-# Install with CLI
 uv sync --extra cli
+```
 
-# Interactive session (prompts for workflow and protocol name)
+### Basic interactive session
+
+```bash
 uv run nli-engine
+```
 
-# Skip the workflow selector
-uv run nli-engine --workflow one_shot_llm --config workflow.yaml
+### Run with configuration file
 
-# Skip the workflow selector and the protocol name prompt
-uv run nli-engine --workflow one_shot_llm --name "my-study" --config workflow.yaml
+```bash
+uv run nli-engine --config workflow.yaml
+```
 
-# Fully automated run — no interactive prompts at all (useful for repeated test runs)
+### Fully automated run with no prompts
+
+```bash
 uv run nli-engine \
   --workflow one_shot_llm \
   --name "my-study" \
   --prompt "record steps with the smartphone, heartbeat every hour" \
-  --config workflow.yaml
-
-# Minimal one-line trace (-v) or full debug trace (-vv)
-uv run nli-engine --workflow one_shot_llm --config workflow.yaml -v
-uv run nli-engine --workflow one_shot_llm --config workflow.yaml -vv
-
-# Custom server
-uv run nli-engine --server http://my-server:8080 --config workflow.yaml
+  --config workflow.yaml \
+  --log-file run.jsonl
 ```
 
 Type `exit` or press `Ctrl-C` to quit an interactive session.
 
 ### Flags reference
 
-| Flag            | Default                 | Description                                                                     |
-| --------------- | ----------------------- | ------------------------------------------------------------------------------- |
-| `--workflow ID` | —                       | Skip the workflow selector and use this workflow directly                       |
-| `--name NAME`   | —                       | Protocol name; skips the interactive name prompt                                |
-| `--prompt TEXT` | —                       | Fire the first turn automatically; best combined with `--workflow` and `--name` |
-| `--config PATH` | —                       | Path to a workflow YAML config file                                             |
-| `--server URL`  | `http://localhost:8080` | Authoring server base URL                                                       |
-| `-v` / `-vv`    | —                       | Verbose trace: `-v` one-line events, `-vv` full debug blocks                    |
+| Flag              | Default                 | Description                                                                                        |
+| ----------------- | ----------------------- | -------------------------------------------------------------------------------------------------- |
+| `--workflow ID`   | —                       | Skip the workflow selector and use this workflow directly                                          |
+| `--name NAME`     | —                       | Protocol name; skips the interactive name prompt                                                   |
+| `--prompt TEXT`   | —                       | Fire the first turn automatically; best combined with `--workflow` and `--name`                    |
+| `--config PATH`   | —                       | Path to a workflow YAML config file                                                                |
+| `--server URL`    | `http://localhost:8080` | Authoring server base URL                                                                          |
+| `--log-file PATH` | —                       | Write a full JSON Lines session log (see [CLI design doc](docs/design/cli/cli.md#session-logging)) |
+| `-v` / `-vv`      | —                       | Verbose trace: `-v` one-line events, `-vv` full debug blocks                                       |
 
 ### Workflow config
 
@@ -96,7 +98,7 @@ Model identifiers follow [LiteLLM's routing conventions](https://docs.litellm.ai
 - [Session layer](docs/design/session_layer/session_layer.md) — `ProtocolSession`, `ToolSpec`, `BoundTool` ([diagram](docs/design/session_layer/session_layer.puml))
 - [Workflow layer](docs/design/workflow_layer/workflow_layer.md) — `Workflow`, `Step`, `WorkflowContext`, `TurnResult`, `Conversation` ([diagram](docs/design/workflow_layer/workflow_layer.puml))
 - [LLM layer](docs/design/llm_layer/llm_layer.md) — `LLMClient`, `LLMStep`, schema conversion, tool dispatch ([diagram](docs/design/llm_layer/llm_layer.puml))
-- [CLI](docs/design/cli/cli.md) — argument structure, interactive flow, Rich component map
+- [CLI](docs/design/cli/cli.md) — argument structure, interactive flow, Rich components, session logging
 
 ## Development
 

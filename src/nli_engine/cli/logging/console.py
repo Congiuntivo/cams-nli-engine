@@ -9,12 +9,14 @@ from rich.markup import escape
 
 def _truncate(s: str, n: int = 200, remove_new_lines: bool = True) -> str:
     """Truncate a string to at most n characters, adding an ellipsis if truncated.
+
     Args:
         s: The string to truncate.
         n: The maximum length of the string. Default is 200 characters.
-        remove_new_lines: If True, replace new line characters with spaces. Default is True.
+        remove_new_lines: If True, replace new line characters with spaces.
 
-    Returns: The truncated string, with new lines replaced if specified.
+    Returns:
+        The truncated string, with new lines replaced if specified.
     """
     if remove_new_lines:
         s = s.replace("\n", " ")
@@ -25,7 +27,7 @@ class TraceHandler(logging.Handler):
     """Logging handler that renders structured trace events to a Rich console.
 
     Handles step lifecycle events emitted by ``Step.run``: ``step_begin`` and
-    ``step_end`` at INFO level.  Also handles six LLM trace events emitted by
+    ``step_end`` at INFO level. Also handles six LLM trace events emitted by
     ``LLMStep``: ``llm_call``, ``tool_call``, and ``text_response`` at INFO
     level (one-liners), and ``llm_request``, ``llm_tool_round``, and
     ``llm_text_response`` at DEBUG level (full blocks).

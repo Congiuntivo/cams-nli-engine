@@ -9,13 +9,15 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.table import Table
 
-from nli_engine.cli.logging import configure_verbose_logging
+from nli_engine.cli.logging import configure_file_logging, configure_verbose_logging
 from nli_engine.engine.client import build_client
 from nli_engine.engine.conversation import Conversation
 from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.registry import WORKFLOW_REGISTRY, WorkflowSpec
 from nli_engine.engine.workflow.result import TurnResult
+
+_session_log = logging.getLogger("nli_engine.session")
 
 
 class InteractiveCLI:
@@ -30,10 +32,13 @@ class InteractiveCLI:
         Args:
             args: Parsed CLI arguments. Relevant fields: ``workflow``, ``server``,
                 ``config``, ``verbose`` (0 = silent, 1 = INFO, 2 = DEBUG),
-                ``name`` (skips the protocol-name prompt), and ``prompt``
-                (fires the first turn automatically).
+                ``name`` (skips the protocol-name prompt), ``prompt``
+                (fires the first turn automatically), and ``log_file``
+                (path to a JSON Lines session log).
         """
         self._configure_verbosity(args)
+        if args.log_file:
+            configure_file_logging(args.log_file)
         config = (
             WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
         )
@@ -45,6 +50,14 @@ class InteractiveCLI:
             self.console.print("\n[dim]Bye.[/dim]")
             return
 
+        _session_log.info(
+            "session_start",
+            extra={
+                "event": "session_start",
+                "workflow": spec.id,
+                "protocol_name": protocol_name,
+            },
+        )
         session = ProtocolSession(build_client(args.server), name=protocol_name)
         conversation = Conversation(spec, config, session)
         self._run_loop(conversation, spec, initial_prompt=args.prompt)
@@ -101,7 +114,7 @@ class InteractiveCLI:
 
         if initial_prompt is not None:
             self.console.print(f"[bold cyan]>[/bold cyan] [dim]{initial_prompt}[/dim]")
-            result = conversation.turn(initial_prompt)
+            result = self._execute_turn(conversation, initial_prompt)
             self._display_result(result)
             if result.done:
                 self.console.print("[dim]Workflow complete.[/dim]")
@@ -118,11 +131,26 @@ class InteractiveCLI:
                 self.console.print("[dim]Bye.[/dim]")
                 break
 
-            result = conversation.turn(user_input)
+            result = self._execute_turn(conversation, user_input)
             self._display_result(result)
             if result.done:
                 self.console.print("[dim]Workflow complete.[/dim]")
                 break
+
+    def _execute_turn(self, conversation: Conversation, user_input: str) -> TurnResult:
+        """Send one user turn, emit session log events, and return the result."""
+        _session_log.info("user_turn", extra={"event": "user_turn", "text": user_input})
+        result = conversation.turn(user_input)
+        _session_log.info(
+            "turn_result",
+            extra={
+                "event": "turn_result",
+                "response": result.message,
+                "protocol": result.protocol,
+                "done": result.done,
+            },
+        )
+        return result
 
     def _display_result(self, result: TurnResult) -> None:
         """Print the response message, optional protocol JSON, and step logs."""
