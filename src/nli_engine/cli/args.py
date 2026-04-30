@@ -34,6 +34,18 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Path to a workflow YAML config file. Uses defaults if omitted.",
     )
     parser.add_argument(
+        "--name",
+        metavar="NAME",
+        default=None,
+        help="Protocol name. Skips the interactive name prompt.",
+    )
+    parser.add_argument(
+        "--prompt",
+        metavar="TEXT",
+        default=None,
+        help="Initial user prompt sent automatically. Best used with --workflow and --name.",
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         action="count",

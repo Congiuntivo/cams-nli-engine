@@ -29,7 +29,9 @@ class InteractiveCLI:
 
         Args:
             args: Parsed CLI arguments. Relevant fields: ``workflow``, ``server``,
-                ``config``, and ``verbose`` (0 = silent, 1 = INFO, 2 = DEBUG).
+                ``config``, ``verbose`` (0 = silent, 1 = INFO, 2 = DEBUG),
+                ``name`` (skips the protocol-name prompt), and ``prompt``
+                (fires the first turn automatically).
         """
         self._configure_verbosity(args)
         config = (
@@ -38,14 +40,14 @@ class InteractiveCLI:
 
         try:
             spec = self._select_workflow(args.workflow)
-            protocol_name = Prompt.ask("[bold]Protocol name[/bold]")
+            protocol_name = args.name or Prompt.ask("[bold]Protocol name[/bold]")
         except (KeyboardInterrupt, EOFError):
             self.console.print("\n[dim]Bye.[/dim]")
             return
 
         session = ProtocolSession(build_client(args.server), name=protocol_name)
         conversation = Conversation(spec, config, session)
-        self._run_loop(conversation, spec)
+        self._run_loop(conversation, spec, initial_prompt=args.prompt)
 
     def _select_workflow(self, preselected_id: str | None) -> WorkflowSpec:
         """Return the workflow spec for the given ID, or prompt the user to choose."""
@@ -78,12 +80,33 @@ class InteractiveCLI:
             table.add_row(str(i), spec.id, spec.name, spec.description)
         return table
 
-    def _run_loop(self, conversation: Conversation, spec: WorkflowSpec) -> None:
-        """Drive the prompt-response loop until the user exits or the workflow completes."""
+    def _run_loop(
+        self,
+        conversation: Conversation,
+        spec: WorkflowSpec,
+        initial_prompt: str | None = None,
+    ) -> None:
+        """Drive the prompt-response loop until the user exits or the workflow completes.
+
+        Args:
+            conversation: Active conversation to send turns to.
+            spec: Workflow spec used for the header line.
+            initial_prompt: Optional first turn sent automatically before entering
+                the interactive loop; useful for scripted or repeated test runs.
+        """
         self.console.print(
             f"\n[dim]Workflow:[/dim] [bold cyan]{spec.name}[/bold cyan]  "
             f"[dim]· type [bold]exit[/bold] or press Ctrl-C to quit[/dim]\n"
         )
+
+        if initial_prompt is not None:
+            self.console.print(f"[bold cyan]>[/bold cyan] [dim]{initial_prompt}[/dim]")
+            result = conversation.turn(initial_prompt)
+            self._display_result(result)
+            if result.done:
+                self.console.print("[dim]Workflow complete.[/dim]")
+                return
+
         while True:
             try:
                 user_input = Prompt.ask("[bold cyan]>[/bold cyan]")

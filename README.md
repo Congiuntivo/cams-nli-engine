@@ -34,17 +34,38 @@ uv sync --extra cli
 uv run nli-engine
 
 # Skip the workflow selector
-uv run nli-engine --workflow dummy_llm --config workflow.yaml
+uv run nli-engine --workflow one_shot_llm --config workflow.yaml
+
+# Skip the workflow selector and the protocol name prompt
+uv run nli-engine --workflow one_shot_llm --name "my-study" --config workflow.yaml
+
+# Fully automated run — no interactive prompts at all (useful for repeated test runs)
+uv run nli-engine \
+  --workflow one_shot_llm \
+  --name "my-study" \
+  --prompt "record steps with the smartphone, heartbeat every hour" \
+  --config workflow.yaml
 
 # Minimal one-line trace (-v) or full debug trace (-vv)
-uv run nli-engine --workflow dummy_llm --config workflow.yaml -v
-uv run nli-engine --workflow dummy_llm --config workflow.yaml -vv
+uv run nli-engine --workflow one_shot_llm --config workflow.yaml -v
+uv run nli-engine --workflow one_shot_llm --config workflow.yaml -vv
 
 # Custom server
 uv run nli-engine --server http://my-server:8080 --config workflow.yaml
 ```
 
 Type `exit` or press `Ctrl-C` to quit an interactive session.
+
+### Flags reference
+
+| Flag            | Default                 | Description                                                                     |
+| --------------- | ----------------------- | ------------------------------------------------------------------------------- |
+| `--workflow ID` | —                       | Skip the workflow selector and use this workflow directly                       |
+| `--name NAME`   | —                       | Protocol name; skips the interactive name prompt                                |
+| `--prompt TEXT` | —                       | Fire the first turn automatically; best combined with `--workflow` and `--name` |
+| `--config PATH` | —                       | Path to a workflow YAML config file                                             |
+| `--server URL`  | `http://localhost:8080` | Authoring server base URL                                                       |
+| `-v` / `-vv`    | —                       | Verbose trace: `-v` one-line events, `-vv` full debug blocks                    |
 
 ### Workflow config
 
@@ -55,6 +76,7 @@ and provides provider-specific parameters:
 # workflow.yaml
 models:
   planner: "ollama/qwen2.5:7b" # or "gpt-4o", "anthropic/claude-sonnet-4-6", …
+  refiner: "ollama/qwen2.5:7b" # used by one_shot_llm for the refinement step
 parameters:
   api_base: "http://localhost:11434" # required for Ollama; omit for cloud providers
 ```
@@ -63,10 +85,11 @@ Model identifiers follow [LiteLLM's routing conventions](https://docs.litellm.ai
 
 ### Available workflows
 
-| ID          | Description                                                                  |
-| ----------- | ---------------------------------------------------------------------------- |
-| `dummy`     | Deterministic baseline — hard-codes the three setup tool calls; no LLM       |
-| `dummy_llm` | LLM-driven version — instructs the model to make the same calls autonomously |
+| ID             | Description                                                                       |
+| -------------- | --------------------------------------------------------------------------------- |
+| `dummy`        | Deterministic baseline — hard-codes the three setup tool calls; no LLM            |
+| `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously      |
+| `one_shot_llm` | Two-step pipeline: a refiner LLM clarifies the request, an executor LLM builds it |
 
 ## Design docs
 
