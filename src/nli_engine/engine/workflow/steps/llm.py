@@ -5,7 +5,7 @@ import logging
 import time
 from typing import Any
 
-from nli_engine.engine.llm.client import LLMClient, LLMResponse
+from nli_engine.engine.llm.client import LLMClient, LLMResponse, ToolCall
 from nli_engine.engine.llm.dispatch import call_tool
 from nli_engine.engine.llm.schema import bound_tool_to_schema
 from nli_engine.engine.tools import BoundTool
@@ -122,20 +122,36 @@ class LLMStep(Step):
 
     def _execute_tool_calls(
         self,
-        tool_calls: list[Any],
+        tool_calls: list[ToolCall],
         tool_map: dict[str, BoundTool],
         new_messages: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         executed = []
         for tc in tool_calls:
             result = call_tool(tool_map[tc.name], tc.arguments)
+            if result.is_error and not result.retryable:
+                raise RuntimeError(result.content)
             new_messages.append(
-                {"role": "tool", "tool_call_id": tc.id, "content": result}
+                {"role": "tool", "tool_call_id": tc.id, "content": result.content}
             )
             executed.append(
-                {"name": tc.name, "arguments": tc.arguments, "result": result}
+                {
+                    "name": tc.name,
+                    "arguments": tc.arguments,
+                    "result": result.content,
+                    "is_error": result.is_error,
+                }
             )
-            _log.info("tool_call", extra={"event": "tool_call", "tool_name": tc.name})
+            _log.info(
+                "tool_call",
+                extra={
+                    "event": "tool_call",
+                    "tool_name": tc.name,
+                    "is_error": result.is_error,
+                },
+            )
+            if result.is_error:
+                break  # Don't execute further tools if one failed; let the LLM correct and retry.
         return executed
 
     def _append_to_history(

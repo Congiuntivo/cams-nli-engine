@@ -79,7 +79,11 @@ class TraceHandler(logging.Handler):
 
     def _render_tool_call(self, record: logging.LogRecord) -> None:
         name: str = getattr(record, "tool_name", "?")
-        self._console.print(f"\t[dim]↳[/dim] Tool usage: [cyan]{escape(name)}[/cyan]")
+        failed: bool = getattr(record, "is_error", False)
+        self._console.print(
+            f"\t[dim]↳[/dim] Tool usage: [cyan]{escape(name)}[/cyan]"
+            + (" [red](failed)[/red]" if failed else "")
+        )
 
     def _render_text_response_info(self, record: logging.LogRecord) -> None:
         text: str = getattr(record, "text", "")
@@ -114,8 +118,10 @@ class TraceHandler(logging.Handler):
             name = escape(tc.get("name", "?"))
             args = escape(_truncate(json.dumps(tc.get("arguments", {}))))
             result = escape(_truncate(str(tc.get("result", ""))))
+            is_error = tc.get("is_error", False)
+            result_markup = f"[red]{result}[/red]" if is_error else result
             self._console.print(
-                f"\t[dim]│[/dim]  [dim]↳[/dim] [cyan]{name}[/cyan]({args}) [dim]→[/dim] {result}"
+                f"\t[dim]│[/dim]  [dim]↳[/dim] [cyan]{name}[/cyan]({args}) [dim]→[/dim] {result_markup}"
             )
         self._console.print("\t[dim]└─[/dim]")
 
