@@ -21,7 +21,7 @@ class DummySetupStep(Step):
             ],
         )
 
-    def run(
+    def _run(
         self, context: WorkflowContext, tools: list[BoundTool]
     ) -> tuple[str, StepLog]:
         start = time.perf_counter()

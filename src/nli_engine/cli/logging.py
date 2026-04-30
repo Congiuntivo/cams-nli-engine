@@ -7,16 +7,28 @@ from rich.console import Console
 from rich.markup import escape
 
 
-def _truncate(s: str, n: int = 200) -> str:
+def _truncate(s: str, n: int = 200, remove_new_lines: bool = True) -> str:
+    """Truncate a string to at most n characters, adding an ellipsis if truncated.
+    Args:
+        s: The string to truncate.
+        n: The maximum length of the string. Default is 200 characters.
+        remove_new_lines: If True, replace new line characters with spaces. Default is True.
+
+    Returns: The truncated string, with new lines replaced if specified.
+    """
+    if remove_new_lines:
+        s = s.replace("\n", " ")
     return s[:n] + "…" if len(s) > n else s
 
 
-class LLMTraceHandler(logging.Handler):
-    """Logging handler that renders structured LLM trace events to a Rich console.
+class TraceHandler(logging.Handler):
+    """Logging handler that renders structured trace events to a Rich console.
 
-    Handles six trace events emitted by LLMStep: ``llm_call``, ``tool_call``,
-    and ``text_response`` at INFO level (one-liners), and ``llm_request``,
-    ``llm_tool_round``, and ``llm_text_response`` at DEBUG level (full blocks).
+    Handles step lifecycle events emitted by ``Step.run``: ``step_begin`` and
+    ``step_end`` at INFO level.  Also handles six LLM trace events emitted by
+    ``LLMStep``: ``llm_call``, ``tool_call``, and ``text_response`` at INFO
+    level (one-liners), and ``llm_request``, ``llm_tool_round``, and
+    ``llm_text_response`` at DEBUG level (full blocks).
     """
 
     def __init__(self, console: Console, level: int = logging.DEBUG) -> None:
@@ -32,7 +44,11 @@ class LLMTraceHandler(logging.Handler):
     def emit(self, record: logging.LogRecord) -> None:
         event = getattr(record, "event", None)
         try:
-            if event == "llm_call":
+            if event == "step_begin":
+                self._render_step_begin(record)
+            elif event == "step_end":
+                self._render_step_end(record)
+            elif event == "llm_call":
                 self._render_llm_call(record)
             elif event == "tool_call":
                 self._render_tool_call(record)
@@ -49,13 +65,21 @@ class LLMTraceHandler(logging.Handler):
 
     # ── INFO renderers (one line each) ───────────────────────────────────────
 
+    def _render_step_begin(self, record: logging.LogRecord) -> None:
+        step_name: str = getattr(record, "step_name", "?")
+        self._console.print(f"[dim]▶ step [/dim][cyan]{escape(step_name)}[/cyan]")
+
+    def _render_step_end(self, record: logging.LogRecord) -> None:
+        step_name: str = getattr(record, "step_name", "?")
+        self._console.print(f"[dim]◀ step [/dim][cyan]{escape(step_name)}[/cyan]")
+
     def _render_llm_call(self, record: logging.LogRecord) -> None:
         model: str = getattr(record, "model", "?")
-        self._console.print(f"[dim]→ llm[/dim]  [cyan]{escape(model)}[/cyan]")
+        self._console.print(f"[dim]→ LLM call [/dim][cyan]{escape(model)}[/cyan]")
 
     def _render_tool_call(self, record: logging.LogRecord) -> None:
         name: str = getattr(record, "tool_name", "?")
-        self._console.print(f"[dim]↳[/dim] [cyan]{escape(name)}[/cyan]")
+        self._console.print(f"\t[dim]↳[/dim] Tool usage: [cyan]{escape(name)}[/cyan]")
 
     def _render_text_response_info(self, record: logging.LogRecord) -> None:
         text: str = getattr(record, "text", "")
@@ -84,16 +108,16 @@ class LLMTraceHandler(logging.Handler):
     def _render_tool_round(self, record: logging.LogRecord) -> None:
         tool_calls: list[dict] = getattr(record, "tool_calls", [])
         self._console.print(
-            f"[dim]┌─[/dim] [bold]response[/bold] [dim]·[/dim] {len(tool_calls)} tool calls"
+            f"\t[dim]┌─[/dim] [bold]response[/bold] [dim]·[/dim] {len(tool_calls)} tool calls"
         )
         for tc in tool_calls:
             name = escape(tc.get("name", "?"))
             args = escape(_truncate(json.dumps(tc.get("arguments", {}))))
             result = escape(_truncate(str(tc.get("result", ""))))
             self._console.print(
-                f"[dim]│[/dim]  [dim]↳[/dim] [cyan]{name}[/cyan]({args}) [dim]→[/dim] {result}"
+                f"\t[dim]│[/dim]  [dim]↳[/dim] [cyan]{name}[/cyan]({args}) [dim]→[/dim] {result}"
             )
-        self._console.print("[dim]└─[/dim]")
+        self._console.print("\t[dim]└─[/dim]")
 
     def _render_text_response_debug(self, record: logging.LogRecord) -> None:
         text: str = getattr(record, "text", "")
@@ -103,13 +127,15 @@ class LLMTraceHandler(logging.Handler):
 
 
 def configure_verbose_logging(console: Console, level: int = logging.DEBUG) -> None:
-    """Attach an LLMTraceHandler to the ``nli_engine.llm`` logger.
+    """Attach a TraceHandler to the ``nli_engine.step`` and ``nli_engine.llm`` loggers.
 
     Args:
         console: Rich console for trace output.
         level: ``logging.INFO`` for one-line events, ``logging.DEBUG`` for
             full trace blocks.
     """
-    logger = logging.getLogger("nli_engine.llm")
-    logger.addHandler(LLMTraceHandler(console, level=level))
-    logger.setLevel(level)
+    handler = TraceHandler(console, level=level)
+    for name in ("nli_engine.step", "nli_engine.llm"):
+        logger = logging.getLogger(name)
+        logger.addHandler(handler)
+        logger.setLevel(level)

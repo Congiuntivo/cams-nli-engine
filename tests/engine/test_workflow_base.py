@@ -13,7 +13,6 @@ from nli_engine.engine.workflow.base import (
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.log import StepLog
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -28,7 +27,7 @@ class ContextWithExtras(WorkflowContext):
 
 
 class ConcreteStep(Step):
-    def run(self, context: WorkflowContext, tools: list[Any]) -> tuple[str, StepLog]:
+    def _run(self, context: WorkflowContext, tools: list[Any]) -> tuple[str, StepLog]:
         log = StepLog(
             step_name=self.name,
             model=None,

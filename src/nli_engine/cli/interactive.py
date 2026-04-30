@@ -1,127 +1,136 @@
 from __future__ import annotations
 
 import argparse
+import json
+import logging
 
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.table import Table
 
+from nli_engine.cli.logging import configure_verbose_logging
 from nli_engine.engine.client import build_client
 from nli_engine.engine.conversation import Conversation
 from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.registry import WORKFLOW_REGISTRY, WorkflowSpec
-
-console = Console()
-
-
-def _select_workflow(preselected_id: str | None) -> WorkflowSpec:
-    if preselected_id is not None:
-        spec = WORKFLOW_REGISTRY.get(preselected_id)
-        if spec is None:
-            console.print(
-                f"[red]Unknown workflow '[bold]{preselected_id}[/bold]'. "
-                f"Available: {', '.join(WORKFLOW_REGISTRY)}[/red]"
-            )
-            raise SystemExit(1)
-        return spec
-
-    table = Table(title="Available workflows", show_lines=False, highlight=True)
-    table.add_column("#", style="dim", width=3)
-    table.add_column("ID", style="bold cyan")
-    table.add_column("Name")
-    table.add_column("Description", style="dim")
-
-    specs = list(WORKFLOW_REGISTRY.values())
-    for i, spec in enumerate(specs, start=1):
-        table.add_row(str(i), spec.id, spec.name, spec.description)
-    console.print(table)
-
-    choices = [str(i) for i in range(1, len(specs) + 1)] + list(WORKFLOW_REGISTRY)
-    raw = Prompt.ask("Select workflow", choices=choices, show_choices=False)
-    if raw.isdigit():
-        return specs[int(raw) - 1]
-    return WORKFLOW_REGISTRY[raw]
+from nli_engine.engine.workflow.result import TurnResult
 
 
-def _show_logs(logs: list) -> None:
-    if not logs:
-        return
-    table = Table(show_header=True, header_style="dim", box=None)
-    table.add_column("step", style="dim")
-    table.add_column("model", style="dim")
-    table.add_column("latency", style="dim", justify="right")
-    for log in logs:
-        table.add_row(
-            log.step_name,
-            log.model or "—",
-            f"{log.latency_ms:.1f}ms",
+class InteractiveCLI:
+    """Drives the interactive prompt-response loop for the NLI engine CLI."""
+
+    def __init__(self) -> None:
+        self.console = Console()
+
+    def run(self, args: argparse.Namespace) -> None:
+        """Configure, set up the session, and start the conversation loop.
+
+        Args:
+            args: Parsed CLI arguments. Relevant fields: ``workflow``, ``server``,
+                ``config``, and ``verbose`` (0 = silent, 1 = INFO, 2 = DEBUG).
+        """
+        self._configure_verbosity(args)
+        config = (
+            WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
         )
-    console.print(table)
 
-
-def run_interactive(args: argparse.Namespace) -> None:
-    """Run the interactive CLI session.
-
-    Configures logging verbosity, creates the workflow session, and drives the
-    prompt-response loop until the user exits or the workflow signals completion.
-
-    Args:
-        args: Parsed CLI arguments. Relevant fields: ``workflow``, ``server``,
-            ``config``, and ``verbose`` (0 = silent, 1 = INFO trace, 2 = DEBUG trace).
-    """
-    verbosity: int = getattr(args, "verbose", 0)
-    if verbosity >= 1:
-        import logging
-        from nli_engine.cli.logging import configure_verbose_logging
-
-        level = logging.INFO if verbosity == 1 else logging.DEBUG
-        configure_verbose_logging(console, level)
-
-    config = WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
-
-    try:
-        spec = _select_workflow(args.workflow)
-        protocol_name = Prompt.ask("[bold]Protocol name[/bold]")
-    except (KeyboardInterrupt, EOFError):
-        console.print("\n[dim]Bye.[/dim]")
-        return
-
-    session = ProtocolSession(build_client(args.server), name=protocol_name)
-    conversation = Conversation(spec, config, session)
-
-    console.print(
-        f"\n[dim]Workflow:[/dim] [bold cyan]{spec.name}[/bold cyan]  "
-        f"[dim]· type [bold]exit[/bold] or press Ctrl-C to quit[/dim]\n"
-    )
-
-    while True:
         try:
-            user_input = Prompt.ask("[bold cyan]>[/bold cyan]")
+            spec = self._select_workflow(args.workflow)
+            protocol_name = Prompt.ask("[bold]Protocol name[/bold]")
         except (KeyboardInterrupt, EOFError):
-            console.print("\n[dim]Bye.[/dim]")
-            break
+            self.console.print("\n[dim]Bye.[/dim]")
+            return
 
-        if user_input.strip().lower() in {"exit", "quit"}:
-            console.print("[dim]Bye.[/dim]")
-            break
+        session = ProtocolSession(build_client(args.server), name=protocol_name)
+        conversation = Conversation(spec, config, session)
+        self._run_loop(conversation, spec)
 
-        result = conversation.turn(user_input)
-        console.print(
+    def _select_workflow(self, preselected_id: str | None) -> WorkflowSpec:
+        """Return the workflow spec for the given ID, or prompt the user to choose."""
+        if preselected_id is not None:
+            spec = WORKFLOW_REGISTRY.get(preselected_id)
+            if spec is None:
+                self.console.print(
+                    f"[red]Unknown workflow '[bold]{preselected_id}[/bold]'. "
+                    f"Available: {', '.join(WORKFLOW_REGISTRY)}[/red]"
+                )
+                raise SystemExit(1)
+            return spec
+
+        self.console.print(self._build_workflow_table())
+        specs = list(WORKFLOW_REGISTRY.values())
+        choices = [str(i) for i in range(1, len(specs) + 1)] + list(WORKFLOW_REGISTRY)
+        raw = Prompt.ask("Select workflow", choices=choices, show_choices=False)
+        if raw.isdigit():
+            return specs[int(raw) - 1]
+        return WORKFLOW_REGISTRY[raw]
+
+    def _build_workflow_table(self) -> Table:
+        """Build a Rich table listing all registered workflows."""
+        table = Table(title="Available workflows", show_lines=False, highlight=True)
+        table.add_column("#", style="dim", width=3)
+        table.add_column("ID", style="bold cyan")
+        table.add_column("Name")
+        table.add_column("Description", style="dim")
+        for i, spec in enumerate(WORKFLOW_REGISTRY.values(), start=1):
+            table.add_row(str(i), spec.id, spec.name, spec.description)
+        return table
+
+    def _run_loop(self, conversation: Conversation, spec: WorkflowSpec) -> None:
+        """Drive the prompt-response loop until the user exits or the workflow completes."""
+        self.console.print(
+            f"\n[dim]Workflow:[/dim] [bold cyan]{spec.name}[/bold cyan]  "
+            f"[dim]· type [bold]exit[/bold] or press Ctrl-C to quit[/dim]\n"
+        )
+        while True:
+            try:
+                user_input = Prompt.ask("[bold cyan]>[/bold cyan]")
+            except (KeyboardInterrupt, EOFError):
+                self.console.print("\n[dim]Bye.[/dim]")
+                break
+
+            if user_input.strip().lower() in {"exit", "quit"}:
+                self.console.print("[dim]Bye.[/dim]")
+                break
+
+            result = conversation.turn(user_input)
+            self._display_result(result)
+            if result.done:
+                self.console.print("[dim]Workflow complete.[/dim]")
+                break
+
+    def _display_result(self, result: TurnResult) -> None:
+        """Print the response message, optional protocol JSON, and step logs."""
+        self.console.print(
             Panel(result.message, title="[bold]response[/bold]", border_style="cyan")
         )
         if result.protocol is not None:
-            import json
-
-            console.print(
+            self.console.print(
                 Panel(
                     json.dumps(result.protocol, indent=2),
                     title="[bold]protocol[/bold]",
                     border_style="dim",
                 )
             )
-        _show_logs(result.logs)
-        if result.done:
-            console.print("[dim]Workflow complete.[/dim]")
-            break
+        self._show_logs(result.logs)
+
+    def _show_logs(self, logs: list) -> None:
+        """Print a table of per-step latency and model information."""
+        if not logs:
+            return
+        table = Table(show_header=True, header_style="dim", box=None)
+        table.add_column("step", style="dim")
+        table.add_column("model", style="dim")
+        table.add_column("latency", style="dim", justify="right")
+        for log in logs:
+            table.add_row(log.step_name, log.model or "—", f"{log.latency_ms:.1f}ms")
+        self.console.print(table)
+
+    def _configure_verbosity(self, args: argparse.Namespace) -> None:
+        """Set up logging handlers based on the --verbose flag count."""
+        verbosity: int = getattr(args, "verbose", 0)
+        if verbosity >= 1:
+            level = logging.INFO if verbosity == 1 else logging.DEBUG
+            configure_verbose_logging(self.console, level)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from abc import ABC, abstractmethod
 from typing import Any, Generic, Literal, TypeVar
 
@@ -10,6 +11,8 @@ from nli_engine.engine.tools import BoundTool
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.log import StepLog
 from nli_engine.engine.workflow.result import TurnResult
+
+_log = logging.getLogger("nli_engine.step")
 
 
 class Message(BaseModel):
@@ -88,11 +91,29 @@ class Step(ABC):
         self.name = name
         self.tool_names = tool_names
 
-    @abstractmethod
     def run(
+        self, context: WorkflowContext, tools: list[BoundTool] = []
+    ) -> tuple[Any, StepLog]:
+        """Execute the step, bookend it with trace logs, and return its output.
+
+        Args:
+            context: Shared workflow state; steps may read and mutate it.
+            tools: The subset of BoundTools declared by this step.
+
+        Returns:
+            A tuple of ``(step output, StepLog)``. The output type is
+            step-specific; LLMStep returns a ``str``.
+        """
+        _log.info("step_begin", extra={"event": "step_begin", "step_name": self.name})
+        result = self._run(context, tools)
+        _log.info("step_end", extra={"event": "step_end", "step_name": self.name})
+        return result
+
+    @abstractmethod
+    def _run(
         self, context: WorkflowContext, tools: list[BoundTool]
     ) -> tuple[Any, StepLog]:
-        """Execute the step and return its output alongside a log entry.
+        """Implement the step logic and return its output alongside a log entry.
 
         Args:
             context: Shared workflow state; steps may read and mutate it.

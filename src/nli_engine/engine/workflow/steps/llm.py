@@ -145,7 +145,7 @@ class LLMStep(Step):
         for d in new_messages:
             context.history.append(Message.from_dict(d))
 
-    def run(
+    def _run(
         self, context: WorkflowContext, tools: list[BoundTool] = []
     ) -> tuple[str, StepLog]:
         """Run the loop and return the final text response and log entry.

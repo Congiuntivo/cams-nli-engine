@@ -1,7 +1,7 @@
 import argparse
 
+from nli_engine.cli.interactive import InteractiveCLI
 from nli_engine.engine.workflow.registry import WORKFLOW_REGISTRY
-from nli_engine.cli.interactive import run_interactive
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -51,4 +51,4 @@ def run() -> None:
     if args.mode == "non-interactive":
         raise NotImplementedError("Non-interactive mode is not yet implemented.")
 
-    run_interactive(args)
+    InteractiveCLI().run(args)
