@@ -9,6 +9,10 @@ from nli_engine.engine.workflow.workflows.dummy_llm import (
     DummyLLMWorkflow,
     DummyLLMWorkflowContext,
 )
+from nli_engine.engine.workflow.workflows.one_shot_llm import (
+    OneShotLLMWorkflow,
+    OneShotLLMWorkflowContext,
+)
 
 
 @dataclass(frozen=True)
@@ -34,5 +38,16 @@ WORKFLOW_REGISTRY: dict[str, WorkflowSpec] = {
         description="Uses an LLM to add a smartphone, CAWS endpoint, and participant role via tool calls.",
         workflow_class=DummyLLMWorkflow,
         context_class=DummyLLMWorkflowContext,
+    ),
+    "one_shot_llm": WorkflowSpec(
+        id="one_shot_llm",
+        name="One-Shot LLM Setup",
+        description=(
+            "Uses one LLM step to refine the user instruction and a second to execute it, "
+            "validating tool calls by instructing the model to add a smartphone, CAWS endpoint, "
+            "and participant role autonomously."
+        ),
+        workflow_class=OneShotLLMWorkflow,
+        context_class=OneShotLLMWorkflowContext,
     ),
 }
