@@ -137,6 +137,9 @@ class TraceHandler(logging.Handler):
 def configure_verbose_logging(console: Console, level: int = logging.DEBUG) -> None:
     """Attach a TraceHandler to the ``nli_engine.step`` and ``nli_engine.llm`` loggers.
 
+    Logger levels are managed externally by ``initialize_trace_loggers``; this
+    function only registers the handler at the requested filter level.
+
     Args:
         console: Rich console for trace output.
         level: ``logging.INFO`` for one-line events, ``logging.DEBUG`` for
@@ -144,6 +147,4 @@ def configure_verbose_logging(console: Console, level: int = logging.DEBUG) -> N
     """
     handler = TraceHandler(console, level=level)
     for name in ("nli_engine.step", "nli_engine.llm"):
-        logger = logging.getLogger(name)
-        logger.addHandler(handler)
-        logger.setLevel(level)
+        logging.getLogger(name).addHandler(handler)

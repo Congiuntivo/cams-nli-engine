@@ -9,7 +9,11 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.table import Table
 
-from nli_engine.cli.logging import configure_file_logging, configure_verbose_logging
+from nli_engine.cli.logging import (
+    configure_file_logging,
+    configure_verbose_logging,
+    initialize_trace_loggers,
+)
 from nli_engine.engine.client import build_client
 from nli_engine.engine.conversation import Conversation
 from nli_engine.engine.session import ProtocolSession
@@ -36,6 +40,7 @@ class InteractiveCLI:
                 (fires the first turn automatically), and ``log_file``
                 (path to a JSON Lines session log).
         """
+        initialize_trace_loggers()
         self._configure_verbosity(args)
         if args.log_file:
             configure_file_logging(args.log_file)

@@ -84,14 +84,14 @@ def configure_file_logging(path: str | Path) -> None:
     """Attach a FileTraceHandler to all trace loggers and write a JSON Lines log.
 
     Subscribes to ``nli_engine.session``, ``nli_engine.step``, and
-    ``nli_engine.llm`` at DEBUG level so every event — including full LLM
-    request/response blocks — is captured regardless of the console verbosity.
+    ``nli_engine.llm`` so every event — including full LLM request/response
+    blocks — is captured regardless of the console verbosity. Logger levels are
+    managed externally by ``initialize_trace_loggers``; this function only
+    registers the handler.
 
     Args:
         path: Destination ``.jsonl`` file path. Created or overwritten.
     """
     handler = FileTraceHandler(path)
     for name in ("nli_engine.session", "nli_engine.step", "nli_engine.llm"):
-        logger = logging.getLogger(name)
-        logger.addHandler(handler)
-        logger.setLevel(logging.DEBUG)
+        logging.getLogger(name).addHandler(handler)
