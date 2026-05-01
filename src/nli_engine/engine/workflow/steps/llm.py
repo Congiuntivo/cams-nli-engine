@@ -127,7 +127,7 @@ class LLMStep(Step):
         new_messages: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         executed = []
-        for tc in tool_calls:
+        for i, tc in enumerate(tool_calls):
             result = call_tool(tool_map[tc.name], tc.arguments)
             if result.is_error and not result.retryable:
                 raise RuntimeError(result.content)
@@ -151,7 +151,18 @@ class LLMStep(Step):
                 },
             )
             if result.is_error:
-                break  # Don't execute further tools if one failed; let the LLM correct and retry.
+                # The API requires every tool_call_id in the assistant message to
+                # have a corresponding tool result. Append placeholder responses for
+                # any calls that won't be executed so the message sequence stays valid.
+                for skipped in tool_calls[i + 1 :]:
+                    new_messages.append(
+                        {
+                            "role": "tool",
+                            "tool_call_id": skipped.id,
+                            "content": "Skipped: a preceding tool call in this batch failed.",
+                        }
+                    )
+                break
         return executed
 
     def _append_to_history(
