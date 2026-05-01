@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import Any
 
@@ -13,6 +14,10 @@ class WorkflowConfig(BaseModel):
     )
     parameters: dict[str, Any] = Field(
         default_factory=dict, description="Additional parameters for the workflow."
+    )
+    max_iterations: dict[str, int] = Field(
+        default_factory=dict,
+        description="Mapping from step name to maximum number of iterations for that step.",
     )
 
     @classmethod

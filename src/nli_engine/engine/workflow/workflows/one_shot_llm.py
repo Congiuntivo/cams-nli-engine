@@ -47,6 +47,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             name="refiner",
             client=refiner_client,
             system_prompt=refiner_system_prompt,
+            max_iterations=config.max_iterations.get("refiner", 3),
         )
 
         executor_client = LLMClient(model=config.models["planner"], api_base=api_base)
@@ -57,6 +58,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             tool_names=executor_tool_names,
             client=executor_client,
             system_prompt=executort_system_prompt,
+            max_iterations=config.max_iterations.get("executor", 10),
         )
 
     def run_turn(
