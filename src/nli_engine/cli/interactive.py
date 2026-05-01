@@ -58,6 +58,14 @@ class InteractiveCLI:
                 "protocol_name": protocol_name,
             },
         )
+        _session_log.info(
+            "workflow_config",
+            extra={
+                "event": "workflow_config",
+                "models": config.models,
+                "parameters": config.parameters,
+            },
+        )
         session = ProtocolSession(build_client(args.server), name=protocol_name)
         conversation = Conversation(spec, config, session)
         self._run_loop(conversation, spec, initial_prompt=args.prompt)
