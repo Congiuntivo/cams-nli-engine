@@ -93,12 +93,53 @@ Model identifiers follow [LiteLLM's routing conventions](https://docs.litellm.ai
 | `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously      |
 | `one_shot_llm` | Two-step pipeline: a refiner LLM clarifies the request, an executor LLM builds it |
 
+## Evaluation
+
+`nli-eval` reads session logs produced by `--log-file` and reports execution metrics.
+No running engine or server required.
+
+### Install with CLI extras
+
+As with the engine, the evaluation CLI is included in the `cli` extra:
+
+```bash
+uv sync --extra cli
+```
+
+### Evaluate a single run
+
+```bash
+uv run nli-eval run run.jsonl
+uv run nli-eval run run.jsonl --output metrics.json
+```
+
+### Evaluate a dataset
+
+Provide a YAML manifest that maps each run log to its expected protocol output:
+
+```yaml
+# dataset/manifest.yaml
+cases:
+  - id: "001_diary_study"
+    prompt: "record steps with the smartphone, heartbeat every hour"
+    expected: cases/001_expected.json # relative to this file
+    log: runs/001.jsonl
+```
+
+```bash
+uv run nli-eval dataset dataset/manifest.yaml
+uv run nli-eval dataset dataset/manifest.yaml --output results.json
+```
+
+See [eval design doc](docs/design/eval/eval.md) for the full metric reference and comparison model.
+
 ## Design docs
 
 - [Session layer](docs/design/session_layer/session_layer.md) — `ProtocolSession`, `ToolSpec`, `BoundTool` ([diagram](docs/design/session_layer/session_layer.puml))
 - [Workflow layer](docs/design/workflow_layer/workflow_layer.md) — `Workflow`, `Step`, `WorkflowContext`, `TurnResult`, `Conversation` ([diagram](docs/design/workflow_layer/workflow_layer.puml))
 - [LLM layer](docs/design/llm_layer/llm_layer.md) — `LLMClient`, `LLMStep`, schema conversion, tool dispatch ([diagram](docs/design/llm_layer/llm_layer.puml))
 - [CLI](docs/design/cli/cli.md) — argument structure, interactive flow, Rich components, session logging
+- [Eval](docs/design/eval/eval.md) — `nli-eval` CLI, JSONL parsing, metrics, dataset manifest, comparison model
 
 ## Development
 

@@ -98,17 +98,17 @@ immediately so the file is valid even after a crash.
 
 ### Event reference
 
-| event                     | logger               | key fields                                          |
-| ------------------------- | -------------------- | --------------------------------------------------- |
-| `session_start`           | `nli_engine.session` | `workflow`, `protocol_name`                         |
-| `user_turn`               | `nli_engine.session` | `text`                                              |
-| `turn_result`             | `nli_engine.session` | `response`, `protocol`, `done`                      |
-| `step_begin` / `step_end` | `nli_engine.step`    | `step_name`                                         |
-| `llm_call`                | `nli_engine.llm`     | `model`                                             |
-| `llm_request`             | `nli_engine.llm`     | `model`, `messages`, `n_tools`                      |
-| `tool_call`               | `nli_engine.llm`     | `tool_name`, `is_error`                             |
-| `llm_tool_round`          | `nli_engine.llm`     | `tool_calls` (name / arguments / result / is_error) |
-| `llm_text_response`       | `nli_engine.llm`     | `text`                                              |
+| event                     | logger               | key fields                                            |
+| ------------------------- | -------------------- | ----------------------------------------------------- |
+| `session_start`           | `nli_engine.session` | `workflow`, `protocol_name`                           |
+| `user_turn`               | `nli_engine.session` | `text`                                                |
+| `turn_result`             | `nli_engine.session` | `response`, `protocol`, `done`, `logs` (StepLog list) |
+| `step_begin` / `step_end` | `nli_engine.step`    | `step_name`                                           |
+| `llm_call`                | `nli_engine.llm`     | `model`                                               |
+| `llm_request`             | `nli_engine.llm`     | `model`, `messages`, `n_tools`                        |
+| `tool_call`               | `nli_engine.llm`     | `tool_name`, `is_error`                               |
+| `llm_tool_round`          | `nli_engine.llm`     | `tool_calls` (name / arguments / result / is_error)   |
+| `llm_text_response`       | `nli_engine.llm`     | `text`                                                |
 
 Every object also carries a `ts` field (ISO-8601 UTC).
 

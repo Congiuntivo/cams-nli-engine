@@ -1,0 +1,109 @@
+"""Entry point for the nli-eval command-line tool."""
+
+from __future__ import annotations
+
+import argparse
+import dataclasses
+import sys
+from pathlib import Path
+
+from rich.console import Console
+
+from nli_engine.eval.dataset import evaluate_dataset, load_manifest
+from nli_engine.eval.metrics import compute_metrics
+from nli_engine.eval.parser import parse_session
+from nli_engine.eval.report import (
+    print_dataset_report,
+    print_run_report,
+    write_json_report,
+)
+
+
+def main() -> None:
+    """Entry point for the ``nli-eval`` CLI."""
+    parser = _build_parser()
+    args = parser.parse_args()
+
+    if not hasattr(args, "func"):
+        parser.print_help()
+        sys.exit(1)
+
+    # Call the handler function associated with the chosen subcommand, passing the parsed args.
+    args.func(args)
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    root = argparse.ArgumentParser(
+        prog="nli-eval",
+        description="Evaluate NLI engine session logs.",
+    )
+    subs = root.add_subparsers(title="subcommands")
+
+    run_parser = subs.add_parser(
+        "run",
+        help="Evaluate a single JSONL session log.",
+    )
+    run_parser.add_argument(
+        "log", type=Path, metavar="LOG", help="Path to the .jsonl log file."
+    )
+    run_parser.add_argument(
+        "--output",
+        type=Path,
+        metavar="PATH",
+        help="Write metrics as JSON to this file.",
+    )
+    run_parser.set_defaults(func=_cmd_run)
+
+    dataset_parser = subs.add_parser(
+        "dataset",
+        help="Evaluate all cases in a manifest YAML file.",
+    )
+    dataset_parser.add_argument(
+        "manifest",
+        type=Path,
+        metavar="MANIFEST",
+        help="Path to the manifest .yaml file.",
+    )
+    dataset_parser.add_argument(
+        "--output",
+        type=Path,
+        metavar="PATH",
+        help="Write full results as JSON to this file.",
+    )
+    dataset_parser.set_defaults(func=_cmd_dataset)
+
+    return root
+
+
+def _cmd_run(args: argparse.Namespace) -> None:
+    console = Console()
+
+    try:
+        session_log = parse_session(args.log)
+    except (FileNotFoundError, ValueError) as exc:
+        console.print(f"[red]Error:[/red] {exc}")
+        sys.exit(1)
+
+    metrics = compute_metrics(session_log)
+    print_run_report(metrics, console)
+
+    if args.output:
+        write_json_report(dataclasses.asdict(metrics), args.output)
+        console.print(f"[dim]Metrics written to {args.output}[/dim]")
+
+
+def _cmd_dataset(args: argparse.Namespace) -> None:
+    console = Console()
+
+    try:
+        cases = load_manifest(args.manifest)
+    except (FileNotFoundError, ValueError) as exc:
+        console.print(f"[red]Error:[/red] {exc}")
+        sys.exit(1)
+
+    results = evaluate_dataset(cases)
+    print_dataset_report(results, console)
+
+    if args.output:
+        write_json_report([dataclasses.asdict(r) for r in results], args.output)
+        console.print(f"[dim]Results written to {args.output}[/dim]")

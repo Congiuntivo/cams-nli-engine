@@ -25,4 +25,4 @@ CLAUDE.md
 config.yaml
 
 # Logs
-logs.jsonl
+logs/

@@ -161,6 +161,7 @@ class InteractiveCLI:
                 "response": result.message,
                 "protocol": result.protocol,
                 "done": result.done,
+                "logs": [log.model_dump() for log in result.logs],
             },
         )
         return result
