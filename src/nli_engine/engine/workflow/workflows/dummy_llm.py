@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import importlib.resources
 from pathlib import Path
 
 from nli_engine.engine.llm import LLMClient
+from nli_engine.engine.prompts import load_prompt
 from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.workflow.base import Message, Workflow, WorkflowContext
 from nli_engine.engine.workflow.config import WorkflowConfig
@@ -12,8 +12,7 @@ from nli_engine.engine.workflow.steps.llm import LLMStep
 
 
 def _load_prompt(filename: Path) -> str:
-    ref = importlib.resources.files("nli_engine.engine.prompts") / filename
-    return ref.read_text(encoding="utf-8")
+    return load_prompt("nli_engine.engine.prompts", str(filename))
 
 
 class DummyLLMWorkflowContext(WorkflowContext):

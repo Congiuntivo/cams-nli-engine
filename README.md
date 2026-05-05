@@ -87,11 +87,11 @@ Model identifiers follow [LiteLLM's routing conventions](https://docs.litellm.ai
 
 ### Available workflows
 
-| ID             | Description                                                                       |
-| -------------- | --------------------------------------------------------------------------------- |
-| `dummy`        | Deterministic baseline — hard-codes the three setup tool calls; no LLM            |
-| `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously      |
-| `one_shot_llm` | Two-step pipeline: a refiner LLM clarifies the request, an executor LLM builds it |
+| ID             | Description                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `dummy`        | Deterministic baseline — hard-codes the three setup tool calls; no LLM                                              |
+| `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously                                        |
+| `one_shot_llm` | Three-step pipeline: a refiner LLM clarifies the request, a planner LLM creates the plan, an executor LLM builds it |
 
 ## Evaluation
 
