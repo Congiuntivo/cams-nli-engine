@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+from pathlib import Path
 
 from rich.console import Console
 from rich.panel import Panel
@@ -24,6 +25,23 @@ from nli_engine.engine.workflow.result import TurnResult
 _session_log = logging.getLogger("nli_engine.session")
 
 
+def _get_git_commit_hash() -> str:
+    """Return the current Git commit hash, or 'unknown' if it can't be determined."""
+    try:
+        import subprocess
+
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+        return result.stdout.strip()
+    except Exception:
+        return "unknown"
+
+
 class InteractiveCLI:
     """Drives the interactive prompt-response loop for the NLI engine CLI."""
 
@@ -37,13 +55,13 @@ class InteractiveCLI:
             args: Parsed CLI arguments. Relevant fields: ``workflow``, ``server``,
                 ``config``, ``verbose`` (0 = silent, 1 = INFO, 2 = DEBUG),
                 ``name`` (skips the protocol-name prompt), ``prompt``
-                (fires the first turn automatically), and ``log_file``
+                (fires the first turn automatically), and ``log_output``
                 (path to a JSON Lines session log).
         """
         initialize_trace_loggers()
         self._configure_verbosity(args)
-        if args.log_file:
-            configure_file_logging(args.log_file)
+        if args.log_output:
+            configure_file_logging(Path(args.log_output))
         config = (
             WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
         )
@@ -67,8 +85,8 @@ class InteractiveCLI:
             "workflow_config",
             extra={
                 "event": "workflow_config",
-                "models": config.models,
-                "parameters": config.parameters,
+                "config": config.model_dump(),
+                "nli_engine_git_hash": _get_git_commit_hash(),
             },
         )
         session = ProtocolSession(build_client(args.server), name=protocol_name)

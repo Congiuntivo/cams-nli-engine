@@ -10,46 +10,53 @@ def _build_parser() -> argparse.ArgumentParser:
         description="Natural-language interface for authoring CARP study protocols.",
     )
     parser.add_argument(
+        "-m",
         "--mode",
         choices=["interactive", "non-interactive"],
         default="interactive",
         help="Run mode (default: interactive).",
     )
     parser.add_argument(
+        "-w",
         "--workflow",
         metavar="ID",
         default=None,
         help=f"Workflow to run. Available: {', '.join(WORKFLOW_REGISTRY)}.",
     )
     parser.add_argument(
+        "-s",
         "--server",
         metavar="URL",
         default="http://localhost:8080",
         help="Authoring server base URL (default: http://localhost:8080).",
     )
     parser.add_argument(
+        "-c",
         "--config",
         metavar="PATH",
         default=None,
         help="Path to a workflow YAML config file. Uses defaults if omitted.",
     )
     parser.add_argument(
+        "-n",
         "--name",
         metavar="NAME",
         default=None,
         help="Protocol name. Skips the interactive name prompt.",
     )
     parser.add_argument(
+        "-p",
         "--prompt",
         metavar="TEXT",
         default=None,
         help="Initial user prompt sent automatically. Best used with --workflow and --name.",
     )
     parser.add_argument(
-        "--log-file",
+        "-lo",
+        "--log-output",
         metavar="PATH",
         default=None,
-        help="Write a full JSON Lines session log to this file.",
+        help="Write a full JSON Lines session log to this location. Can be also a directory (in which case a timestamped filename will be generated).",
     )
     parser.add_argument(
         "-v",

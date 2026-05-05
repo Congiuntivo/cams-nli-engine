@@ -47,13 +47,19 @@ class FileTraceHandler(logging.Handler):
     the log is readable even if the process crashes mid-session.
     """
 
-    def __init__(self, path: str | Path) -> None:
+    def __init__(self, path: Path) -> None:
         """
         Args:
-            path: Destination file path. Created or overwritten on open.
+            path: Destination path. Can be a filename or a directory. If a directory is provided, a timestamped filename will be generated within it.
         """
         super().__init__(level=logging.DEBUG)
-        self._file = open(path, "w", encoding="utf-8")  # noqa: SIM115
+        if path.is_dir():
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            self._file_path = path / f"logs_{timestamp}.jsonl"
+        else:
+            self._file_path = path
+
+        self._file = open(self._file_path, "w", encoding="utf-8")
 
     def emit(self, record: logging.LogRecord) -> None:
         try:
@@ -80,7 +86,7 @@ class FileTraceHandler(logging.Handler):
             super().close()
 
 
-def configure_file_logging(path: str | Path) -> None:
+def configure_file_logging(path: Path) -> None:
     """Attach a FileTraceHandler to all trace loggers and write a JSON Lines log.
 
     Subscribes to ``nli_engine.session``, ``nli_engine.step``, and
@@ -92,6 +98,9 @@ def configure_file_logging(path: str | Path) -> None:
     Args:
         path: Destination ``.jsonl`` file path. Created or overwritten.
     """
+    if not isinstance(path, Path):
+        raise ValueError(f"Expected a `pathlib.Path` object, got {type(path)}")
+
     handler = FileTraceHandler(path)
     for name in ("nli_engine.session", "nli_engine.step", "nli_engine.llm"):
         logging.getLogger(name).addHandler(handler)
