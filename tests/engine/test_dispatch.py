@@ -62,6 +62,23 @@ def test_call_tool_read_only_tool():
 
 
 # ---------------------------------------------------------------------------
+# Pydantic validation errors (retryable — bad LLM arguments)
+# ---------------------------------------------------------------------------
+
+
+def test_call_tool_validation_error_is_retryable():
+    class _StrictRequest(BaseModel):
+        value: int
+
+    tool = _make_tool(request_model=_StrictRequest)
+    result = call_tool(tool, {"value": "not-an-int"})
+
+    assert result.is_error
+    assert result.retryable
+    assert "validation error" in result.content.lower()
+
+
+# ---------------------------------------------------------------------------
 # Retryable errors (4xx)
 # ---------------------------------------------------------------------------
 

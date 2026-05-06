@@ -4,6 +4,8 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
+from pydantic import ValidationError
+
 from nli_engine.client._generated.authoring_client.exceptions import ApiException
 from nli_engine.engine.tools import BoundTool
 
@@ -84,6 +86,8 @@ def call_tool(tool: BoundTool, arguments: dict) -> ToolResult:
         else:
             raw = tool.call(tool.request_model(**arguments))
         return ToolResult.success(_serialize(raw))
+    except ValidationError as exc:
+        return ToolResult.error(str(exc), retryable=True)
     except ApiException as exc:
         return ToolResult.error(
             _format_api_error(exc),

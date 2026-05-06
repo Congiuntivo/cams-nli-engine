@@ -17,12 +17,12 @@ A protocol always has at least one primary device and may have any number of con
 
 ### Measures
 
-A measure specifies a single type of data to collect. Measure types follow the format `dk.cachet.carp.<type>` (e.g. `dk.cachet.carp.accelerometer`).
+A measure specifies a single type of data to collect. Measure types follow the format `dk.cachet.carp.<type>` (e.g. `dk.cachet.carp.acceleration`).
 
 Two sampling modes:
 
-- **Event-based (EB)**: continuously samples once started; runs until explicitly stopped. Examples: accelerometer, heart rate, steps, screen events.
-- **One-time (OT)**: produces a single value when triggered. Examples: weather data, device info, a location snapshot.
+- **Event-based (EB)**: continuously samples once started; runs until explicitly stopped. Examples: `acceleration`, `polar.hr`, `stepevent`, `screenevent`.
+- **One-time (OT)**: produces a single value when triggered. Examples: `weather`, `deviceinformation`, a `location`.
 
 The mode matters when choosing a trigger.
 

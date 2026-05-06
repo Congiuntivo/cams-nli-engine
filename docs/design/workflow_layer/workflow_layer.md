@@ -12,12 +12,17 @@ The workflow layer sits above the session layer. Its job is to:
 - Return a typed `TurnResult` per turn — carrying the human message, step logs, assembled protocol, and a `done` flag.
 - Record a `StepLog` for every step so callers (CLI, GUI) have structured observability without touching step internals.
 
-```
-User ──▶ Conversation.turn() ──▶ Workflow.run_turn() ──▶ [Step₁, Step₂, …] ──▶ ProtocolSession.tools() ──▶ LLM + Server
-                                         │
-                                  WorkflowContext (flows through every step)
-                                         │
-                                    TurnResult ──▶ CLI / GUI
+```mermaid
+flowchart LR
+    U([User]) --> C["Conversation.turn()"]
+    C --> W["Workflow.run_turn()"]
+    W --> S["Step₁ … Stepₙ"]
+    S --> PS["ProtocolSession.tools()"]
+    PS --> LS["LLM + Server"]
+    W -. "WorkflowContext
+    flows through every step" .-> S
+    W --> TR(["TurnResult"])
+    TR --> UI["CLI / GUI"]
 ```
 
 The workflow itself signals completion via `TurnResult.done`. When `done=True`, the caller must not invoke `run_turn()` again.
@@ -31,10 +36,11 @@ The workflow itself signals completion via `TurnResult.done`. When `done=True`, 
 ```yaml
 # Example workflow.yaml
 models:
-  refinement: claude-haiku-4-5-20251001
-  executor: claude-sonnet-4-6
+  refiner: claude-haiku-4-5-20251001
+  orchestrator: claude-sonnet-4-6
+  specialist: claude-sonnet-4-6
 parameters:
-  max_history_turns: 50
+  api_base: "https://api.openai.com/v1/"
 ```
 
 ### `engine/workflow/log.py`
@@ -139,34 +145,74 @@ Neither the CLI nor the GUI ever touches `Workflow` or `WorkflowContext` directl
 
 See the [LLM layer design](../llm_layer/llm_layer.md) for `LLMClient`, schema conversion, and tool dispatch.
 
+### `engine/workflow/specialist.py`
+
+Provides the three building blocks for the orchestrator/specialist multi-agent pattern.
+
+**`SpecialistContext`** — a concrete, minimal `WorkflowContext` subclass with no extra
+fields. Used to give each specialist an isolated history containing only the delegation
+instruction; the main conversation history is never exposed to a specialist.
+
+**`DelegationRequest`** — a single-field Pydantic model used as the `request_model` for
+every delegation `BoundTool`:
+
+| field         | type  | meaning                                                                                                     |
+| ------------- | ----- | ----------------------------------------------------------------------------------------------------------- |
+| `instruction` | `str` | natural-language instruction from the orchestrator, including all names and parameters the specialist needs |
+
+**`build_specialist_tool(name, description, step, domain_tools) → BoundTool`** — wraps
+an `LLMStep` as a `BoundTool` so the orchestrator can call it via standard tool
+calling. When invoked, it:
+
+1. Creates a fresh `SpecialistContext`.
+2. Appends the `DelegationRequest.instruction` as the single user message.
+3. Runs `step.run(context, domain_tools)`.
+4. Returns the specialist's final text reply as the tool result content.
+
+Because `DelegationRequest` satisfies the `BoundTool.request_model` contract, the
+existing `call_tool()` dispatch and `bound_tool_to_schema()` schema generation work
+without modification. Injecting the returned `BoundTool` into `Workflow._all_tools`
+lets `_resolve_tools()` resolve it for the orchestrator step like any other tool.
+
 ### `engine/workflow/workflows/`
 
-| file           | class              | behaviour                                                                           |
-| -------------- | ------------------ | ----------------------------------------------------------------------------------- |
-| `dummy.py`     | `DummyWorkflow`    | deterministic baseline — hard-codes the three tool calls; no LLM involved           |
-| `dummy_llm.py` | `DummyLLMWorkflow` | LLM-driven version — instructs the model to call the same three tools via `LLMStep` |
+| file              | class                | behaviour                                                                                                              |
+| ----------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `dummy.py`        | `DummyWorkflow`      | deterministic baseline — hard-codes the three tool calls; no LLM involved                                              |
+| `dummy_llm.py`    | `DummyLLMWorkflow`   | LLM-driven version — instructs the model to call the same three tools via `LLMStep`                                    |
+| `one_shot_llm.py` | `OneShotLLMWorkflow` | production workflow — refiner → planner → orchestrator with domain specialists; see [one_shot_llm.md](one_shot_llm.md) |
 
 ## Step hierarchy
 
-```
-Step  (abstract — all step types)
- ├── LLMStep          calls an LLM; has model + prompt_template
- ├── RAGStep          retrieval; subclasses Step directly
- └── …                any other deterministic step
+```mermaid
+flowchart TD
+    S["Step (abstract)"]
+    L["LLMStep
+    calls an LLM · agentic tool-call loop"]
+    R["RAGStep
+    retrieval · subclasses Step directly"]
+    X["… any other deterministic step"]
+    S --> L
+    S --> R
+    S --> X
 ```
 
 ## Tool visibility
 
 Every workflow holds all tools from the session. Each step receives only the subset it declared by name.
 
-```
-session.tools()  →  all BoundTools
-                         │
-              Workflow._all_tools (dict by name)
-                         │
-          ┌──────────────┴──────────────┐
-     Step A                        Step B
-   tool_names=["add_task"]     tool_names=[]   ← no tools
+```mermaid
+flowchart TD
+    SES["session.tools()"]
+    AT["Workflow._all_tools
+    dict keyed by name"]
+    A["Step A
+    tool_names=[add_task]"]
+    B["Step B
+    tool_names=[]"]
+    SES --> AT
+    AT --> A
+    AT --> B
 ```
 
 ## Workflow usage
