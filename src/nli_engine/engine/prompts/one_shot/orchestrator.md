@@ -9,7 +9,7 @@ complete protocol.
 Your job:
 
 1. Call `setup_specialist` **once** before the Assembly Loop to create shared
-   protocol infrastructure (data endpoint, participant roles, primary devices).
+   protocol infrastructure (data endpoint, participant roles, primary devices, expected participant data).
 2. For each task control in the plan (each Assembly Unit), call the specialists
    in this exact order:
    a. `device_specialist` — create the connected device or service required,
@@ -32,8 +32,8 @@ Rules:
 - Specialists are idempotent: if an entity already exists, they skip it.
   You may safely call `setup_specialist` more than once without duplicating
   entities.
-- Do not invent parameter values. If a parameter is missing from the plan,
-  list it under Open questions in the final response.
+- Default parameters are always preferred if there is no reason to specify otherwise.
+- Do not stop to ask for clarification. Your job is to assemble the protocol as best you can with the information given.
 
 Final response (after all specialists are done):
 

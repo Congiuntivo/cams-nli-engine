@@ -45,6 +45,8 @@ SETUP_SPECIALIST_TOOL_NAMES: list[str] = [
     "add_primary_smartphone",
     "add_primary_web_browser",
     "get_primary_devices",
+    "add_expected_data_all_roles",
+    "add_expected_data_for_role",
 ]
 
 DEVICE_SPECIALIST_TOOL_NAMES: list[str] = [

@@ -6,7 +6,14 @@ CAMS (CARP Mobile Sensing) is a framework for building mobile health sensing stu
 
 ### Study Protocol
 
-A `SmartphoneStudyProtocol` is the root container. It holds the full set of devices, tasks, triggers, and task controls that together define a study.
+A `SmartphoneStudyProtocol` is the root container. At the top level it is composed of:
+
+- **Participant roles**: who takes part in the study. Most studies are individual (one participant per deployment), so the protocol usually has a single role (e.g. `"Participant"`).
+- **Expected participant data**: metadata the platform collects about each participant before the study starts — e.g. name, address, informed consent, sex, age. Each entry declares a field name, type, and whether it is required.
+- **Data endpoint**: where the collected data is stored and sent. Specifies the backend (e.g. a CARP server) and connection parameters.
+- **Task controls**: the bindings that wire triggers to tasks on specific devices — these are the core of what a study does.
+
+Within those task controls, the protocol also holds the full set of devices, tasks, and triggers that together define a study.
 
 ### Devices
 
