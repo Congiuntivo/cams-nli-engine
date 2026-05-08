@@ -138,6 +138,7 @@ See [eval design doc](docs/design/eval/eval.md) for the full metric reference an
 - [Session layer](docs/design/session_layer/session_layer.md) — `ProtocolSession`, `ToolSpec`, `BoundTool` ([diagram](docs/design/session_layer/session_layer.puml))
 - [Workflow layer](docs/design/workflow_layer/workflow_layer.md) — `Workflow`, `Step`, `WorkflowContext`, `TurnResult`, `Conversation` ([diagram](docs/design/workflow_layer/workflow_layer.puml))
 - [LLM layer](docs/design/llm_layer/llm_layer.md) — `LLMClient`, `LLMStep`, schema conversion, tool dispatch ([diagram](docs/design/llm_layer/llm_layer.puml))
+- [Retrieval layer](docs/design/retrieval_layer/retrieval_layer.md) — `Retriever`, `Document`, `RetrievedChunk`, `QueryExtractor`, `RetrievalContext`, `RetrievalStep`
 - [CLI](docs/design/cli/cli.md) — argument structure, interactive flow, Rich components, session logging
 - [Eval](docs/design/eval/eval.md) — `nli-eval` CLI, JSONL parsing, metrics, dataset manifest, comparison model
 
