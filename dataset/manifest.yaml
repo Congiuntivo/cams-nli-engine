@@ -1,0 +1,5 @@
+cases:
+  - id: "001_diary_study"
+    prompt: "Record steps with the smartphone. location every hour. At the beginning of the study ask for the full name. Upload the data to the CARP backend."
+    expected: cases/001_expected.json # relative to this file
+    log: ../logs/logs_20260507_124610.jsonl
