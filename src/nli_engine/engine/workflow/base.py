@@ -70,6 +70,15 @@ class WorkflowContext(BaseModel, ABC):
                 "WorkflowContext is abstract and cannot be instantiated directly"
             )
 
+    def context_variables(self) -> dict[str, str]:
+        """Named variables available for system prompt template rendering.
+
+        Returns:
+            Empty dict by default. Override in subclasses to expose context
+            fields as injectable string values for ``{{var: name}}`` tags.
+        """
+        return {}
+
 
 C = TypeVar("C", bound=WorkflowContext)
 

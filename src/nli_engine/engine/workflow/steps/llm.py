@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import time
 from typing import Any
 
@@ -46,10 +47,35 @@ class LLMStep(Step):
         self._system_prompt = system_prompt
         self._max_iterations = max_iterations
 
+    def _render_system_prompt(self, context: WorkflowContext) -> str:
+        """Render ``{{var: name}}`` tags in the system prompt from context variables.
+
+        Args:
+            context: Workflow context whose ``context_variables()`` supplies values.
+
+        Returns:
+            System prompt with all ``{{var: name}}`` tags replaced.
+
+        Raises:
+            ValueError: If the prompt references a variable not returned by the context.
+        """
+        variables = context.context_variables()
+
+        def _replace(match: re.Match) -> str:  # type: ignore[type-arg]
+            name = match.group(1)
+            if name not in variables:
+                raise ValueError(
+                    f"System prompt of step '{self.name}' references "
+                    f"undefined variable '{{{{var: {name}}}}}'."
+                )
+            return variables[name]
+
+        return re.sub(r"\{\{var:\s*(\w+)\s*\}\}", _replace, self._system_prompt)
+
     def _build_messages(self, context: WorkflowContext) -> list[dict[str, Any]]:
-        """Construct the messages list for the LLM, system prompt + conversation history."""
+        """Construct the messages list for the LLM: rendered system prompt + conversation history."""
         messages: list[dict[str, Any]] = [
-            {"role": "system", "content": self._system_prompt}
+            {"role": "system", "content": self._render_system_prompt(context)}
         ]
         messages.extend(m.to_dict() for m in context.history)
         return messages
