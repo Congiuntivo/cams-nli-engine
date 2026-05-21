@@ -47,9 +47,6 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
     - ``models["orchestrator"]``: model for the orchestrator step.
     - ``models["specialist"]``: shared model for all five specialist steps.
 
-    Optional parameters:
-
-    - ``parameters["api_base"]``: non-default provider endpoint (e.g. Ollama).
     """
 
     _SPECIALIST_NAMES = [
@@ -64,17 +61,15 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         """
         Args:
             config: Must contain ``models["refiner"]``, ``models["planner"]``,
-                ``models["orchestrator"]``, and ``models["specialist"]``; may
-                contain ``parameters["api_base"]`` for custom provider endpoints.
+                ``models["orchestrator"]``, and ``models["specialist"]``.
             session: Live authoring session used to bind and dispatch tools.
 
         Raises:
             KeyError: If any required model key is absent from ``config.models``.
         """
         super().__init__(config, session)
-        api_base: str | None = config.parameters.get("api_base")
 
-        refiner_client = LLMClient(model=config.models["refiner"], api_base=api_base)
+        refiner_client = LLMClient(model=config.models["refiner"])
         self._refinement_step = LLMStep(
             name="refiner",
             client=refiner_client,
@@ -82,7 +77,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             max_iterations=config.max_iterations.get("refiner", 3),
         )
 
-        planner_client = LLMClient(model=config.models["planner"], api_base=api_base)
+        planner_client = LLMClient(model=config.models["planner"])
         self._planning_step = LLMStep(
             name="planner",
             client=planner_client,
@@ -90,17 +85,13 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             max_iterations=config.max_iterations.get("planner", 1),
         )
 
-        specialist_client = LLMClient(
-            model=config.models["specialist"], api_base=api_base
-        )
+        specialist_client = LLMClient(model=config.models["specialist"])
         self._specialist_steps = self._build_specialist_steps(specialist_client, config)
 
         for tool in self._specialist_steps:
             self._all_tools[tool.name] = tool
 
-        orchestrator_client = LLMClient(
-            model=config.models["orchestrator"], api_base=api_base
-        )
+        orchestrator_client = LLMClient(model=config.models["orchestrator"])
         self._orchestrator_step = LLMStep(
             name="orchestrator",
             tool_names=self._SPECIALIST_NAMES,

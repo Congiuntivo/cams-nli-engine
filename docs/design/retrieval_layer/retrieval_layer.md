@@ -98,6 +98,65 @@ def extract(self, context: WorkflowContext) -> str: ...
 | --------------- | ---------------- | ------------------------ |
 | `corpus`        | `list[Document]` | documents to search over |
 
+### `engine/retrieval/backends/qdrant.py`
+
+`QdrantRetriever(Retriever)` — production backend backed by a Qdrant vector store. Supports three search strategies selected by `method`:
+
+| `method`   | what happens                                                                                       |
+| ---------- | -------------------------------------------------------------------------------------------------- |
+| `"dense"`  | Single-vector ANN search using dense embeddings (LiteLLM model)                                    |
+| `"sparse"` | Sparse BM25 search using FastEmbed                                                                 |
+| `"hybrid"` | Prefetch candidates from both dense and sparse branches, then fuse with RRF or rerank with ColBERT |
+
+When `method="hybrid"` and `rerank=True`, a ColBERT late-interaction model rescores the prefetched candidates. Set `rerank=False` to use reciprocal-rank fusion (RRF) instead. `rerank=True` is invalid when `method` is not `"hybrid"` and raises a `ValueError` at config-parse time.
+
+**Configuration split:**
+
+| parameter              | source        | notes                                               |
+| ---------------------- | ------------- | --------------------------------------------------- |
+| `QDRANT_URL`           | `.env`        | e.g. `http://localhost:6333` (required)             |
+| `QDRANT_COLLECTION`    | `.env`        | collection name built by the kb pipeline (required) |
+| `FASTEMBED_CACHE_PATH` | `.env`        | path to pre-downloaded FastEmbed models (optional)  |
+| `OPENAI_API_BASE`      | `.env`        | override LiteLLM endpoint when needed (optional)    |
+| `dense_model`          | `config.yaml` | LiteLLM string; must match index-time model         |
+| `sparse_model`         | `config.yaml` | FastEmbed model name; must match index time         |
+| `multi_model`          | `config.yaml` | FastEmbed model name; must match index time         |
+| `method`               | `config.yaml` | `"hybrid"` \| `"dense"` \| `"sparse"`               |
+| `rerank`               | `config.yaml` | ColBERT reranking on top of hybrid prefetch         |
+| `prefetch_limit`       | `config.yaml` | candidates per branch before fusion/reranking       |
+| `top_k`                | `config.yaml` | final number of results returned                    |
+
+**One-time model download:**
+
+FastEmbed models must be downloaded before the first use. Run once per environment:
+
+```bash
+uv run python scripts/download_models.py
+```
+
+Reads `FASTEMBED_CACHE_PATH` from the environment and exits with an error if it is unset.
+
+**Constructing the retriever:**
+
+```python
+from nli_engine.engine.retrieval.backends.qdrant import QdrantRetriever
+
+retriever = QdrantRetriever(
+    dense_model=config.retrieval.dense_model,
+    sparse_model=config.retrieval.sparse_model,
+    multi_model=config.retrieval.multi_model,
+    method=config.retrieval.method,
+    rerank=config.retrieval.rerank,
+    prefetch_limit=config.retrieval.prefetch_limit,
+)
+```
+
+`QDRANT_URL`, `QDRANT_COLLECTION`, and `FASTEMBED_CACHE_PATH` are read from the
+environment automatically. Set `OPENAI_API_BASE` in `.env` to route LiteLLM
+dense-embedding calls to a custom endpoint (e.g. a local Ollama instance).
+
+Pass this retriever to `RetrievalStep` the same way as `KeywordRetriever`; no other wiring changes are required.
+
 ## Integration: `RetrievalStep`
 
 `RetrievalStep` (in `engine/workflow/steps/retrieval.py`) is the `Step` subclass that wires the retrieval domain into a workflow. It calls no LLM and has no declared tools.

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import litellm
 
@@ -42,14 +42,15 @@ class LLMResponse:
 class LLMClient:
     """Provider-agnostic LLM client backed by LiteLLM.
 
+    The provider endpoint is configured via the ``OPENAI_API_BASE`` environment
+    variable, which LiteLLM reads automatically. Set it in ``.env`` when
+    targeting a non-default endpoint (e.g. a local Ollama instance).
+
     Attributes:
         model: LiteLLM model identifier, e.g. ``"ollama/qwen2.5:7b"`` or ``"gpt-4o"``.
-        api_base: Custom API endpoint; None uses the provider default.
-            Required for Ollama (e.g. ``"http://localhost:11434"``).
     """
 
     model: str
-    api_base: str | None = field(default=None)
 
     def complete(self, messages: list[dict], tools: list[dict]) -> LLMResponse:
         """Send a chat completion request and return the parsed response.
@@ -63,8 +64,6 @@ class LLMClient:
             Parsed LLMResponse with text, tool calls, and token counts.
         """
         kwargs: dict = {"model": self.model, "messages": messages}
-        if self.api_base is not None:
-            kwargs["api_base"] = self.api_base
         if tools:
             kwargs["tools"] = tools
 

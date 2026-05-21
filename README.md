@@ -138,7 +138,7 @@ See [eval design doc](docs/design/eval/eval.md) for the full metric reference an
 - [Session layer](docs/design/session_layer/session_layer.md) — `ProtocolSession`, `ToolSpec`, `BoundTool` ([diagram](docs/design/session_layer/session_layer.puml))
 - [Workflow layer](docs/design/workflow_layer/workflow_layer.md) — `Workflow`, `Step`, `WorkflowContext`, `TurnResult`, `Conversation` ([diagram](docs/design/workflow_layer/workflow_layer.puml))
 - [LLM layer](docs/design/llm_layer/llm_layer.md) — `LLMClient`, `LLMStep`, schema conversion, tool dispatch ([diagram](docs/design/llm_layer/llm_layer.puml))
-- [Retrieval layer](docs/design/retrieval_layer/retrieval_layer.md) — `Retriever`, `Document`, `RetrievedChunk`, `QueryExtractor`, `RetrievalContext`, `RetrievalStep`
+- [Retrieval layer](docs/design/retrieval_layer/retrieval_layer.md) — `Retriever`, `Document`, `RetrievedChunk`, `QueryExtractor`, `RetrievalContext`, `RetrievalStep`; backends: `KeywordRetriever` (in-memory), `QdrantRetriever` (hybrid dense+sparse+ColBERT)
 - [CLI](docs/design/cli/cli.md) — argument structure, interactive flow, Rich components, session logging
 - [Eval](docs/design/eval/eval.md) — `nli-eval` CLI, JSONL parsing, metrics, dataset manifest, comparison model
 
@@ -148,3 +148,13 @@ See [eval design doc](docs/design/eval/eval.md) for the full metric reference an
 uv sync --all-extras
 uv run pytest
 ```
+
+### First-time Qdrant setup
+
+Set `FASTEMBED_CACHE_PATH`, `QDRANT_URL`, and `QDRANT_COLLECTION` in `.env`, then download the FastEmbed models once:
+
+```bash
+uv run python scripts/download_models.py
+```
+
+The script exits with an error if `FASTEMBED_CACHE_PATH` is unset. Models are downloaded only on the first run; subsequent calls are instant.

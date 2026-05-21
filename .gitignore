@@ -26,3 +26,6 @@ config.yaml
 
 # Logs
 logs/
+
+# Embedding models
+.models/

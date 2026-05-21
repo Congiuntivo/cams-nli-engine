@@ -23,24 +23,20 @@ class DummyLLMWorkflow(Workflow[DummyLLMWorkflowContext]):
     """LLM-driven workflow that validates tool-calling by instructing the model
     to add a smartphone, CAWS endpoint, and participant role autonomously.
 
-    Reads ``models["planner"]`` from WorkflowConfig and optionally
-    ``parameters["api_base"]`` for non-default provider endpoints (e.g. Ollama).
+    Reads ``models["planner"]`` from WorkflowConfig.
     """
 
     def __init__(self, config: WorkflowConfig, session: ProtocolSession) -> None:
         """
         Args:
-            config: Must contain ``models["planner"]``; may contain
-                ``parameters["api_base"]`` for custom provider endpoints.
+            config: Must contain ``models["planner"]``.
             session: Live authoring session used to bind and dispatch tools.
 
         Raises:
             KeyError: If ``config.models["planner"]`` is not set.
         """
         super().__init__(config, session)
-        model = config.models["planner"]
-        api_base: str | None = config.parameters.get("api_base")
-        client = LLMClient(model=model, api_base=api_base)
+        client = LLMClient(model=config.models["planner"])
         system_prompt = _load_prompt("dummy_llm_setup.md")
         self._step = LLMStep(
             name="dummy_llm_setup",
