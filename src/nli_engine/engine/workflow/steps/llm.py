@@ -9,11 +9,27 @@ from typing import Any
 from nli_engine.engine.llm.client import LLMClient, LLMResponse, ToolCall
 from nli_engine.engine.llm.dispatch import call_tool
 from nli_engine.engine.llm.schema import bound_tool_to_schema
+from nli_engine.engine.retrieval.chunk import RetrievedChunk
+from nli_engine.engine.retrieval.query import LastUserMessageExtractor, QueryExtractor
+from nli_engine.engine.retrieval.retriever import Retriever
 from nli_engine.engine.tools import BoundTool
 from nli_engine.engine.workflow.base import Message, Step, WorkflowContext
 from nli_engine.engine.workflow.log import StepLog
 
 _log = logging.getLogger("nli_engine.llm")
+
+
+def _format_chunks(chunks: list[RetrievedChunk]) -> str:
+    """Format retrieved chunks as a source-annotated block for prompt injection."""
+    return (
+        "<context>"
+        + "\n"
+        + "\n".join(
+            f'<document source="{c.source}">\n{c.content}</document>' for c in chunks
+        )
+        + "\n"
+        + "</context>"
+    )  # Anthropic's recommended format for retrieval-augmented generation.
 
 
 class LLMStep(Step):
@@ -22,6 +38,11 @@ class LLMStep(Step):
     On each ``run()`` call the step sends the conversation history to the LLM,
     dispatches any tool calls, feeds results back, and repeats until the model
     produces a plain text response or ``max_iterations`` is reached.
+
+    When ``retriever`` is provided the step runs retrieval before each LLM call,
+    formats the results, and makes them available as ``{{var: retrieved_context}}``
+    in the system prompt. Retrieval is entirely local to the step — no shared
+    context state is read or written.
     """
 
     def __init__(
@@ -31,6 +52,9 @@ class LLMStep(Step):
         system_prompt: str,
         tool_names: list[str] = [],
         max_iterations: int = 10,
+        retriever: Retriever | None = None,
+        query_extractor: QueryExtractor | None = None,
+        top_k: int = 5,
     ) -> None:
         """
         Args:
@@ -41,17 +65,34 @@ class LLMStep(Step):
             tool_names: Names of the BoundTools this step may call.
             max_iterations: Maximum number of tool-call rounds before aborting
                 with an error message.
+            retriever: Optional retrieval backend. When set, retrieval runs before
+                each LLM call and its output is injected via ``{{var: retrieved_context}}``.
+            query_extractor: Strategy for deriving the retrieval query from context.
+                Defaults to ``LastUserMessageExtractor`` when ``None``.
+            top_k: Maximum number of chunks to retrieve. Ignored when ``retriever``
+                is ``None``.
         """
         super().__init__(name, tool_names)
         self._client = client
         self._system_prompt = system_prompt
         self._max_iterations = max_iterations
+        self._retriever = retriever
+        self._query_extractor: QueryExtractor = (
+            query_extractor
+            if query_extractor is not None
+            else LastUserMessageExtractor()
+        )
+        self._top_k = top_k
 
-    def _render_system_prompt(self, context: WorkflowContext) -> str:
+    def _render_system_prompt(
+        self, context: WorkflowContext, extra_variables: dict[str, str] = {}
+    ) -> str:
         """Render ``{{var: name}}`` tags in the system prompt from context variables.
 
         Args:
             context: Workflow context whose ``context_variables()`` supplies values.
+            extra_variables: Additional variables merged on top of the context's own
+                variables. These take precedence on collision.
 
         Returns:
             System prompt with all ``{{var: name}}`` tags replaced.
@@ -59,9 +100,9 @@ class LLMStep(Step):
         Raises:
             ValueError: If the prompt references a variable not returned by the context.
         """
-        variables = context.context_variables()
+        variables = {**context.context_variables(), **extra_variables}
 
-        def _replace(match: re.Match) -> str:  # type: ignore[type-arg]
+        def _replace(match: re.Match) -> str:
             name = match.group(1)
             if name not in variables:
                 raise ValueError(
@@ -72,10 +113,15 @@ class LLMStep(Step):
 
         return re.sub(r"\{\{var:\s*(\w+)\s*\}\}", _replace, self._system_prompt)
 
-    def _build_messages(self, context: WorkflowContext) -> list[dict[str, Any]]:
+    def _build_messages(
+        self, context: WorkflowContext, extra_variables: dict[str, str] = {}
+    ) -> list[dict[str, Any]]:
         """Construct the messages list for the LLM: rendered system prompt + conversation history."""
         messages: list[dict[str, Any]] = [
-            {"role": "system", "content": self._render_system_prompt(context)}
+            {
+                "role": "system",
+                "content": self._render_system_prompt(context, extra_variables),
+            }
         ]
         messages.extend(m.to_dict() for m in context.history)
         return messages
@@ -216,7 +262,16 @@ class LLMStep(Step):
             token counts across all iterations.
         """
         tool_schemas, tool_map = self._build_tool_context(tools)
-        messages = self._build_messages(context)
+
+        extra_vars: dict[str, str] = {}
+        retrieval_extra: dict[str, Any] = {}
+        if self._retriever is not None:
+            query = self._query_extractor.extract(context)
+            chunks = self._retriever.retrieve(query, self._top_k)
+            extra_vars["retrieved_context"] = _format_chunks(chunks) if chunks else ""
+            retrieval_extra = {"query": query, "n_chunks": len(chunks)}
+
+        messages = self._build_messages(context, extra_vars)
 
         # Iteration variables
         new_messages: list[dict[str, Any]] = []
@@ -252,4 +307,5 @@ class LLMStep(Step):
             input_tokens=total_input,
             output_tokens=total_output,
             latency_ms=(time.monotonic() - start) * 1000,
+            extra=retrieval_extra,
         )
