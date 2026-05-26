@@ -17,7 +17,10 @@ from nli_engine.engine.tools.registries.primary_devices import (
 from nli_engine.engine.tools.registries.requirements_and_serialization import (
     REQUIREMENTS_AND_SERIALIZATION_READ_ONLY_TOOLS,
 )
-from nli_engine.engine.tools.registries.services import SERVICES_TOOLS
+from nli_engine.engine.tools.registries.services import (
+    SERVICES_READ_ONLY_TOOLS,
+    SERVICES_TOOLS,
+)
 from nli_engine.engine.tools.registries.task_controls import (
     TASK_CONTROLS_MUTATION_TOOLS,
     TASK_CONTROLS_READ_ONLY_TOOLS,
@@ -87,6 +90,7 @@ TASK_CONTROL_ASSEMBLER_TOOL_NAMES: list[str] = [
     "get_tasks",
     "get_primary_devices",
     "get_connected_devices",
+    "get_services",
 ]
 
 TOOL_REGISTRY: list[ToolSpec] = [
@@ -113,6 +117,7 @@ TOOL_REGISTRY: list[ToolSpec] = [
     *REQUIREMENTS_AND_SERIALIZATION_READ_ONLY_TOOLS,
     *PRIMARY_DEVICES_READ_ONLY_TOOLS,
     *DEVICES_READ_ONLY_TOOLS,
+    *SERVICES_READ_ONLY_TOOLS,
     *PARTICIPANT_ROLES_READ_ONLY_TOOLS,
     *TASKS_READ_ONLY_TOOLS,
     *TRIGGERS_READ_ONLY_TOOLS,

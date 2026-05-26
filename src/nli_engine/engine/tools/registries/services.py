@@ -7,6 +7,15 @@ from nli_engine.client._generated.authoring_client import (
 )
 from nli_engine.engine.tools.spec import ToolSpec
 
+SERVICES_READ_ONLY_TOOLS: list[ToolSpec] = [
+    ToolSpec(
+        name="get_services",
+        api_class=ServicesApi,
+        method="get_service_roles",
+        description="Return all service device roles added so far (LocationService, WeatherService, AirQualityService, HealthService).",
+    ),
+]
+
 SERVICES_TOOLS: list[ToolSpec] = [
     ToolSpec(
         name="add_air_quality_service",

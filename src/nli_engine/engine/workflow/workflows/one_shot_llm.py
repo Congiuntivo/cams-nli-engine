@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from nli_engine.engine.llm import LLMClient
 from nli_engine.engine.prompts import load_prompt
+from nli_engine.engine.retrieval.backends.qdrant import QdrantRetriever
+from nli_engine.engine.retrieval.retriever import Retriever
 from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.tools import BoundTool
 from nli_engine.engine.tools.registry import (
@@ -69,6 +71,18 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         """
         super().__init__(config, session)
 
+        self._retriever: Retriever | None = None
+        if config.retrieval is not None:
+            rc = config.retrieval
+            self._retriever = QdrantRetriever(
+                dense_model=rc.dense_model,
+                sparse_model=rc.sparse_model,
+                multi_model=rc.multi_model,
+                method=rc.method,
+                rerank=rc.rerank,
+                prefetch_limit=rc.prefetch_limit,
+            )
+
         refiner_client = LLMClient(model=config.models["refiner"])
         self._refinement_step = LLMStep(
             name="refiner",
@@ -86,7 +100,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         )
 
         specialist_client = LLMClient(model=config.models["specialist"])
-        self._specialist_steps = self._build_specialist_steps(specialist_client, config)
+        self._specialist_steps = self._build_specialist_steps(
+            specialist_client, config, self._retriever
+        )
 
         for tool in self._specialist_steps:
             self._all_tools[tool.name] = tool
@@ -118,7 +134,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         return [self._all_tools[n] for n in names]
 
     def _build_specialist_steps(
-        self, client: LLMClient, config: WorkflowConfig
+        self, client: LLMClient, config: WorkflowConfig, retriever: Retriever | None
     ) -> list[BoundTool]:
         """Construct all five specialist delegation tools.
 
@@ -128,6 +144,8 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         Args:
             client: Shared LLMClient for all specialist steps.
             config: WorkflowConfig for per-specialist max_iterations overrides.
+            retriever: Optional retrieval backend passed to each specialist step.
+                When ``None``, specialists run without retrieval.
 
         Returns:
             List of five BoundTools (delegation tools) in the canonical order:
@@ -140,30 +158,35 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             client=client,
             system_prompt=_load_specialist_prompt("setup.md"),
             max_iterations=max_iter.get("setup_specialist", 5),
+            retriever=retriever,
         )
         device_step = LLMStep(
             name="device_specialist",
             client=client,
             system_prompt=_load_specialist_prompt("device.md"),
             max_iterations=max_iter.get("device_specialist", 5),
+            retriever=retriever,
         )
         trigger_step = LLMStep(
             name="trigger_specialist",
             client=client,
             system_prompt=_load_specialist_prompt("trigger.md"),
             max_iterations=max_iter.get("trigger_specialist", 5),
+            retriever=retriever,
         )
         task_step = LLMStep(
             name="task_specialist",
             client=client,
             system_prompt=_load_specialist_prompt("task.md"),
             max_iterations=max_iter.get("task_specialist", 5),
+            retriever=retriever,
         )
         task_control_step = LLMStep(
             name="task_control_assembler",
             client=client,
             system_prompt=_load_specialist_prompt("task_control.md"),
             max_iterations=max_iter.get("task_control_assembler", 5),
+            retriever=retriever,
         )
 
         return [

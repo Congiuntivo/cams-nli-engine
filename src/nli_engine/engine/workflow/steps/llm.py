@@ -263,7 +263,7 @@ class LLMStep(Step):
         """
         tool_schemas, tool_map = self._build_tool_context(tools)
 
-        extra_vars: dict[str, str] = {}
+        extra_vars: dict[str, str] = {"retrieved_context": ""}
         retrieval_extra: dict[str, Any] = {}
         if self._retriever is not None:
             query = self._query_extractor.extract(context)
