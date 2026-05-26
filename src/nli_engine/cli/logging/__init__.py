@@ -5,6 +5,10 @@ import logging
 from nli_engine.cli.logging.console import TraceHandler, configure_verbose_logging
 from nli_engine.cli.logging.file import FileTraceHandler, configure_file_logging
 
+# Suppress botocore-absent WARNINGs emitted at LiteLLM import time.
+# Fixed upstream in LiteLLM 1.87: https://github.com/BerriAI/litellm/issues/28175
+logging.getLogger("LiteLLM").setLevel(logging.ERROR)
+
 _TRACE_LOGGERS: tuple[str, ...] = (
     "nli_engine.session",
     "nli_engine.step",
