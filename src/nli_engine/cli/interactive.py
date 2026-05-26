@@ -65,6 +65,12 @@ class InteractiveCLI:
         config = (
             WorkflowConfig.from_yaml(args.config) if args.config else WorkflowConfig()
         )
+        if args.stop_after:
+            config = config.model_copy(
+                update={
+                    "parameters": {**config.parameters, "stop_after": args.stop_after}
+                }
+            )
 
         try:
             spec = self._select_workflow(args.workflow)

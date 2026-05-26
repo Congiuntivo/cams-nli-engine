@@ -260,12 +260,17 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         context.history.append(Message(role="user", content=user_input))
 
         logs = []
+        stop_after = self.config.parameters.get("stop_after")
 
-        _, log = self._refinement_step.run(context)
+        refiner_text, log = self._refinement_step.run(context)
         logs.append(log)
+        if stop_after == "refiner":
+            return TurnResult(message=refiner_text, logs=logs, done=True)
 
-        _, log = self._planning_step.run(context)
+        planner_text, log = self._planning_step.run(context)
         logs.append(log)
+        if stop_after == "planner":
+            return TurnResult(message=planner_text, logs=logs, done=True)
 
         text, log = self._orchestrator_step.run(
             context,

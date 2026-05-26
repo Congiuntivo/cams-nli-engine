@@ -52,6 +52,13 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Initial user prompt sent automatically. Best used with --workflow and --name.",
     )
     parser.add_argument(
+        "--stop-after",
+        metavar="STEP",
+        choices=["refiner", "planner", "orchestrator"],
+        default=None,
+        help="Stop after this step and return its output (for debugging). One of: refiner, planner, orchestrator.",
+    )
+    parser.add_argument(
         "-lo",
         "--log-output",
         metavar="PATH",
