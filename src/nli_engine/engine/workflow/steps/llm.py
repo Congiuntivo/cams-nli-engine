@@ -270,6 +270,10 @@ class LLMStep(Step):
             chunks = self._retriever.retrieve(query, self._top_k)
             extra_vars["retrieved_context"] = _format_chunks(chunks) if chunks else ""
             retrieval_extra = {"query": query, "n_chunks": len(chunks)}
+        elif "{{var: retrieved_context}}" in self._system_prompt:
+            _log.warning(
+                "System prompt references {{var: retrieved_context}} but no retriever was provided. The variable will be empty."
+            )
 
         messages = self._build_messages(context, extra_vars)
 
