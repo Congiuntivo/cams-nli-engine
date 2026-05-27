@@ -33,10 +33,25 @@ logs.jsonl ──▶ parser.py ──▶ SessionLog ──▶ metrics.py ──�
 
 ```
 nli-eval run     <LOG>      [--output PATH]
-nli-eval dataset <MANIFEST> [--output PATH]
+nli-eval dataset <MANIFEST> [--output PATH] [--last-from LOGS_DIR]
 ```
 
 `--output` writes full results as JSON; omitting it prints only the Rich table.
+
+`--last-from LOGS_DIR` substitutes each case's `log` path in memory (the
+manifest file is not modified) with the most recently modified `.jsonl` file in
+`LOGS_DIR` whose first `user_turn` text matches the case's `prompt` exactly.
+This lets you evaluate a fresh batch of engine runs without touching the
+manifest:
+
+```bash
+uv run nli-engine --workflow one_shot_llm --name s1 \
+  --prompt "record steps with smartphone" --log-file logs/run1.jsonl
+uv run nli-eval dataset dataset/manifest.yaml --last-from logs/
+```
+
+Cases with no matching log emit a warning and fall back to the path recorded in
+the manifest.
 
 ## JSONL parsing
 

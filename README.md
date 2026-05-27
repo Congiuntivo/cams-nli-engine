@@ -131,6 +131,14 @@ uv run nli-eval dataset dataset/manifest.yaml
 uv run nli-eval dataset dataset/manifest.yaml --output results.json
 ```
 
+Use `--last-from` to evaluate fresh engine runs without editing the manifest —
+it replaces each case's log path in memory with the most recent file in the
+given directory whose prompt matches:
+
+```bash
+uv run nli-eval dataset dataset/manifest.yaml --last-from logs/
+```
+
 See [eval design doc](docs/design/eval/eval.md) for the full metric reference and comparison model.
 
 ## Design docs

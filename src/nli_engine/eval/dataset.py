@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import json
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+log = logging.getLogger(__name__)
 
 import yaml
 
@@ -129,6 +132,79 @@ def _evaluate_case(
         case_id=case.id,
         metrics=metrics,
         protocol_score=protocol_score,
+    )
+
+
+def resolve_last_from(cases: list[DatasetCase], logs_dir: Path) -> list[DatasetCase]:
+    """Replace each case's log path with the most recent matching log in *logs_dir*.
+
+    Scans all ``*.jsonl`` files under *logs_dir*, reads the first ``user_turn``
+    event from each to extract the prompt text, and builds a map from prompt to
+    the most recently modified matching file (by ``mtime``).  Each
+    :class:`DatasetCase` whose prompt has a match gets a new ``log_path``; cases
+    with no match keep their original path and emit a warning.
+
+    Args:
+        cases: Cases as returned by :func:`load_manifest`.
+        logs_dir: Directory to scan for ``.jsonl`` log files.
+
+    Returns:
+        A new list of :class:`DatasetCase` with ``log_path`` substituted where
+        a match was found.
+
+    Raises:
+        FileNotFoundError: If *logs_dir* does not exist.
+    """
+    if not logs_dir.exists():
+        raise FileNotFoundError(f"Logs directory not found: {logs_dir}")
+
+    # Build prompt → most-recent-path map.
+    best: dict[str, tuple[float, Path]] = {}
+    for log_file in logs_dir.glob("*.jsonl"):
+        prompt = _extract_prompt(log_file)
+        if prompt is None:
+            continue
+        mtime = log_file.stat().st_mtime
+        if prompt not in best or mtime > best[prompt][0]:
+            best[prompt] = (mtime, log_file)
+
+    resolved = []
+    for case in cases:
+        if case.prompt in best:
+            resolved.append(
+                dataclass_replace(case, log_path=best[case.prompt][1].resolve())
+            )
+        else:
+            log.warning(
+                "No log found for case %r — keeping original log path.", case.id
+            )
+            resolved.append(case)
+    return resolved
+
+
+def _extract_prompt(path: Path) -> str | None:
+    """Return the first user_turn text from a JSONL log, or None if absent."""
+    with path.open() as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if event.get("event") == "user_turn":
+                return event.get("text")
+    return None
+
+
+def dataclass_replace(case: DatasetCase, **changes: Any) -> DatasetCase:
+    """Return a copy of *case* with the given field values replaced."""
+    return DatasetCase(
+        id=changes.get("id", case.id),
+        prompt=changes.get("prompt", case.prompt),
+        expected_path=changes.get("expected_path", case.expected_path),
+        log_path=changes.get("log_path", case.log_path),
     )
 
 

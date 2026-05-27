@@ -9,7 +9,7 @@ from pathlib import Path
 
 from rich.console import Console
 
-from nli_engine.eval.dataset import evaluate_dataset, load_manifest
+from nli_engine.eval.dataset import evaluate_dataset, load_manifest, resolve_last_from
 from nli_engine.eval.metrics import compute_metrics
 from nli_engine.eval.parser import parse_session
 from nli_engine.eval.report import (
@@ -70,6 +70,17 @@ def _build_parser() -> argparse.ArgumentParser:
         metavar="PATH",
         help="Write full results as JSON to this file.",
     )
+    dataset_parser.add_argument(
+        "--last-from",
+        type=Path,
+        metavar="LOGS_DIR",
+        dest="last_from",
+        help=(
+            "Directory of .jsonl log files. For each manifest case, substitute "
+            "the log path with the most recent file in this directory whose "
+            "user prompt matches."
+        ),
+    )
     dataset_parser.set_defaults(func=_cmd_dataset)
 
     return root
@@ -97,6 +108,8 @@ def _cmd_dataset(args: argparse.Namespace) -> None:
 
     try:
         cases = load_manifest(args.manifest)
+        if args.last_from:
+            cases = resolve_last_from(cases, args.last_from)
     except (FileNotFoundError, ValueError) as exc:
         console.print(f"[red]Error:[/red] {exc}")
         sys.exit(1)
