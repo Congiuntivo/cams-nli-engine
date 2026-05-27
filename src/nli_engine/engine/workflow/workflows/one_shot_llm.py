@@ -89,6 +89,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             client=refiner_client,
             system_prompt=_load_prompt("refiner.md"),
             max_iterations=config.max_iterations.get("refiner", 3),
+            retriever=self._retriever,
         )
 
         planner_client = LLMClient(model=config.models["planner"])
@@ -97,6 +98,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             client=planner_client,
             system_prompt=_load_prompt("planner.md"),
             max_iterations=config.max_iterations.get("planner", 1),
+            retriever=self._retriever,
         )
 
         specialist_client = LLMClient(model=config.models["specialist"])
@@ -114,6 +116,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             client=orchestrator_client,
             system_prompt=_load_prompt("orchestrator.md"),
             max_iterations=config.max_iterations.get("orchestrator", 20),
+            retriever=self._retriever,
         )
 
     def _tools_for_names(self, names: list[str]) -> list[BoundTool]:
