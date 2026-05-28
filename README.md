@@ -157,6 +157,17 @@ uv sync --all-extras
 uv run pytest
 ```
 
+### Regenerate the API client
+
+The generated client under `src/nli_engine/client/_generated/` is produced from
+`openapi/openapi.yaml`. Regenerate it after changing the spec (requires Java):
+
+```bash
+bash openapi/generate_client.sh
+```
+
+The generated code is committed to the repo so CI and fresh clones work without Java.
+
 ### First-time Qdrant setup
 
 Set `FASTEMBED_CACHE_PATH`, `QDRANT_URL`, and `QDRANT_COLLECTION` in `.env`, then download the FastEmbed models once:
