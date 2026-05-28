@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import dataclasses
+import json
 import sys
 from pathlib import Path
 
@@ -83,6 +84,18 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     dataset_parser.set_defaults(func=_cmd_dataset)
 
+    extract_parser = subs.add_parser(
+        "extract",
+        help="Extract the final protocol from a JSONL session log.",
+    )
+    extract_parser.add_argument(
+        "log", type=Path, metavar="LOG", help="Path to the .jsonl log file."
+    )
+    extract_parser.add_argument(
+        "output", type=Path, metavar="OUTPUT", help="Path to write the protocol JSON."
+    )
+    extract_parser.set_defaults(func=_cmd_extract)
+
     return root
 
 
@@ -120,3 +133,22 @@ def _cmd_dataset(args: argparse.Namespace) -> None:
     if args.output:
         write_json_report([dataclasses.asdict(r) for r in results], args.output)
         console.print(f"[dim]Results written to {args.output}[/dim]")
+
+
+def _cmd_extract(args: argparse.Namespace) -> None:
+    console = Console()
+
+    try:
+        session_log = parse_session(args.log)
+    except (FileNotFoundError, ValueError) as exc:
+        console.print(f"[red]Error:[/red] {exc}")
+        sys.exit(1)
+
+    turns_with_protocol = [t for t in session_log.turns if t.protocol is not None]
+    if not turns_with_protocol:
+        console.print("[red]Error:[/red] No protocol found in session log.")
+        sys.exit(1)
+
+    protocol = turns_with_protocol[-1].protocol
+    args.output.write_text(json.dumps(protocol, indent=2))
+    console.print(f"[dim]Protocol written to {args.output}[/dim]")

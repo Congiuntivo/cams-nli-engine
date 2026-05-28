@@ -139,6 +139,15 @@ given directory whose prompt matches:
 uv run nli-eval dataset dataset/manifest.yaml --last-from logs/
 ```
 
+### Extract the final protocol from a log
+
+```bash
+uv run nli-eval extract run.jsonl protocol.json
+```
+
+Writes the protocol from the last completed turn to `protocol.json`. Useful for
+inspecting what the engine actually produced or seeding a new expected-output file.
+
 See [eval design doc](docs/design/eval/eval.md) for the full metric reference and comparison model.
 
 ## Design docs

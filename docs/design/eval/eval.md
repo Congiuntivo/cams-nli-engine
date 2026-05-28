@@ -27,16 +27,21 @@ logs.jsonl ──▶ parser.py ──▶ SessionLog ──▶ metrics.py ──�
 | `comparison.py` | `compare_protocols(actual, expected)` → `ProtocolScore`                      |
 | `dataset.py`    | Manifest loading (`load_manifest`) and batch evaluation (`evaluate_dataset`) |
 | `report.py`     | Rich table rendering and `write_json_report`                                 |
-| `cli.py`        | `nli-eval` entry point: `run` and `dataset` subcommands                      |
+| `cli.py`        | `nli-eval` entry point: `run`, `dataset`, and `extract` subcommands          |
 
 ## CLI
 
 ```
 nli-eval run     <LOG>      [--output PATH]
 nli-eval dataset <MANIFEST> [--output PATH] [--last-from LOGS_DIR]
+nli-eval extract <LOG>      <OUTPUT>
 ```
 
-`--output` writes full results as JSON; omitting it prints only the Rich table.
+`--output` (on `run` / `dataset`) writes full results as JSON; omitting it prints only the Rich table.
+
+`extract` writes the final protocol from the log as pretty-printed JSON to `OUTPUT`. It picks the
+last turn that contains a non-null protocol, so a failed final turn does not discard an earlier
+successful one. Exits with an error if no protocol is found.
 
 `--last-from LOGS_DIR` substitutes each case's `log` path in memory (the
 manifest file is not modified) with the most recently modified `.jsonl` file in
