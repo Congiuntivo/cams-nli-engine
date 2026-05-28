@@ -43,7 +43,7 @@ def test_build_client_returns_api_client():
 
 
 def test_registry_length():
-    assert len(TOOL_REGISTRY) == 33
+    assert len(TOOL_REGISTRY) == 43
 
 
 def test_registry_entries_are_well_formed():

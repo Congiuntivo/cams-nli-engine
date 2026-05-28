@@ -71,6 +71,16 @@ TRIGGER_SPECIALIST_TOOL_NAMES: list[str] = [
     "add_cron_trigger",
     "add_manual_trigger",
     "add_no_op_trigger",
+    "add_date_time_trigger",
+    "add_elapsed_time_trigger",
+    "add_no_user_task_trigger",
+    "add_one_time_trigger",
+    "add_passive_trigger",
+    "add_random_recurrent_trigger",
+    "add_recurrent_scheduled_trigger",
+    "add_sampling_event_trigger",
+    "add_scheduled_trigger",
+    "add_user_task_trigger",
     "get_triggers",
 ]
 
