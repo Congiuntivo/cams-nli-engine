@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Name       | Type       | Description | Notes |
-| ---------- | ---------- | ----------- | ----- |
-| **name**   | **str**    |             |
-| **device** | **object** |             |
+| Name       | Type                  | Description | Notes |
+| ---------- | --------------------- | ----------- | ----- |
+| **name**   | **str**               |             |
+| **device** | **Dict[str, object]** |             |
 
 ## Example
 

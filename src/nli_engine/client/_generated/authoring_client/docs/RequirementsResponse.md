@@ -2,9 +2,9 @@
 
 ## Properties
 
-| Name                         | Type       | Description | Notes |
-| ---------------------------- | ---------- | ----------- | ----- |
-| **unfulfilled_requirements** | **object** |             |
+| Name                         | Type                  | Description | Notes |
+| ---------------------------- | --------------------- | ----------- | ----- |
+| **unfulfilled_requirements** | **Dict[str, object]** |             |
 
 ## Example
 

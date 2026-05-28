@@ -9,18 +9,18 @@ All URIs are relative to _http://localhost:8080_
 
 # **add_participant_role**
 
-> DataEndpointResponse add_participant_role(session_id, add_participant_role_request)
+> SessionMutationResponse add_participant_role(session_id, add_participant_role_request)
 
 Add a participant role to the protocol in the session
 
-Adds a participant role. Protocol must already be started with POST /protocol/new.
+Adds a participant role to the session protocol. roleName must be non-empty and unique within the protocol. isOptional defaults to false if omitted, meaning the role is required to be filled for the study to run.
 
 ### Example
 
 ```python
 import nli_engine.client._generated.authoring_client
 from nli_engine.client._generated.authoring_client.models.add_participant_role_request import AddParticipantRoleRequest
-from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
 from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
@@ -35,7 +35,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.ParticipantRolesApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     add_participant_role_request = {"roleName":"Patient","isOptional":false} # AddParticipantRoleRequest | Participant role configuration payload.
 
     try:
@@ -49,14 +49,14 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                             | Type                                                          | Description                                | Notes |
-| -------------------------------- | ------------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                   | **str**                                                       | Session id returned by POST /protocol/new. |
-| **add_participant_role_request** | [**AddParticipantRoleRequest**](AddParticipantRoleRequest.md) | Participant role configuration payload.    |
+| Name                             | Type                                                          | Description                                    | Notes |
+| -------------------------------- | ------------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                   | **str**                                                       | Session identifier returned by POST /sessions. |
+| **add_participant_role_request** | [**AddParticipantRoleRequest**](AddParticipantRoleRequest.md) | Participant role configuration payload.        |
 
 ### Return type
 
-[**DataEndpointResponse**](DataEndpointResponse.md)
+[**SessionMutationResponse**](SessionMutationResponse.md)
 
 ### Authorization
 
@@ -71,9 +71,10 @@ No authorization required
 
 | Status code | Description                     | Response headers |
 | ----------- | ------------------------------- | ---------------- |
-| **200**     | Participant role added          | -                |
+| **201**     | Participant role added          | -                |
 | **400**     | Missing or invalid request body | -                |
-| **404**     | Session id not found            | -                |
+| **404**     | Session id not found.           | -                |
+| **0**       | Unexpected server error.        | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -83,7 +84,7 @@ No authorization required
 
 Get participant role names from the session protocol
 
-Returns participant role names currently configured in the session protocol.
+Returns participant role names currently configured in the session protocol. Returns only the role names, not full role objects.
 
 ### Example
 
@@ -104,7 +105,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.ParticipantRolesApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
 
     try:
         # Get participant role names from the session protocol
@@ -117,9 +118,9 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name           | Type    | Description                                | Notes |
-| -------------- | ------- | ------------------------------------------ | ----- |
-| **session_id** | **str** | Session id returned by POST /protocol/new. |
+| Name           | Type    | Description                                    | Notes |
+| -------------- | ------- | ---------------------------------------------- | ----- |
+| **session_id** | **str** | Session identifier returned by POST /sessions. |
 
 ### Return type
 
@@ -140,6 +141,7 @@ No authorization required
 | ----------- | ------------------------------------------ | ---------------- |
 | **200**     | Participant role names returned            | -                |
 | **400**     | Missing session id or protocol not started | -                |
-| **404**     | Session id not found                       | -                |
+| **404**     | Session id not found.                      | -                |
+| **0**       | Unexpected server error.                   | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

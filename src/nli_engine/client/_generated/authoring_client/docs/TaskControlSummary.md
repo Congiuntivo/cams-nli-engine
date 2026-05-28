@@ -2,12 +2,12 @@
 
 ## Properties
 
-| Name              | Type       | Description | Notes |
-| ----------------- | ---------- | ----------- | ----- |
-| **task_control**  | **object** |             |
-| **trigger**       | **object** |             |
-| **task**          | **object** |             |
-| **target_device** | **object** |             |
+| Name              | Type                  | Description | Notes |
+| ----------------- | --------------------- | ----------- | ----- |
+| **task_control**  | **Dict[str, object]** |             |
+| **trigger**       | **Dict[str, object]** |             |
+| **task**          | **Dict[str, object]** |             |
+| **target_device** | **Dict[str, object]** |             |
 
 ## Example
 

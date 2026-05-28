@@ -10,18 +10,18 @@ All URIs are relative to _http://localhost:8080_
 
 # **add_smartphone_primary_device**
 
-> RequirementsResponse add_smartphone_primary_device(session_id, primary_device_role_request)
+> SessionMutationResponse add_smartphone_primary_device(session_id, primary_device_role_request)
 
 Add a smartphone primary device to the session protocol
 
-Adds a smartphone as a primary device in the session protocol.
+Adds a Smartphone as the primary device in the session protocol. A primary device must be added before tasks and triggers can be added. roleName defaults to "Smartphone" if omitted. Adding a primary device fulfills the critical requirement for at least one primary device.
 
 ### Example
 
 ```python
 import nli_engine.client._generated.authoring_client
 from nli_engine.client._generated.authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
-from nli_engine.client._generated.authoring_client.models.requirements_response import RequirementsResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
 from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
@@ -36,7 +36,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.PrimaryDevicesApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     primary_device_role_request = {"roleName":"User Phone"} # PrimaryDeviceRoleRequest | Optional role name for the primary smartphone.
 
     try:
@@ -52,12 +52,12 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 | Name                            | Type                                                        | Description                                    | Notes |
 | ------------------------------- | ----------------------------------------------------------- | ---------------------------------------------- | ----- |
-| **session_id**                  | **str**                                                     | Session id returned by POST /protocol/new.     |
+| **session_id**                  | **str**                                                     | Session identifier returned by POST /sessions. |
 | **primary_device_role_request** | [**PrimaryDeviceRoleRequest**](PrimaryDeviceRoleRequest.md) | Optional role name for the primary smartphone. |
 
 ### Return type
 
-[**RequirementsResponse**](RequirementsResponse.md)
+[**SessionMutationResponse**](SessionMutationResponse.md)
 
 ### Authorization
 
@@ -72,26 +72,27 @@ No authorization required
 
 | Status code | Description                                                        | Response headers |
 | ----------- | ------------------------------------------------------------------ | ---------------- |
-| **200**     | Primary device added                                               | -                |
+| **201**     | Primary device added                                               | -                |
 | **400**     | Missing session id, invalid payload, or incompatible protocol type | -                |
-| **404**     | Session id not found                                               | -                |
+| **404**     | Session id not found.                                              | -                |
+| **0**       | Unexpected server error.                                           | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **add_web_browser_primary_device**
 
-> RequirementsResponse add_web_browser_primary_device(session_id, primary_device_role_request)
+> SessionMutationResponse add_web_browser_primary_device(session_id, primary_device_role_request)
 
 Add a web browser primary device to the session protocol
 
-Adds a web browser as a primary device in the session protocol.
+Adds a WebBrowser as the primary device in the session protocol. A primary device must be added before tasks and triggers can be added. roleName defaults to "Web Browser" if omitted. Adding a primary device fulfills the critical requirement for at least one primary device.
 
 ### Example
 
 ```python
 import nli_engine.client._generated.authoring_client
 from nli_engine.client._generated.authoring_client.models.primary_device_role_request import PrimaryDeviceRoleRequest
-from nli_engine.client._generated.authoring_client.models.requirements_response import RequirementsResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
 from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
@@ -106,7 +107,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.PrimaryDevicesApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     primary_device_role_request = {"roleName":"Participant Browser"} # PrimaryDeviceRoleRequest | Optional role name for the primary web browser.
 
     try:
@@ -122,12 +123,12 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 | Name                            | Type                                                        | Description                                     | Notes |
 | ------------------------------- | ----------------------------------------------------------- | ----------------------------------------------- | ----- |
-| **session_id**                  | **str**                                                     | Session id returned by POST /protocol/new.      |
+| **session_id**                  | **str**                                                     | Session identifier returned by POST /sessions.  |
 | **primary_device_role_request** | [**PrimaryDeviceRoleRequest**](PrimaryDeviceRoleRequest.md) | Optional role name for the primary web browser. |
 
 ### Return type
 
-[**RequirementsResponse**](RequirementsResponse.md)
+[**SessionMutationResponse**](SessionMutationResponse.md)
 
 ### Authorization
 
@@ -142,9 +143,10 @@ No authorization required
 
 | Status code | Description                                                        | Response headers |
 | ----------- | ------------------------------------------------------------------ | ---------------- |
-| **200**     | Primary device added                                               | -                |
+| **201**     | Primary device added                                               | -                |
 | **400**     | Missing session id, invalid payload, or incompatible protocol type | -                |
-| **404**     | Session id not found                                               | -                |
+| **404**     | Session id not found.                                              | -                |
+| **0**       | Unexpected server error.                                           | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -154,7 +156,7 @@ No authorization required
 
 Get primary devices from the session protocol
 
-Returns primary devices currently configured in the session protocol, including role name and serialized device payload.
+Returns primary devices currently configured in the session protocol, including role name and serialized device payload. Each device object contains a \_\_type discriminator identifying the concrete CARP device type.
 
 ### Example
 
@@ -175,7 +177,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.PrimaryDevicesApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
 
     try:
         # Get primary devices from the session protocol
@@ -188,9 +190,9 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name           | Type    | Description                                | Notes |
-| -------------- | ------- | ------------------------------------------ | ----- |
-| **session_id** | **str** | Session id returned by POST /protocol/new. |
+| Name           | Type    | Description                                    | Notes |
+| -------------- | ------- | ---------------------------------------------- | ----- |
+| **session_id** | **str** | Session identifier returned by POST /sessions. |
 
 ### Return type
 
@@ -211,6 +213,7 @@ No authorization required
 | ----------- | ------------------------ | ---------------- |
 | **200**     | Primary devices returned | -                |
 | **400**     | Missing session id       | -                |
-| **404**     | Session id not found     | -                |
+| **404**     | Session id not found.    | -                |
+| **0**       | Unexpected server error. | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

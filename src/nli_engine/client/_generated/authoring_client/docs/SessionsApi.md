@@ -2,9 +2,9 @@
 
 All URIs are relative to _http://localhost:8080_
 
-| Method                                                                | HTTP request           | Description                             |
-| --------------------------------------------------------------------- | ---------------------- | --------------------------------------- |
-| [**create_protocol_session**](SessionsApi.md#create_protocol_session) | **POST** /protocol/new | Create a new protocol authoring session |
+| Method                                                                | HTTP request       | Description                             |
+| --------------------------------------------------------------------- | ------------------ | --------------------------------------- |
+| [**create_protocol_session**](SessionsApi.md#create_protocol_session) | **POST** /sessions | Create a new protocol authoring session |
 
 # **create_protocol_session**
 
@@ -12,7 +12,7 @@ All URIs are relative to _http://localhost:8080_
 
 Create a new protocol authoring session
 
-Creates an in-memory authoring session and returns a sessionId for subsequent requests.
+Creates an in-memory authoring session and returns a sessionId for all subsequent requests. Sessions are not persisted — restarting the server destroys all sessions. name is required; all other fields are optional and customize the resulting protocol metadata. The sessionId returned here must be included in the path of every subsequent call.
 
 ### Example
 
@@ -69,5 +69,6 @@ No authorization required
 | Status code | Description                   | Response headers |
 | ----------- | ----------------------------- | ---------------- |
 | **201**     | New authoring session created | -                |
+| **0**       | Unexpected server error.      | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

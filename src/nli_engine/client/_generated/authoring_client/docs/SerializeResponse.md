@@ -8,7 +8,7 @@
 | **owner_id**          | **str**          |             |
 | **version**           | **int**          |             |
 | **id**                | **str**          |             | [optional] |
-| **created_on**        | **str**          |             | [optional] |
+| **created_on**        | **datetime**     |             | [optional] |
 | **description**       | **str**          |             | [optional] |
 | **participant_roles** | **List[object]** |             | [optional] |
 | **primary_devices**   | **List[object]** |             | [optional] |

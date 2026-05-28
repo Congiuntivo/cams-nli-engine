@@ -13,7 +13,7 @@ All URIs are relative to _http://localhost:8080_
 
 Get current unfulfilled requirements for the session
 
-Returns the current unfulfilled requirements for the session.
+Returns the current unfulfilled requirements for the session. Each requirement has a name and a severity — critical requirements block serialization; warnings do not. Call this endpoint at any point to check what still needs to be configured before GET /sessions/{id}/serialize will succeed.
 
 ### Example
 
@@ -34,7 +34,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.RequirementsAndSerializationApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
 
     try:
         # Get current unfulfilled requirements for the session
@@ -47,9 +47,9 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name           | Type    | Description                                | Notes |
-| -------------- | ------- | ------------------------------------------ | ----- |
-| **session_id** | **str** | Session id returned by POST /protocol/new. |
+| Name           | Type    | Description                                    | Notes |
+| -------------- | ------- | ---------------------------------------------- | ----- |
+| **session_id** | **str** | Session identifier returned by POST /sessions. |
 
 ### Return type
 
@@ -70,7 +70,8 @@ No authorization required
 | ----------- | ------------------------------------------------ | ---------------- |
 | **200**     | Current unfulfilled requirements for the session | -                |
 | **400**     | Missing session id                               | -                |
-| **404**     | Session id not found                             | -                |
+| **404**     | Session id not found.                            | -                |
+| **0**       | Unexpected server error.                         | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -80,7 +81,7 @@ No authorization required
 
 Return the serialized protocol for the session
 
-Returns the serialized protocol for the session.
+Finalizes the session and returns the full serialized CARP SmartphoneStudyProtocol as JSON. Returns 409 if any critical requirements remain unmet — use GET /sessions/{id}/requirements to check first. The response contains the full protocol graph including all devices, tasks, triggers, and task controls. Calling serialize does not destroy the session; further mutations are still possible afterward.
 
 ### Example
 
@@ -101,7 +102,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.RequirementsAndSerializationApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
 
     try:
         # Return the serialized protocol for the session
@@ -114,9 +115,9 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name           | Type    | Description                                | Notes |
-| -------------- | ------- | ------------------------------------------ | ----- |
-| **session_id** | **str** | Session id returned by POST /protocol/new. |
+| Name           | Type    | Description                                    | Notes |
+| -------------- | ------- | ---------------------------------------------- | ----- |
+| **session_id** | **str** | Session identifier returned by POST /sessions. |
 
 ### Return type
 
@@ -138,6 +139,7 @@ No authorization required
 | **200**     | Serialized protocol for the session                                     | -                |
 | **400**     | Missing session id                                                      | -                |
 | **409**     | Protocol cannot be serialized until critical requirements are fulfilled | -                |
-| **404**     | Session id not found                                                    | -                |
+| **404**     | Session id not found.                                                   | -                |
+| **0**       | Unexpected server error.                                                | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

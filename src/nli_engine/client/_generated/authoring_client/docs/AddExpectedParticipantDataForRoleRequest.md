@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Name          | Type    | Description | Notes |
-| ------------- | ------- | ----------- | ----- |
-| **role_name** | **str** |             |
-| **data_type** | **str** |             |
+| Name          | Type                                              | Description | Notes |
+| ------------- | ------------------------------------------------- | ----------- | ----- |
+| **role_name** | **str**                                           |             |
+| **data_type** | [**ParticipantDataType**](ParticipantDataType.md) |             |
 
 ## Example
 

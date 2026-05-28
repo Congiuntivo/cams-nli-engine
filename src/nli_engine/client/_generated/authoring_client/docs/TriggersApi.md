@@ -28,7 +28,7 @@ All URIs are relative to _http://localhost:8080_
 
 Add a cron scheduled trigger to the session protocol
 
-Adds a cron scheduled trigger using optional cron fields. Null fields match all values.
+Adds a cron-based scheduled trigger. triggerName must be unique within the protocol. The individual cron fields (minute, hour, dayOfMonth, month, dayOfWeek) are all optional; an omitted field matches all values. Returns 400 if any field is out of range or triggerName is a duplicate.
 
 ### Example
 
@@ -50,7 +50,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     cron_scheduled_trigger_request = {"triggerName":"daily_evening_prompt","minute":30,"hour":19} # CronScheduledTriggerRequest | Cron scheduled trigger payload.
 
     try:
@@ -64,10 +64,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                               | Type                                                              | Description                                | Notes |
-| ---------------------------------- | ----------------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                     | **str**                                                           | Session id returned by POST /protocol/new. |
-| **cron_scheduled_trigger_request** | [**CronScheduledTriggerRequest**](CronScheduledTriggerRequest.md) | Cron scheduled trigger payload.            |
+| Name                               | Type                                                              | Description                                    | Notes |
+| ---------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                     | **str**                                                           | Session identifier returned by POST /sessions. |
+| **cron_scheduled_trigger_request** | [**CronScheduledTriggerRequest**](CronScheduledTriggerRequest.md) | Cron scheduled trigger payload.                |
 
 ### Return type
 
@@ -86,9 +86,10 @@ No authorization required
 
 | Status code | Description                                                | Response headers |
 | ----------- | ---------------------------------------------------------- | ---------------- |
-| **200**     | Cron scheduled trigger added                               | -                |
+| **201**     | Cron scheduled trigger added                               | -                |
 | **400**     | Invalid request payload, cron field range, or trigger name | -                |
-| **404**     | Session id not found                                       | -                |
+| **404**     | Session id not found.                                      | -                |
+| **0**       | Unexpected server error.                                   | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -98,7 +99,7 @@ No authorization required
 
 Add a date-time trigger to the session protocol
 
-Adds a trigger that fires once at the specified ISO-8601 date-time.
+Adds a trigger that fires once at the specified date and time. triggerName must be unique within the protocol. schedule must be a valid ISO 8601 date-time string. Returns 400 if the format is invalid or triggerName is a duplicate.
 
 ### Example
 
@@ -120,7 +121,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     date_time_trigger_request = {"triggerName":"enrollment_follow_up","schedule":"2026-10-01T09:30:00Z"} # DateTimeTriggerRequest | Date-time trigger payload.
 
     try:
@@ -134,10 +135,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                          | Type                                                    | Description                                | Notes |
-| ----------------------------- | ------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                | **str**                                                 | Session id returned by POST /protocol/new. |
-| **date_time_trigger_request** | [**DateTimeTriggerRequest**](DateTimeTriggerRequest.md) | Date-time trigger payload.                 |
+| Name                          | Type                                                    | Description                                    | Notes |
+| ----------------------------- | ------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                | **str**                                                 | Session identifier returned by POST /sessions. |
+| **date_time_trigger_request** | [**DateTimeTriggerRequest**](DateTimeTriggerRequest.md) | Date-time trigger payload.                     |
 
 ### Return type
 
@@ -156,9 +157,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Date-time trigger added                           | -                |
+| **201**     | Date-time trigger added                           | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -168,7 +170,7 @@ No authorization required
 
 Add a delayed trigger to the session protocol
 
-Adds a trigger that fires after a delay from sensing start.
+Adds a trigger that fires after a fixed delay from when sensing starts. triggerName must be unique within the protocol. delay is specified as a DurationRequest object with optional days, hours, minutes, seconds, milliseconds, and microseconds fields. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -190,7 +192,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     delayed_trigger_request = {"triggerName":"delayed_prompt","delay":{"minutes":15}} # DelayedTriggerRequest | Delayed trigger payload.
 
     try:
@@ -204,10 +206,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                        | Type                                                  | Description                                | Notes |
-| --------------------------- | ----------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**              | **str**                                               | Session id returned by POST /protocol/new. |
-| **delayed_trigger_request** | [**DelayedTriggerRequest**](DelayedTriggerRequest.md) | Delayed trigger payload.                   |
+| Name                        | Type                                                  | Description                                    | Notes |
+| --------------------------- | ----------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**              | **str**                                               | Session identifier returned by POST /sessions. |
+| **delayed_trigger_request** | [**DelayedTriggerRequest**](DelayedTriggerRequest.md) | Delayed trigger payload.                       |
 
 ### Return type
 
@@ -226,9 +228,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Delayed trigger added                             | -                |
+| **201**     | Delayed trigger added                             | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -238,7 +241,7 @@ No authorization required
 
 Add an elapsed-time trigger to the session protocol
 
-Adds a trigger that fires when elapsed time from sensing start is reached.
+Adds a trigger that fires when elapsed time from sensing start reaches the specified duration. triggerName must be unique within the protocol. elapsedTime is specified as a DurationRequest object. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -260,7 +263,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     elapsed_time_trigger_request = {"triggerName":"elapsed_30_minutes","elapsedTime":{"minutes":30}} # ElapsedTimeTriggerRequest | Elapsed-time trigger payload.
 
     try:
@@ -274,10 +277,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                             | Type                                                          | Description                                | Notes |
-| -------------------------------- | ------------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                   | **str**                                                       | Session id returned by POST /protocol/new. |
-| **elapsed_time_trigger_request** | [**ElapsedTimeTriggerRequest**](ElapsedTimeTriggerRequest.md) | Elapsed-time trigger payload.              |
+| Name                             | Type                                                          | Description                                    | Notes |
+| -------------------------------- | ------------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                   | **str**                                                       | Session identifier returned by POST /sessions. |
+| **elapsed_time_trigger_request** | [**ElapsedTimeTriggerRequest**](ElapsedTimeTriggerRequest.md) | Elapsed-time trigger payload.                  |
 
 ### Return type
 
@@ -296,9 +299,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Elapsed-time trigger added                        | -                |
+| **201**     | Elapsed-time trigger added                        | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -308,7 +312,7 @@ No authorization required
 
 Add an immediate trigger to the session protocol
 
-Adds a trigger that fires immediately when sensing starts.
+Adds a trigger that fires immediately when sensing starts. triggerName must be unique within the protocol. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -330,7 +334,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     immediate_trigger_request = {"triggerName":"start_now"} # ImmediateTriggerRequest | Immediate trigger payload.
 
     try:
@@ -344,10 +348,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                          | Type                                                      | Description                                | Notes |
-| ----------------------------- | --------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                | **str**                                                   | Session id returned by POST /protocol/new. |
-| **immediate_trigger_request** | [**ImmediateTriggerRequest**](ImmediateTriggerRequest.md) | Immediate trigger payload.                 |
+| Name                          | Type                                                      | Description                                    | Notes |
+| ----------------------------- | --------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                | **str**                                                   | Session identifier returned by POST /sessions. |
+| **immediate_trigger_request** | [**ImmediateTriggerRequest**](ImmediateTriggerRequest.md) | Immediate trigger payload.                     |
 
 ### Return type
 
@@ -366,9 +370,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Immediate trigger added                           | -                |
+| **201**     | Immediate trigger added                           | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -378,7 +383,7 @@ No authorization required
 
 Add a manual trigger to the session protocol
 
-Adds a manual trigger with optional label and description.
+Adds a trigger that is fired manually by the participant or researcher. triggerName must be unique within the protocol. label and description are shown to the participant in the app. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -400,7 +405,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     manual_trigger_request = {"triggerName":"manual_daily_prompt","label":"Daily prompt","description":"Shown manually by the participant."} # ManualTriggerRequest | Manual trigger payload.
 
     try:
@@ -414,10 +419,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                       | Type                                                | Description                                | Notes |
-| -------------------------- | --------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**             | **str**                                             | Session id returned by POST /protocol/new. |
-| **manual_trigger_request** | [**ManualTriggerRequest**](ManualTriggerRequest.md) | Manual trigger payload.                    |
+| Name                       | Type                                                | Description                                    | Notes |
+| -------------------------- | --------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**             | **str**                                             | Session identifier returned by POST /sessions. |
+| **manual_trigger_request** | [**ManualTriggerRequest**](ManualTriggerRequest.md) | Manual trigger payload.                        |
 
 ### Return type
 
@@ -436,9 +441,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Manual trigger added                              | -                |
+| **201**     | Manual trigger added                              | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -448,7 +454,7 @@ No authorization required
 
 Add a no-op trigger to the session protocol
 
-Adds a trigger that starts immediately and never stops.
+Adds a no-op trigger that starts immediately and never stops. Used to model tasks that run continuously from the moment sensing starts. triggerName must be unique within the protocol. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -470,7 +476,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     no_op_trigger_request = {"triggerName":"always_on"} # NoOpTriggerRequest | No-op trigger payload.
 
     try:
@@ -484,10 +490,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                      | Type                                            | Description                                | Notes |
-| ------------------------- | ----------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**            | **str**                                         | Session id returned by POST /protocol/new. |
-| **no_op_trigger_request** | [**NoOpTriggerRequest**](NoOpTriggerRequest.md) | No-op trigger payload.                     |
+| Name                      | Type                                            | Description                                    | Notes |
+| ------------------------- | ----------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**            | **str**                                         | Session identifier returned by POST /sessions. |
+| **no_op_trigger_request** | [**NoOpTriggerRequest**](NoOpTriggerRequest.md) | No-op trigger payload.                         |
 
 ### Return type
 
@@ -506,9 +512,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | No-op trigger added                               | -                |
+| **201**     | No-op trigger added                               | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -518,7 +525,7 @@ No authorization required
 
 Add a no-user-task trigger to the session protocol
 
-Adds a trigger that fires when the specified task is not on the task list.
+Adds a trigger that fires when the specified user task is absent from the task list. triggerName must be unique within the protocol. taskName references the task that must be absent. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -540,7 +547,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     no_user_task_trigger_request = {"triggerName":"ensure_survey_task","taskName":"daily_survey"} # NoUserTaskTriggerRequest | No-user-task trigger payload.
 
     try:
@@ -554,10 +561,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                             | Type                                                        | Description                                | Notes |
-| -------------------------------- | ----------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                   | **str**                                                     | Session id returned by POST /protocol/new. |
-| **no_user_task_trigger_request** | [**NoUserTaskTriggerRequest**](NoUserTaskTriggerRequest.md) | No-user-task trigger payload.              |
+| Name                             | Type                                                        | Description                                    | Notes |
+| -------------------------------- | ----------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                   | **str**                                                     | Session identifier returned by POST /sessions. |
+| **no_user_task_trigger_request** | [**NoUserTaskTriggerRequest**](NoUserTaskTriggerRequest.md) | No-user-task trigger payload.                  |
 
 ### Return type
 
@@ -576,9 +583,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | No-user-task trigger added                        | -                |
+| **201**     | No-user-task trigger added                        | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -588,7 +596,7 @@ No authorization required
 
 Add a one-time trigger to the session protocol
 
-Adds a trigger that can only be fired once during deployment.
+Adds a trigger that fires exactly once during the entire study deployment. triggerName must be unique within the protocol. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -610,7 +618,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     one_time_trigger_request = {"triggerName":"show_demographics_once"} # OneTimeTriggerRequest | One-time trigger payload.
 
     try:
@@ -624,10 +632,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                         | Type                                                  | Description                                | Notes |
-| ---------------------------- | ----------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**               | **str**                                               | Session id returned by POST /protocol/new. |
-| **one_time_trigger_request** | [**OneTimeTriggerRequest**](OneTimeTriggerRequest.md) | One-time trigger payload.                  |
+| Name                         | Type                                                  | Description                                    | Notes |
+| ---------------------------- | ----------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**               | **str**                                               | Session identifier returned by POST /sessions. |
+| **one_time_trigger_request** | [**OneTimeTriggerRequest**](OneTimeTriggerRequest.md) | One-time trigger payload.                      |
 
 ### Return type
 
@@ -646,9 +654,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | One-time trigger added                            | -                |
+| **201**     | One-time trigger added                            | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -658,7 +667,7 @@ No authorization required
 
 Add a passive trigger to the session protocol
 
-Adds a trigger that fires only when manually triggered from code.
+Adds a passive trigger that fires only when explicitly triggered from application code — no automatic scheduling. triggerName must be unique within the protocol. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -680,7 +689,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     passive_trigger_request = {"triggerName":"manual_code_trigger"} # PassiveTriggerRequest | Passive trigger payload.
 
     try:
@@ -694,10 +703,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                        | Type                                                  | Description                                | Notes |
-| --------------------------- | ----------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**              | **str**                                               | Session id returned by POST /protocol/new. |
-| **passive_trigger_request** | [**PassiveTriggerRequest**](PassiveTriggerRequest.md) | Passive trigger payload.                   |
+| Name                        | Type                                                  | Description                                    | Notes |
+| --------------------------- | ----------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**              | **str**                                               | Session identifier returned by POST /sessions. |
+| **passive_trigger_request** | [**PassiveTriggerRequest**](PassiveTriggerRequest.md) | Passive trigger payload.                       |
 
 ### Return type
 
@@ -716,9 +725,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Passive trigger added                             | -                |
+| **201**     | Passive trigger added                             | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -728,7 +738,7 @@ No authorization required
 
 Add a periodic trigger to the session protocol
 
-Adds a trigger that repeats with a fixed period.
+Adds a trigger that fires repeatedly at a fixed interval. triggerName must be unique within the protocol. period is specified as a DurationRequest object and must be greater than zero. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -750,7 +760,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     periodic_trigger_request = {"triggerName":"periodic_prompt","period":{"minutes":20}} # PeriodicTriggerRequest | Periodic trigger payload.
 
     try:
@@ -764,10 +774,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                         | Type                                                    | Description                                | Notes |
-| ---------------------------- | ------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**               | **str**                                                 | Session id returned by POST /protocol/new. |
-| **periodic_trigger_request** | [**PeriodicTriggerRequest**](PeriodicTriggerRequest.md) | Periodic trigger payload.                  |
+| Name                         | Type                                                    | Description                                    | Notes |
+| ---------------------------- | ------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**               | **str**                                                 | Session identifier returned by POST /sessions. |
+| **periodic_trigger_request** | [**PeriodicTriggerRequest**](PeriodicTriggerRequest.md) | Periodic trigger payload.                      |
 
 ### Return type
 
@@ -786,9 +796,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Periodic trigger added                            | -                |
+| **201**     | Periodic trigger added                            | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -798,7 +809,7 @@ No authorization required
 
 Add a random recurrent trigger to the session protocol
 
-Adds a random recurrent trigger with time window and trigger count bounds.
+Adds a trigger that fires at random times within a daily time window. triggerName must be unique within the protocol. minNumberOfTriggers and maxNumberOfTriggers bound how many times the trigger may fire each day. startTime and endTime define the daily window as clock time objects with hour and minute fields. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -820,7 +831,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     random_recurrent_trigger_request = {"triggerName":"random_daily_prompts","minNumberOfTriggers":3,"maxNumberOfTriggers":8,"startTime":{"hour":8,"minute":0},"endTime":{"hour":20,"minute":0}} # RandomRecurrentTriggerRequest | Random recurrent trigger payload.
 
     try:
@@ -834,10 +845,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                                 | Type                                                                  | Description                                | Notes |
-| ------------------------------------ | --------------------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                       | **str**                                                               | Session id returned by POST /protocol/new. |
-| **random_recurrent_trigger_request** | [**RandomRecurrentTriggerRequest**](RandomRecurrentTriggerRequest.md) | Random recurrent trigger payload.          |
+| Name                                 | Type                                                                  | Description                                    | Notes |
+| ------------------------------------ | --------------------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                       | **str**                                                               | Session identifier returned by POST /sessions. |
+| **random_recurrent_trigger_request** | [**RandomRecurrentTriggerRequest**](RandomRecurrentTriggerRequest.md) | Random recurrent trigger payload.              |
 
 ### Return type
 
@@ -856,9 +867,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Random recurrent trigger added                    | -                |
+| **201**     | Random recurrent trigger added                    | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -868,7 +880,7 @@ No authorization required
 
 Add a recurrent scheduled trigger to the session protocol
 
-Adds a recurrent scheduled trigger with daily, weekly, or monthly recurrence.
+Adds a trigger that fires at a fixed clock time on a recurring schedule. triggerName must be unique within the protocol. type selects the recurrence (daily, weekly, monthly). For weekly recurrence dayOfWeek is required (1=Monday); for monthly recurrence dayOfMonth is required. time specifies the clock time with hour and minute fields. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -890,7 +902,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     recurrent_scheduled_trigger_request = {"triggerName":"weekday_checkin","type":"weekly","time":{"hour":9,"minute":30},"dayOfWeek":1} # RecurrentScheduledTriggerRequest | Recurrent scheduled trigger payload.
 
     try:
@@ -904,10 +916,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                                    | Type                                                                        | Description                                | Notes |
-| --------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                          | **str**                                                                     | Session id returned by POST /protocol/new. |
-| **recurrent_scheduled_trigger_request** | [**RecurrentScheduledTriggerRequest**](RecurrentScheduledTriggerRequest.md) | Recurrent scheduled trigger payload.       |
+| Name                                    | Type                                                                        | Description                                    | Notes |
+| --------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                          | **str**                                                                     | Session identifier returned by POST /sessions. |
+| **recurrent_scheduled_trigger_request** | [**RecurrentScheduledTriggerRequest**](RecurrentScheduledTriggerRequest.md) | Recurrent scheduled trigger payload.           |
 
 ### Return type
 
@@ -926,9 +938,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Recurrent scheduled trigger added                 | -                |
+| **201**     | Recurrent scheduled trigger added                 | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -938,7 +951,7 @@ No authorization required
 
 Add a sampling-event trigger to the session protocol
 
-Adds a trigger that fires when data of a specific measure type is sampled. Optional triggerCondition must be a serialized CARP Data object containing a \_\_type field and any matching data fields.
+Adds a trigger that fires when data of a specific measure type is sampled and optionally matches a condition. triggerName must be unique within the protocol. measureType is the CARP data type URI whose measurements are evaluated. triggerCondition is an optional serialized CARP Data object (including \_\_type); when provided, only measurements matching its fields fire the trigger. Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -960,7 +973,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     sampling_event_trigger_request = {"triggerName":"after_completed_task","measureType":"dk.cachet.carp.completed_task","triggerCondition":{"__type":"dk.cachet.carp.common.application.data.completedtask"}} # SamplingEventTriggerRequest | Sampling-event trigger payload. triggerCondition is optional and should follow serialized CARP Data format.
 
     try:
@@ -976,7 +989,7 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 | Name                               | Type                                                              | Description                                                                                                 | Notes |
 | ---------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----- |
-| **session_id**                     | **str**                                                           | Session id returned by POST /protocol/new.                                                                  |
+| **session_id**                     | **str**                                                           | Session identifier returned by POST /sessions.                                                              |
 | **sampling_event_trigger_request** | [**SamplingEventTriggerRequest**](SamplingEventTriggerRequest.md) | Sampling-event trigger payload. triggerCondition is optional and should follow serialized CARP Data format. |
 
 ### Return type
@@ -996,9 +1009,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Sampling-event trigger added                      | -                |
+| **201**     | Sampling-event trigger added                      | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -1008,7 +1022,7 @@ No authorization required
 
 Add a scheduled trigger to the session protocol
 
-Adds a scheduled trigger with a recurrence rule based on RFC-5545 concepts.
+Adds a trigger with a time and a full recurrence rule based on RFC 5545 concepts. triggerName must be unique within the protocol. time specifies the clock time (hour, minute, optional second). recurrenceRule selects the frequency (daily, weekly, monthly, yearly), the interval, and the end condition (never, count, or elapsed time). Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -1030,7 +1044,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     scheduled_trigger_request = {"triggerName":"daily_checkin","time":{"hour":9,"minute":0},"recurrenceRule":{"frequency":"daily","interval":1,"end":{"type":"never"}}} # ScheduledTriggerRequest | Scheduled trigger payload.
 
     try:
@@ -1044,10 +1058,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                          | Type                                                      | Description                                | Notes |
-| ----------------------------- | --------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                | **str**                                                   | Session id returned by POST /protocol/new. |
-| **scheduled_trigger_request** | [**ScheduledTriggerRequest**](ScheduledTriggerRequest.md) | Scheduled trigger payload.                 |
+| Name                          | Type                                                      | Description                                    | Notes |
+| ----------------------------- | --------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                | **str**                                                   | Session identifier returned by POST /sessions. |
+| **scheduled_trigger_request** | [**ScheduledTriggerRequest**](ScheduledTriggerRequest.md) | Scheduled trigger payload.                     |
 
 ### Return type
 
@@ -1066,9 +1080,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | Scheduled trigger added                           | -                |
+| **201**     | Scheduled trigger added                           | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -1078,7 +1093,7 @@ No authorization required
 
 Add a user-task trigger to the session protocol
 
-Adds a trigger that fires when a named user task reaches the specified state.
+Adds a trigger that fires when a named user task reaches the specified state. triggerName must be unique within the protocol. taskName identifies the user task to watch; triggerCondition specifies the required state (e.g. done, expired, discarded). Returns 400 if triggerName is a duplicate.
 
 ### Example
 
@@ -1100,7 +1115,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     user_task_trigger_request = {"triggerName":"survey_completion_trigger","taskName":"daily_survey","triggerCondition":"done"} # UserTaskTriggerRequest | User-task trigger payload.
 
     try:
@@ -1114,10 +1129,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                          | Type                                                    | Description                                | Notes |
-| ----------------------------- | ------------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**                | **str**                                                 | Session id returned by POST /protocol/new. |
-| **user_task_trigger_request** | [**UserTaskTriggerRequest**](UserTaskTriggerRequest.md) | User-task trigger payload.                 |
+| Name                          | Type                                                    | Description                                    | Notes |
+| ----------------------------- | ------------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**                | **str**                                                 | Session identifier returned by POST /sessions. |
+| **user_task_trigger_request** | [**UserTaskTriggerRequest**](UserTaskTriggerRequest.md) | User-task trigger payload.                     |
 
 ### Return type
 
@@ -1136,9 +1151,10 @@ No authorization required
 
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
-| **200**     | User-task trigger added                           | -                |
+| **201**     | User-task trigger added                           | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found                              | -                |
+| **404**     | Session id not found.                             | -                |
+| **0**       | Unexpected server error.                          | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -1148,7 +1164,7 @@ No authorization required
 
 Get configured triggers from the session protocol
 
-Returns configured trigger ids and serialized trigger configurations currently in the session protocol.
+Returns trigger summaries currently configured in the session protocol. Each summary includes the full serialized trigger object, which contains a \_\_type discriminator identifying the concrete CARP trigger type.
 
 ### Example
 
@@ -1169,7 +1185,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
 
     try:
         # Get configured triggers from the session protocol
@@ -1182,9 +1198,9 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name           | Type    | Description                                | Notes |
-| -------------- | ------- | ------------------------------------------ | ----- |
-| **session_id** | **str** | Session id returned by POST /protocol/new. |
+| Name           | Type    | Description                                    | Notes |
+| -------------- | ------- | ---------------------------------------------- | ----- |
+| **session_id** | **str** | Session identifier returned by POST /sessions. |
 
 ### Return type
 
@@ -1205,6 +1221,7 @@ No authorization required
 | ----------- | -------------------------- | ---------------- |
 | **200**     | Trigger summaries returned | -                |
 | **400**     | Missing session id         | -                |
-| **404**     | Session id not found       | -                |
+| **404**     | Session id not found.      | -                |
+| **0**       | Unexpected server error.   | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

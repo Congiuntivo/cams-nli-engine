@@ -13,7 +13,7 @@ All URIs are relative to _http://localhost:8080_
 
 Add a task control to the session protocol
 
-Adds a task control that binds a trigger, task, and destination device role in the session protocol.
+Binds a trigger, task, and target device role into a task control entry in the session protocol. taskName must match an existing task; triggerName must match an existing trigger; deviceRoleName must match an existing primary or connected device role. Returns 400 if any reference cannot be resolved.
 
 ### Example
 
@@ -35,7 +35,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TaskControlsApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     task_control_request = {"taskName":"daily_survey","triggerName":"start_now","deviceRoleName":"User Phone"} # TaskControlRequest | Task control payload.
 
     try:
@@ -49,10 +49,10 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                     | Type                                            | Description                                | Notes |
-| ------------------------ | ----------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**           | **str**                                         | Session id returned by POST /protocol/new. |
-| **task_control_request** | [**TaskControlRequest**](TaskControlRequest.md) | Task control payload.                      |
+| Name                     | Type                                            | Description                                    | Notes |
+| ------------------------ | ----------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**           | **str**                                         | Session identifier returned by POST /sessions. |
+| **task_control_request** | [**TaskControlRequest**](TaskControlRequest.md) | Task control payload.                          |
 
 ### Return type
 
@@ -71,9 +71,10 @@ No authorization required
 
 | Status code | Description                                                               | Response headers |
 | ----------- | ------------------------------------------------------------------------- | ---------------- |
-| **200**     | Task control added                                                        | -                |
+| **201**     | Task control added                                                        | -                |
 | **400**     | Invalid request payload or unresolved task/trigger/device role references | -                |
-| **404**     | Session id not found                                                      | -                |
+| **404**     | Session id not found.                                                     | -                |
+| **0**       | Unexpected server error.                                                  | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -83,7 +84,7 @@ No authorization required
 
 Get task controls from the session protocol
 
-Returns configured task controls currently in the session protocol, including taskControl, trigger, task, and targetDevice payloads for each entry.
+Returns configured task controls currently in the session protocol, including taskControl, trigger, task, and targetDevice payloads for each entry. Each object contains a \_\_type discriminator identifying the concrete CARP type.
 
 ### Example
 
@@ -104,7 +105,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.TaskControlsApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
 
     try:
         # Get task controls from the session protocol
@@ -117,9 +118,9 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name           | Type    | Description                                | Notes |
-| -------------- | ------- | ------------------------------------------ | ----- |
-| **session_id** | **str** | Session id returned by POST /protocol/new. |
+| Name           | Type    | Description                                    | Notes |
+| -------------- | ------- | ---------------------------------------------- | ----- |
+| **session_id** | **str** | Session identifier returned by POST /sessions. |
 
 ### Return type
 
@@ -140,6 +141,7 @@ No authorization required
 | ----------- | -------------------------------------- | ---------------- |
 | **200**     | Expanded task control entries returned | -                |
 | **400**     | Missing session id                     | -                |
-| **404**     | Session id not found                   | -                |
+| **404**     | Session id not found.                  | -                |
+| **0**       | Unexpected server error.               | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

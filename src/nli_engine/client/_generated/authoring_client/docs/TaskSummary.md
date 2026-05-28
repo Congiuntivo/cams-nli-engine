@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Name               | Type       | Description | Notes |
-| ------------------ | ---------- | ----------- | ----- |
-| **name**           | **str**    |             |
-| **serialized_obj** | **object** |             |
+| Name               | Type                  | Description | Notes |
+| ------------------ | --------------------- | ----------- | ----- |
+| **name**           | **str**               |             |
+| **serialized_obj** | **Dict[str, object]** |             |
 
 ## Example
 

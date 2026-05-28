@@ -2,24 +2,24 @@
 
 All URIs are relative to _http://localhost:8080_
 
-| Method                                                        | HTTP request                                 | Description                                      |
-| ------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------ |
-| [**add_data_endpoint**](DataEndpointApi.md#add_data_endpoint) | **POST** /sessions/{sessionId}/data-endpoint | Add a data endpoint to a protocol in the session |
+| Method                                                        | HTTP request                                | Description                                      |
+| ------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| [**add_data_endpoint**](DataEndpointApi.md#add_data_endpoint) | **PUT** /sessions/{sessionId}/data-endpoint | Add a data endpoint to a protocol in the session |
 
 # **add_data_endpoint**
 
-> DataEndpointResponse add_data_endpoint(session_id, data_endpoint_request)
+> SessionMutationResponse add_data_endpoint(session_id, data_endpoint_request)
 
 Add a data endpoint to a protocol in the session
 
-Adds a data endpoint to the session protocol. Protocol must already be started with POST /protocol/new.
+Configures the data upload endpoint for the protocol. endpointType must be one of CAWS, SQLITE, or FILE. For CAWS and SQLITE endpoints, uploadMethod controls how data is batched: stream, datapoint, or file. For FILE endpoints, setting encrypt to true requires publicKey to also be provided. bufferSize controls the in-memory data buffer size in bytes and must be greater than 0 if specified.
 
 ### Example
 
 ```python
 import nli_engine.client._generated.authoring_client
 from nli_engine.client._generated.authoring_client.models.data_endpoint_request import DataEndpointRequest
-from nli_engine.client._generated.authoring_client.models.data_endpoint_response import DataEndpointResponse
+from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
 from nli_engine.client._generated.authoring_client.rest import ApiException
 from pprint import pprint
 
@@ -34,7 +34,7 @@ configuration = nli_engine.client._generated.authoring_client.Configuration(
 with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = nli_engine.client._generated.authoring_client.DataEndpointApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session id returned by POST /protocol/new.
+    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
     data_endpoint_request = {"endpointType":"CAWS","uploadMethod":"stream","name":"CARP Web Services","deleteWhenUploaded":true} # DataEndpointRequest | Data endpoint configuration payload.
 
     try:
@@ -48,14 +48,14 @@ with nli_engine.client._generated.authoring_client.ApiClient(configuration) as a
 
 ### Parameters
 
-| Name                      | Type                                              | Description                                | Notes |
-| ------------------------- | ------------------------------------------------- | ------------------------------------------ | ----- |
-| **session_id**            | **str**                                           | Session id returned by POST /protocol/new. |
-| **data_endpoint_request** | [**DataEndpointRequest**](DataEndpointRequest.md) | Data endpoint configuration payload.       |
+| Name                      | Type                                              | Description                                    | Notes |
+| ------------------------- | ------------------------------------------------- | ---------------------------------------------- | ----- |
+| **session_id**            | **str**                                           | Session identifier returned by POST /sessions. |
+| **data_endpoint_request** | [**DataEndpointRequest**](DataEndpointRequest.md) | Data endpoint configuration payload.           |
 
 ### Return type
 
-[**DataEndpointResponse**](DataEndpointResponse.md)
+[**SessionMutationResponse**](SessionMutationResponse.md)
 
 ### Authorization
 
@@ -68,10 +68,11 @@ No authorization required
 
 ### HTTP response details
 
-| Status code | Description                         | Response headers |
-| ----------- | ----------------------------------- | ---------------- |
-| **200**     | Data endpoint added                 | -                |
-| **400**     | Missing or invalid query parameters | -                |
-| **404**     | Session id not found                | -                |
+| Status code | Description                                    | Response headers |
+| ----------- | ---------------------------------------------- | ---------------- |
+| **201**     | Data endpoint added                            | -                |
+| **400**     | Invalid or missing fields in the request body. | -                |
+| **404**     | Session id not found.                          | -                |
+| **0**       | Unexpected server error.                       | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

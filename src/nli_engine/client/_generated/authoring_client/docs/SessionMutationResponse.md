@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Name                         | Type       | Description | Notes |
-| ---------------------------- | ---------- | ----------- | ----- |
-| **session_id**               | **str**    |             |
-| **unfulfilled_requirements** | **object** |             |
+| Name                         | Type                  | Description | Notes |
+| ---------------------------- | --------------------- | ----------- | ----- |
+| **session_id**               | **str**               |             |
+| **unfulfilled_requirements** | **Dict[str, object]** |             |
 
 ## Example
 

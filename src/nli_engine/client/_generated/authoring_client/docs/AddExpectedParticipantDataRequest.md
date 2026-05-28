@@ -2,9 +2,9 @@
 
 ## Properties
 
-| Name          | Type    | Description | Notes |
-| ------------- | ------- | ----------- | ----- |
-| **data_type** | **str** |             |
+| Name          | Type                                              | Description | Notes |
+| ------------- | ------------------------------------------------- | ----------- | ----- |
+| **data_type** | [**ParticipantDataType**](ParticipantDataType.md) |             |
 
 ## Example
 

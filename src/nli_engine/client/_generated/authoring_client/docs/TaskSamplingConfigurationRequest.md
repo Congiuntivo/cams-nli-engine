@@ -12,6 +12,8 @@
 | **stop_radius**        | **float**                                 |             | [optional] |
 | **place_radius**       | **float**                                 |             | [optional] |
 | **stop_duration**      | [**DurationRequest**](DurationRequest.md) |             | [optional] |
+| **health_data_types**  | **List[str]**                             |             | [optional] |
+| **days**               | **int**                                   |             | [optional] |
 
 ## Example
 
