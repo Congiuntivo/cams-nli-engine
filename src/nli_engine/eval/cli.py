@@ -14,6 +14,7 @@ from nli_engine.eval.dataset import evaluate_dataset, load_manifest, resolve_las
 from nli_engine.eval.metrics import compute_metrics
 from nli_engine.eval.parser import parse_session
 from nli_engine.eval.report import (
+    print_comparison_report,
     print_dataset_report,
     print_run_report,
     write_json_report,
@@ -129,6 +130,11 @@ def _cmd_dataset(args: argparse.Namespace) -> None:
 
     results = evaluate_dataset(cases)
     print_dataset_report(results, console)
+
+    for result in results:
+        if result.comparison is not None:
+            console.rule(f"[cyan]{result.case_id}[/cyan]")
+            print_comparison_report(result.comparison, console)
 
     if args.output:
         write_json_report([dataclasses.asdict(r) for r in results], args.output)

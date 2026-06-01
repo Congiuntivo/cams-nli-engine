@@ -15,19 +15,22 @@ Two modes:
 ```
 logs.jsonl ──▶ parser.py ──▶ SessionLog ──▶ metrics.py ──▶ SessionMetrics ──▶ report.py ──▶ stdout
                                                   │
-                                         dataset.py ──▶ compare_protocols() ──▶ ProtocolScore
+                                         dataset.py ──▶ compare_protocols() ──▶ ComparisonResult
+                                                              │
+                                                    hashmatch.py ──▶ HashMatchScore (per-field F1)
 ```
 
 ## Module structure
 
-| file            | responsibility                                                               |
-| --------------- | ---------------------------------------------------------------------------- |
-| `parser.py`     | JSONL → `SessionLog` / `TurnLog` / `ToolCallRecord` / `StepRecord`           |
-| `metrics.py`    | `SessionLog` → `SessionMetrics` (frozen dataclass)                           |
-| `comparison.py` | `compare_protocols(actual, expected)` → `ProtocolScore`                      |
-| `dataset.py`    | Manifest loading (`load_manifest`) and batch evaluation (`evaluate_dataset`) |
-| `report.py`     | Rich table rendering and `write_json_report`                                 |
-| `cli.py`        | `nli-eval` entry point: `run`, `dataset`, and `extract` subcommands          |
+| file            | responsibility                                                                 |
+| --------------- | ------------------------------------------------------------------------------ |
+| `parser.py`     | JSONL → `SessionLog` / `TurnLog` / `ToolCallRecord` / `StepRecord`             |
+| `metrics.py`    | `SessionLog` → `SessionMetrics` (frozen dataclass)                             |
+| `hashmatch.py`  | Content-addressed set F1 → `HashMatchScore` (see [hashmatch.md](hashmatch.md)) |
+| `comparison.py` | `compare_protocols(actual, expected)` → `ComparisonResult`                     |
+| `dataset.py`    | Manifest loading (`load_manifest`) and batch evaluation (`evaluate_dataset`)   |
+| `report.py`     | Rich table rendering and `write_json_report`                                   |
+| `cli.py`        | `nli-eval` entry point: `run`, `dataset`, and `extract` subcommands            |
 
 ## CLI
 
@@ -129,18 +132,16 @@ metadata — the evaluator does not use it to run the engine.
 
 ## Comparison model
 
-`compare_protocols(actual, expected, value_comparator=None)` flattens both dicts
-into `{dotted.key.path: leaf_value}` maps (lists are indexed numerically, e.g.
-`tasks.0.name`) and computes:
+`compare_protocols(actual, expected)` returns a `ComparisonResult` containing a
+`HashMatchScore`. The score is computed by `HashMatchScore.compute`, which:
 
-| score                    | meaning                                                             |
-| ------------------------ | ------------------------------------------------------------------- |
-| `key_recall`             | fraction of expected leaf keys present in actual (coverage)         |
-| `key_precision`          | fraction of actual leaf keys present in expected (no hallucination) |
-| `exact_value_match_rate` | for shared keys, fraction with identical values                     |
-| `smart_value_score`      | optional; populated by `value_comparator` if provided               |
+1. Converts both protocols to content-addressed form (arrays become hash-keyed
+   dicts, cross-references are rewritten to stable content hashes).
+2. Decomposes each protocol into named categories (`primaryDevices`, `tasks`,
+   `triggers`, `connections`, `taskControls`, `dataEndpoint`, and an `other`
+   bucket for remaining top-level keys).
+3. Computes set F1 (TP / FP / FN over content-hash sets) for each category.
+4. Macro-averages F1, precision, and recall across categories.
 
-`value_comparator` is the extension point for semantic comparison. Its signature
-is `(key_path: str, actual_val: Any, expected_val: Any) -> float` returning a
-score in `[0.0, 1.0]`. Pass a custom comparator to plug in normalised string
-matching, embeddings, or an LLM-as-judge without changing any other code.
+This approach follows the component-wise F1 design from Yu et al. (2018) Spider.
+See [hashmatch.md](hashmatch.md) for the full algorithm and design rationale.

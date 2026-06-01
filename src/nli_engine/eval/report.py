@@ -10,6 +10,7 @@ from typing import Any
 from rich.console import Console
 from rich.table import Table
 
+from nli_engine.eval.comparison import ComparisonResult
 from nli_engine.eval.dataset import CaseResult
 from nli_engine.eval.metrics import SessionMetrics
 
@@ -62,6 +63,48 @@ def print_run_report(
         )
 
 
+def print_comparison_report(comparison: ComparisonResult, console: Console) -> None:
+    """Print a per-field HashMatch breakdown table to *console*.
+
+    Args:
+        comparison: Comparison result containing a :class:`~nli_engine.eval.hashmatch.HashMatchScore`.
+        console: Rich Console to write to.
+    """
+    hm = comparison.hashmatch
+    table = Table(title="HashMatch per-field", show_header=True, header_style="bold")
+    table.add_column("Field", style="cyan")
+    table.add_column("F1", justify="right")
+    table.add_column("P", justify="right")
+    table.add_column("R", justify="right")
+    table.add_column("TP", justify="right")
+    table.add_column("FP", justify="right")
+    table.add_column("FN", justify="right")
+
+    for field, score in sorted(hm.per_field.items()):
+        table.add_row(
+            field,
+            f"{score.f1:.1%}",
+            f"{score.precision:.1%}",
+            f"{score.recall:.1%}",
+            str(score.tp),
+            str(score.fp),
+            str(score.fn),
+        )
+
+    table.add_section()
+    table.add_row(
+        "[bold]macro avg[/bold]",
+        f"[bold]{hm.f1:.1%}[/bold]",
+        f"[bold]{hm.precision:.1%}[/bold]",
+        f"[bold]{hm.recall:.1%}[/bold]",
+        "",
+        "",
+        "",
+    )
+
+    console.print(table)
+
+
 def print_dataset_report(results: list[CaseResult], console: Console) -> None:
     """Print a per-case summary table for a dataset evaluation.
 
@@ -76,18 +119,18 @@ def print_dataset_report(results: list[CaseResult], console: Console) -> None:
     table.add_column("Failed", justify="right")
     table.add_column("Tokens (in+out)", justify="right")
     table.add_column("Latency (ms)", justify="right")
-    table.add_column("Key recall", justify="right")
-    table.add_column("Key precision", justify="right")
-    table.add_column("Value match", justify="right")
+    table.add_column("HM precision", justify="right")
+    table.add_column("HM recall", justify="right")
+    table.add_column("HM F1", justify="right")
 
     for result in results:
         m = result.metrics
-        ps = result.protocol_score
+        hm = result.comparison.hashmatch if result.comparison else None
         complete_str = "[green]✓[/green]" if m.workflow_complete else "[red]✗[/red]"
         tokens_str = f"{m.total_input_tokens}+{m.total_output_tokens}"
-        recall_str = f"{ps.key_recall:.1%}" if ps else "—"
-        precision_str = f"{ps.key_precision:.1%}" if ps else "—"
-        value_str = f"{ps.exact_value_match_rate:.1%}" if ps else "—"
+        precision_str = f"{hm.precision:.1%}" if hm else "—"
+        recall_str = f"{hm.recall:.1%}" if hm else "—"
+        f1_str = f"{hm.f1:.1%}" if hm else "—"
 
         table.add_row(
             result.case_id,
@@ -96,9 +139,9 @@ def print_dataset_report(results: list[CaseResult], console: Console) -> None:
             str(m.n_failed_tool_calls),
             tokens_str,
             f"{m.total_latency_ms:,.1f}",
-            recall_str,
             precision_str,
-            value_str,
+            recall_str,
+            f1_str,
         )
 
     console.print(table)

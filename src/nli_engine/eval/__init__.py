@@ -18,8 +18,9 @@ For dataset evaluation::
     results = evaluate_dataset(cases)
 """
 
-from nli_engine.eval.comparison import compare_protocols
+from nli_engine.eval.comparison import ComparisonResult, compare_protocols
 from nli_engine.eval.dataset import evaluate_dataset, load_manifest
+from nli_engine.eval.hashmatch import HashMatchScore
 from nli_engine.eval.metrics import compute_metrics
 from nli_engine.eval.parser import parse_session
 
@@ -27,6 +28,8 @@ __all__ = [
     "parse_session",
     "compute_metrics",
     "compare_protocols",
+    "ComparisonResult",
+    "HashMatchScore",
     "load_manifest",
     "evaluate_dataset",
 ]

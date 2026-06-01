@@ -8,13 +8,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-log = logging.getLogger(__name__)
-
 import yaml
 
-from nli_engine.eval.comparison import ProtocolScore, ValueComparator, compare_protocols
+from nli_engine.eval.comparison import ComparisonResult, compare_protocols
 from nli_engine.eval.metrics import SessionMetrics, compute_metrics
 from nli_engine.eval.parser import parse_session
+
+log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -41,14 +41,14 @@ class CaseResult:
     Attributes:
         case_id: Identifier matching :attr:`DatasetCase.id`.
         metrics: Execution metrics derived from the session log.
-        protocol_score: Key and value overlap scores between the actual and
-            expected protocol. None when the session log contains no protocol
-            (e.g. the workflow did not complete).
+        comparison: Comparison scores between the actual and expected protocol.
+            None when the session log contains no protocol (e.g. the workflow
+            did not complete).
     """
 
     case_id: str
     metrics: SessionMetrics
-    protocol_score: ProtocolScore | None
+    comparison: ComparisonResult | None
 
 
 def load_manifest(path: Path) -> list[DatasetCase]:
@@ -97,41 +97,33 @@ def load_manifest(path: Path) -> list[DatasetCase]:
     return cases
 
 
-def evaluate_dataset(
-    cases: list[DatasetCase],
-    value_comparator: ValueComparator | None = None,
-) -> list[CaseResult]:
+def evaluate_dataset(cases: list[DatasetCase]) -> list[CaseResult]:
     """Evaluate all cases in a dataset and return per-case results.
 
     Args:
         cases: List of cases as returned by :func:`load_manifest`.
-        value_comparator: Optional callable for semantic value comparison.
-            Passed through to :func:`~nli_engine.eval.comparison.compare_protocols`.
 
     Returns:
         A :class:`CaseResult` for each case, in the same order as *cases*.
     """
-    return [_evaluate_case(case, value_comparator) for case in cases]
+    return [_evaluate_case(case) for case in cases]
 
 
-def _evaluate_case(
-    case: DatasetCase,
-    value_comparator: ValueComparator | None,
-) -> CaseResult:
+def _evaluate_case(case: DatasetCase) -> CaseResult:
     session = parse_session(case.log_path)
     metrics = compute_metrics(session)
 
     actual_protocol = session.turns[-1].protocol if session.turns else None
     if actual_protocol is not None:
         expected = _load_json(case.expected_path)
-        protocol_score = compare_protocols(actual_protocol, expected, value_comparator)
+        comparison = compare_protocols(actual_protocol, expected)
     else:
-        protocol_score = None
+        comparison = None
 
     return CaseResult(
         case_id=case.id,
         metrics=metrics,
-        protocol_score=protocol_score,
+        comparison=comparison,
     )
 
 
