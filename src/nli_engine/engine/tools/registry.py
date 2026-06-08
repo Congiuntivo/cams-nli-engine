@@ -92,6 +92,13 @@ TASK_SPECIALIST_TOOL_NAMES: list[str] = [
     "get_tasks",
 ]
 
+UNIT_SPECIALIST_NAMES: list[str] = [
+    "device_specialist",
+    "trigger_specialist",
+    "task_specialist",
+    "task_control_assembler",
+]
+
 TASK_CONTROL_ASSEMBLER_TOOL_NAMES: list[str] = [
     "add_task_control",
     "get_task_controls",

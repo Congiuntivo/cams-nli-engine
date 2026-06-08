@@ -2,8 +2,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from typing import Generic, TypeVar
 
 import litellm
+from pydantic import BaseModel
+
+T = TypeVar("T", bound=BaseModel)
 
 
 @dataclass(frozen=True)
@@ -34,6 +38,21 @@ class LLMResponse:
 
     text: str | None
     tool_calls: list[ToolCall]
+    input_tokens: int
+    output_tokens: int
+
+
+@dataclass(frozen=True)
+class StructuredResponse(Generic[T]):
+    """Return value of LLMClient.complete_structured().
+
+    Attributes:
+        parsed: The Pydantic model instance parsed from the response.
+        input_tokens: Prompt token count.
+        output_tokens: Completion token count.
+    """
+
+    parsed: T
     input_tokens: int
     output_tokens: int
 
@@ -84,6 +103,35 @@ class LLMClient:
         return LLMResponse(
             text=choice.content,
             tool_calls=parsed_calls,
+            input_tokens=raw.usage.prompt_tokens,
+            output_tokens=raw.usage.completion_tokens,
+        )
+
+    def complete_structured(
+        self, messages: list[dict], schema: type[T]
+    ) -> StructuredResponse[T]:
+        """Send a structured-output completion request and return the parsed model.
+
+        No tools are sent. The provider is asked to respond with JSON that
+        conforms to ``schema``'s JSON schema. LiteLLM passes ``response_format``
+        directly to the provider (OpenAI JSON schema mode or equivalent).
+
+        Args:
+            messages: Conversation history in OpenAI message-dict format.
+            schema: Pydantic model class defining the expected response shape.
+
+        Returns:
+            StructuredResponse with the parsed model instance and token counts.
+        """
+        raw = litellm.completion(
+            model=self.model,
+            messages=messages,
+            response_format=schema,
+        )
+        choice = raw.choices[0].message
+        parsed = schema.model_validate_json(choice.content)
+        return StructuredResponse(
+            parsed=parsed,
             input_tokens=raw.usage.prompt_tokens,
             output_tokens=raw.usage.completion_tokens,
         )

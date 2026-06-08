@@ -40,6 +40,15 @@ WorkflowContext (history) ──▶ LLMStep ──▶ LLMClient.complete() ─�
 | `input_tokens`  | `int`            | prompt token count                                             |
 | `output_tokens` | `int`            | completion token count                                         |
 
+**`StructuredResponse[T]`** is the typed return value of `complete_structured()`, where
+`T` is a Pydantic `BaseModel` subclass.
+
+| field           | type  | meaning                            |
+| --------------- | ----- | ---------------------------------- |
+| `parsed`        | `T`   | model instance validated from JSON |
+| `input_tokens`  | `int` | prompt token count                 |
+| `output_tokens` | `int` | completion token count             |
+
 **`ToolCall`** is one parsed tool invocation.
 
 | field       | type   | meaning                                                            |
@@ -64,9 +73,15 @@ def call_tool(tool: BoundTool, arguments: dict) -> str:
 
 Executes a `BoundTool` from the LLM-returned arguments dict and returns the result serialised to a string for inclusion in the tool-result message. Branches on `request_model is None` to distinguish read-only from mutation tools.
 
-## Integration: `LLMStep`
+**`LLMClient.complete_structured(messages, schema)`** sends a single completion with no
+tools and asks the provider for JSON output conforming to `schema`'s JSON schema
+(OpenAI `response_format` mode or equivalent via LiteLLM). Returns a
+`StructuredResponse[T]` with the validated model instance and token counts.
 
-`LLMStep` (in `engine/workflow/steps/llm.py`) is the only consumer of this layer from the workflow side. It runs the agentic loop:
+## Integration: `LLMStep` and `ExtractionStep`
+
+`LLMStep` (in `engine/workflow/steps/llm.py`) is the agentic consumer of this layer.
+It runs the tool-call loop:
 
 1. Converts `context.history` to message dicts and prepends the system prompt.
 2. Calls `LLMClient.complete()` repeatedly until the LLM stops issuing tool calls.
@@ -74,7 +89,12 @@ Executes a `BoundTool` from the LLM-returned arguments dict and returns the resu
 4. Persists all intermediate messages (assistant-with-tool-calls + tool results) back into `context.history`.
 5. Returns `(final_text, StepLog)` with aggregated token counts.
 
-See the [workflow layer design](../workflow_layer/workflow_layer.md) for how `LLMStep` fits into the broader orchestration.
+`ExtractionStep` (in `engine/workflow/steps/extraction.py`) is the structured-output
+consumer. It calls `LLMClient.complete_structured()` once — no tool loop — and returns
+the parsed Pydantic model directly. It never modifies shared history.
+
+See the [workflow layer design](../workflow_layer/workflow_layer.md) for how these
+steps fit into the broader orchestration.
 
 ## Configuration
 

@@ -77,8 +77,9 @@ and provides provider-specific parameters:
 ```yaml
 # workflow.yaml
 models:
-  planner: "ollama/qwen2.5:7b" # or "gpt-4o", "anthropic/claude-sonnet-4-6", …
-  refiner: "ollama/qwen2.5:7b" # used by one_shot_llm for the refinement step
+  default: "ollama/qwen2.5:7b" # or "gpt-4o", "anthropic/claude-sonnet-4-6", …
+  # override individual steps (all fall back to "default" if omitted):
+  # orchestrator: "gpt-4o"
 parameters:
   api_base: "http://localhost:11434" # required for Ollama; omit for cloud providers
 ```
@@ -87,11 +88,11 @@ Model identifiers follow [LiteLLM's routing conventions](https://docs.litellm.ai
 
 ### Available workflows
 
-| ID             | Description                                                                                                         |
-| -------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `dummy`        | Deterministic baseline — hard-codes the three setup tool calls; no LLM                                              |
-| `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously                                        |
-| `one_shot_llm` | Three-step pipeline: a refiner LLM clarifies the request, a planner LLM creates the plan, an executor LLM builds it |
+| ID             | Description                                                                                               |
+| -------------- | --------------------------------------------------------------------------------------------------------- |
+| `dummy`        | Deterministic baseline — hard-codes the three setup tool calls; no LLM                                    |
+| `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously                              |
+| `one_shot_llm` | Five-step pipeline: refiner → planner → extractor → setup → per-unit orchestrator with domain specialists |
 
 ## Evaluation
 

@@ -54,7 +54,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--stop-after",
         metavar="STEP",
-        choices=["refiner", "planner", "orchestrator"],
+        choices=["refiner", "planner", "orchestrator", "extractor"],
         default=None,
         help="Stop after this step and return its output (for debugging). One of: refiner, planner, orchestrator.",
     )

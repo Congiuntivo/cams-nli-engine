@@ -1,0 +1,41 @@
+from __future__ import annotations
+
+from pydantic import BaseModel, Field
+
+
+class AssemblyUnit(BaseModel):
+    """One task-control assembly unit extracted from the planner's output.
+
+    Attributes:
+        name: Short label for the unit, matching the planner's numbering.
+        description: Full natural-language description passed verbatim to the
+            orchestrator as its per-unit instruction.
+        needs_connected_device: True when the unit requires a connected device
+            or service (e.g. LocationService, eSense). False when it uses only
+            the primary device.
+    """
+
+    name: str
+    description: str = Field(
+        description=(
+            "Full natural-language description of the assembly unit, including "
+            "device, trigger, task, and any names or parameters the orchestrator needs."
+        )
+    )
+    needs_connected_device: bool = Field(
+        description=(
+            "True if the unit requires a connected device or service "
+            "(e.g. LocationService, WeatherService, eSense, Polar). "
+            "False if it uses only a primary device (Smartphone, WebBrowser) or no device."
+        )
+    )
+
+
+class AssemblyPlan(BaseModel):
+    """The full set of assembly units extracted from the planner's output.
+
+    Attributes:
+        units: Ordered list of assembly units, one per task control in the plan.
+    """
+
+    units: list[AssemblyUnit]

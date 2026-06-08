@@ -129,9 +129,10 @@ Neither the CLI nor the GUI ever touches `Workflow` or `WorkflowContext` directl
 
 ### `engine/workflow/steps/`
 
-| file     | class     | role                                                                                                                                           |
-| -------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `llm.py` | `LLMStep` | subclasses `Step`; runs the agentic loop — calls `LLMClient.complete()`, dispatches tool calls, repeats until the LLM produces a text response |
+| file            | class            | role                                                                                                                                                          |
+| --------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `llm.py`        | `LLMStep`        | subclasses `Step`; runs the agentic loop — calls `LLMClient.complete()`, dispatches tool calls, repeats until the LLM produces a text response                |
+| `extraction.py` | `ExtractionStep` | subclasses `Step`; calls `LLMClient.complete_structured()` once to parse a Pydantic model from conversation context; never appends messages to shared history |
 
 `LLMStep` constructor parameters:
 
@@ -176,11 +177,11 @@ lets `_resolve_tools()` resolve it for the orchestrator step like any other tool
 
 ### `engine/workflow/workflows/`
 
-| file              | class                | behaviour                                                                                                              |
-| ----------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `dummy.py`        | `DummyWorkflow`      | deterministic baseline — hard-codes the three tool calls; no LLM involved                                              |
-| `dummy_llm.py`    | `DummyLLMWorkflow`   | LLM-driven version — instructs the model to call the same three tools via `LLMStep`                                    |
-| `one_shot_llm.py` | `OneShotLLMWorkflow` | production workflow — refiner → planner → orchestrator with domain specialists; see [one_shot_llm.md](one_shot_llm.md) |
+| file              | class                | behaviour                                                                                                               |
+| ----------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `dummy.py`        | `DummyWorkflow`      | deterministic baseline — hard-codes the three tool calls; no LLM involved                                               |
+| `dummy_llm.py`    | `DummyLLMWorkflow`   | LLM-driven version — instructs the model to call the same three tools via `LLMStep`                                     |
+| `one_shot_llm.py` | `OneShotLLMWorkflow` | production workflow — refiner → planner → extractor → setup → orchestrator loop; see [one_shot_llm.md](one_shot_llm.md) |
 
 ## Step hierarchy
 

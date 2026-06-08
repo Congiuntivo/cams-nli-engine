@@ -2,8 +2,8 @@
 
 `OneShotLLMWorkflow` is the production workflow for protocol authoring. It takes a
 single free-text user request and assembles a complete CARP study protocol in one
-turn, using four cooperating LLM agents: a **refiner**, a **planner**, an
-**orchestrator**, and a pool of **domain specialists**.
+turn, using a five-step pipeline: a **refiner**, a **planner**, an **extractor**, a
+**setup step**, and a per-unit **orchestrator** backed by four domain specialists.
 
 ## Pipeline overview
 
@@ -14,30 +14,36 @@ flowchart TD
     no tools · max 3 iter"]
     P["Planner
     no tools · max 1 iter"]
-    O["Orchestrator
-    delegation tools only · max 20 iter"]
-    SS[setup_specialist]
+    E["Extractor
+    structured output · no tools"]
+    S["Setup step
+    setup tools · max 5 iter"]
 
     U --> R
     R -->|structured spec| P
-    P -->|ordered action list| O
-    O -->|"once, before loop"| SS
+    P -->|ordered action list| E
+    E -->|AssemblyPlan| S
 
-    subgraph AU["Assembly Loop — one pass per TaskControl"]
+    subgraph AU["Assembly Loop — Python-driven, one pass per AssemblyUnit"]
         direction LR
+        O["Orchestrator
+        delegation tools · max 20 iter"]
         DS[device_specialist
         if needed]
         TS[trigger_specialist]
         TAS[task_specialist]
         TCA[task_control_assembler]
-        DS --> TS --> TAS --> TCA
+        O -->|delegates| DS
+        O -->|delegates| TS
+        O -->|delegates| TAS
+        O -->|delegates| TCA
     end
 
-    O --> AU
+    S --> AU
 ```
 
-All three main steps share `OneShotLLMWorkflowContext.history`, so each step sees the
-full conversation up to that point. Specialist invocations run in isolated
+All main steps share `OneShotLLMWorkflowContext.history`. The extractor reads but
+never writes to the shared history. Specialist invocations run in isolated
 `SpecialistContext` instances and do not touch the main history.
 
 ## Steps
@@ -46,40 +52,61 @@ full conversation up to that point. Specialist invocations run in isolated
 
 Rewrites the user's free-text into a formal, structured specification. Runs without
 tools; uses the `refiner.md` system prompt. The output is appended to the shared
-history so the planner and orchestrator read a clean, unambiguous description rather
+history so the planner and extractor read a clean, unambiguous description rather
 than the raw user message.
 
 ### Planner
 
 Reads the refined specification and produces a concise ordered list of domain objects
 to create — one item per line, in plain language. Runs in a single iteration without
-tools. Its output anchors the orchestrator's Assembly Loop: each task control in the
-plan corresponds to one Assembly Unit.
+tools. Its output is the input to the extractor.
+
+### Extractor
+
+Parses the planner's output into a structured `AssemblyPlan` using
+`LLMClient.complete_structured()`. It receives only the planner's final reply (not the
+full history) and the `assembly_plan_extraction.md` system prompt. It never writes
+messages back to the shared history — the step is invisible to all subsequent steps.
+
+The result is an `AssemblyPlan` containing an ordered list of `AssemblyUnit` objects,
+each with a `name`, a self-contained `description`, and a `needs_connected_device`
+flag Python uses to log intent.
+
+### Setup step
+
+Runs the `setup_specialist` prompt as a direct `LLMStep` against the shared context,
+creating the shared protocol infrastructure (data endpoint, participant roles, primary
+devices). Its tool-call exchanges are appended to the shared history so every
+subsequent orchestrator invocation can see what already exists.
 
 ### Orchestrator
 
-The orchestrator manages the Assembly Loop. It does not call API tools directly; its
-entire tool set consists of the five delegation tools that invoke domain specialists.
+Python iterates over `AssemblyPlan.units` and invokes the orchestrator once per unit,
+injecting a user message of the form `"Assemble assembly unit N of M: <description>"`.
+The orchestrator does not call API tools directly; its tool set consists of the four
+per-unit delegation tools.
 
-**Assembly Loop — per TaskControl in the plan:**
+**Per-unit assembly order:**
 
-1. Call `setup_specialist` once before the loop (idempotent — safe to call again if
-   needed).
-2. For each Assembly Unit:
-   a. `device_specialist` — create the connected device or service, if any.
-   b. `trigger_specialist` — create the trigger.
-   c. `task_specialist` — create the task.
-   d. `task_control_assembler` — bind trigger, task, and device into the TaskControl.
+1. `device_specialist` — create the connected device or service, if any. Skip if the
+   unit needs no connected device.
+2. `trigger_specialist` — create the trigger.
+3. `task_specialist` — create the task.
+4. `task_control_assembler` — bind trigger, task, and device into the TaskControl.
 
-After all Assembly Units are complete the orchestrator emits a plain-text summary of
-what was created, together with any Assumptions or Open questions.
+After `task_control_assembler` returns, the orchestrator emits a plain-text summary
+of the entities created for that unit, together with any Assumptions or Open questions.
+All orchestrator invocations share the same context, so AU N+1 sees AU N's history.
 
 ## Specialists
 
-Each specialist is an `LLMStep` wrapped as a `BoundTool` via `build_specialist_tool()`
-in `engine/workflow/specialist.py`. The orchestrator calls them with a single
-`DelegationRequest(instruction: str)` argument — a natural-language description
-containing all names and parameters the specialist needs.
+Each per-unit specialist is an `LLMStep` wrapped as a `BoundTool` via
+`build_specialist_tool()` in `engine/workflow/specialist.py`. The orchestrator calls
+them with a single `DelegationRequest(instruction: str)` argument — a natural-language
+description containing all names and parameters the specialist needs.
+
+The setup step is **not** a delegation tool; it runs as a plain `LLMStep` directly
+against the shared context (see [Setup step](#setup-step) above).
 
 ### Isolation model
 
@@ -94,9 +121,9 @@ specialist **idempotent**: calling it a second time for the same entity is safe.
 Each specialist is given only the `BoundTool`s relevant to its domain. The subsets are
 defined as named lists in `engine/tools/registry.py`.
 
-| Specialist               | Domain                                            | API tools                                                                                                                                        |
+| Step / Specialist        | Domain                                            | API tools                                                                                                                                        |
 | ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `setup_specialist`       | Data endpoint, participant roles, primary devices | `add_data_endpoint`, `add_participant_role`, `get_participant_roles`, `add_primary_smartphone`, `add_primary_web_browser`, `get_primary_devices` |
+| Setup step (direct)      | Data endpoint, participant roles, primary devices | `add_data_endpoint`, `add_participant_role`, `get_participant_roles`, `add_primary_smartphone`, `add_primary_web_browser`, `get_primary_devices` |
 | `device_specialist`      | Connected devices and services                    | `add_esense/movesense/movisens/polar`, `get_connected_devices`, `add_*_service`                                                                  |
 | `trigger_specialist`     | All trigger types                                 | `add_immediate/delayed/periodic/cron/manual/no_op_trigger`, `get_triggers`                                                                       |
 | `task_specialist`        | All task types                                    | `add_background/app/health_app/web_task`, `get_tasks`                                                                                            |
@@ -117,16 +144,16 @@ sequenceDiagram
     W->>S: session.tools()
     S-->>AT: all API BoundTools
 
-    loop for each of the 5 specialists
+    loop for each of the 4 per-unit specialists
         W->>AT: _tools_for_names(domain names)
         AT-->>W: domain BoundTools
         W->>W: build LLMStep + build_specialist_tool()
         W->>AT: inject delegation BoundTool
     end
 
-    W->>O: create with tool_names = SPECIALIST_NAMES
+    W->>O: create with tool_names = UNIT_SPECIALIST_NAMES
     O->>AT: _resolve_tools()
-    AT-->>O: 5 delegation BoundTools
+    AT-->>O: 4 delegation BoundTools
 ```
 
 Adding delegation tools to `self._all_tools` lets `_resolve_tools()` work unchanged for
@@ -136,19 +163,22 @@ the orchestrator step.
 
 `WorkflowConfig` keys consumed by this workflow:
 
-| models key       | step                                     |
-| ---------------- | ---------------------------------------- |
-| `"refiner"`      | Refiner step                             |
-| `"planner"`      | Planner step                             |
-| `"orchestrator"` | Orchestrator step                        |
-| `"specialist"`   | All five specialist steps (shared model) |
+| models key       | step                                              |
+| ---------------- | ------------------------------------------------- |
+| `"default"`      | Fallback for any step without an explicit key     |
+| `"refiner"`      | Refiner step                                      |
+| `"planner"`      | Planner step                                      |
+| `"extractor"`    | Extractor step                                    |
+| `"orchestrator"` | Orchestrator step                                 |
+| `"specialist"`   | Setup step and all four per-unit specialist steps |
+
+Each step falls back to `models["default"]` if its specific key is absent.
 
 ```yaml
 models:
-  refiner: "gpt-5.4-mini"
-  planner: "gpt-5.4-mini"
-  orchestrator: "gpt-5.4-mini"
-  specialist: "gpt-5.4-mini"
+  default: "gpt-5.4-mini"
+  # override individual steps as needed:
+  # orchestrator: "gpt-5.4"
 parameters:
   api_base: "https://api.openai.com/v1/"
 max_iterations:
@@ -163,37 +193,44 @@ max_iterations:
 ## Context and history
 
 `OneShotLLMWorkflowContext` holds a single `history: list[Message]` (inherited from
-`WorkflowContext`). The three main steps — refiner, planner, orchestrator — share this
-list and append to it. Specialist invocations are invisible to it: the specialists run
-in isolated `SpecialistContext` instances and their internal tool-call exchanges are
-never written to the main history.
+`WorkflowContext`). The refiner, planner, setup, and orchestrator steps all share and
+append to this list. The extractor is invisible to it: it reads only the planner's
+last reply and never writes back. Specialist invocations also do not touch the main
+history — they run in isolated `SpecialistContext` instances.
 
 ```mermaid
 sequenceDiagram
     participant H as context.history
     participant R as Refiner
     participant P as Planner
+    participant E as Extractor
+    participant S as Setup step
     participant O as Orchestrator
 
     Note over H: user message appended before steps run
     R->>H: assistant reply (structured spec)
     P->>H: assistant reply (ordered action list)
-    O->>H: tool call — setup_specialist(instruction)
-    H->>O: tool result — specialist summary text
-    loop per Assembly Unit
+    Note over E: reads planner reply only; never writes to H
+    S->>H: tool calls + tool results + assistant reply
+    loop per AssemblyUnit (Python-driven)
+        Note over H: user message injected: "Assemble unit N of M: ..."
+        O->>H: tool call — device_specialist(instruction) [if needed]
+        H->>O: tool result — specialist summary text
         O->>H: tool call — trigger_specialist(instruction)
         H->>O: tool result — specialist summary text
         O->>H: tool call — task_specialist(instruction)
         H->>O: tool result — specialist summary text
         O->>H: tool call — task_control_assembler(instruction)
         H->>O: tool result — specialist summary text
+        O->>H: final assistant reply for this unit
     end
-    O->>H: final assistant reply
 ```
 
 The orchestrator's tool-call messages record the delegation instruction and the
 specialist's summary reply — providing full observability of the Assembly Loop in the
-main history without embedding specialist-internal tool exchanges.
+main history without embedding specialist-internal tool exchanges. Because all
+orchestrator invocations share the same context, each unit's history is visible to
+the next.
 
 ## Error handling
 
@@ -212,8 +249,9 @@ All prompt files live under `engine/prompts/one_shot/`.
 | ----------------------------- | ---------------------- |
 | `refiner.md`                  | Refiner step           |
 | `planner.md`                  | Planner step           |
+| `assembly_plan_extraction.md` | Extractor step         |
 | `orchestrator.md`             | Orchestrator step      |
-| `specialists/setup.md`        | setup_specialist       |
+| `specialists/setup.md`        | Setup step             |
 | `specialists/device.md`       | device_specialist      |
 | `specialists/trigger.md`      | trigger_specialist     |
 | `specialists/task.md`         | task_specialist        |
