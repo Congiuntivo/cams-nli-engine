@@ -40,7 +40,6 @@ class TestCreateProtocolRequest(unittest.TestCase):
                 name = 'My Study Protocol',
                 owner_id = '979b408d-784e-4b1b-bb1e-ff9204e072f3',
                 protocol_version_tag = 'v1.0.0',
-                protocol_api_level = '2.0',
                 application_name = 'carp_study_app',
                 privacy_schema_name = 'default-privacy-schema'
             )

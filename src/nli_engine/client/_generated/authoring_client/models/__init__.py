@@ -154,6 +154,9 @@ from nli_engine.client._generated.authoring_client.models.service_roles_response
 from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
     SessionMutationResponse,
 )
+from nli_engine.client._generated.authoring_client.models.set_application_data_request import (
+    SetApplicationDataRequest,
+)
 from nli_engine.client._generated.authoring_client.models.task_control_request import (
     TaskControlRequest,
 )

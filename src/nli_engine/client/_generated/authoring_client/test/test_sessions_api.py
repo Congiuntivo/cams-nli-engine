@@ -32,6 +32,13 @@ class TestSessionsApi(unittest.TestCase):
         """
         pass
 
+    def test_set_application_data(self) -> None:
+        """Test case for set_application_data
+
+        Set custom application data on the protocol
+        """
+        pass
+
 
 if __name__ == "__main__":
     unittest.main()

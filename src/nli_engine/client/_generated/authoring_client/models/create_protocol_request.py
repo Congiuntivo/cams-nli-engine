@@ -34,9 +34,6 @@ class CreateProtocolRequest(BaseModel):
     protocol_version_tag: Optional[StrictStr] = Field(
         default=None, alias="protocolVersionTag"
     )
-    protocol_api_level: Optional[StrictStr] = Field(
-        default=None, alias="protocolApiLevel"
-    )
     application_name: Optional[StrictStr] = Field(default=None, alias="applicationName")
     privacy_schema_name: Optional[StrictStr] = Field(
         default=None, alias="privacySchemaName"
@@ -45,7 +42,6 @@ class CreateProtocolRequest(BaseModel):
         "name",
         "ownerId",
         "protocolVersionTag",
-        "protocolApiLevel",
         "applicationName",
         "privacySchemaName",
     ]
@@ -113,7 +109,6 @@ class CreateProtocolRequest(BaseModel):
                 "name": obj.get("name"),
                 "ownerId": obj.get("ownerId"),
                 "protocolVersionTag": obj.get("protocolVersionTag"),
-                "protocolApiLevel": obj.get("protocolApiLevel"),
                 "applicationName": obj.get("applicationName"),
                 "privacySchemaName": obj.get("privacySchemaName"),
             }

@@ -50,6 +50,7 @@ SETUP_SPECIALIST_TOOL_NAMES: list[str] = [
     "get_primary_devices",
     "add_expected_data_all_roles",
     "add_expected_data_for_role",
+    "set_application_data",
 ]
 
 DEVICE_SPECIALIST_TOOL_NAMES: list[str] = [

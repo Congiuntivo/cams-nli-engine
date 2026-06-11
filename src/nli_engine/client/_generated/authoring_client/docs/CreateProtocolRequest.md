@@ -7,7 +7,6 @@
 | **name**                 | **str**  |             |
 | **owner_id**             | **UUID** |             | [optional] |
 | **protocol_version_tag** | **str**  |             | [optional] |
-| **protocol_api_level**   | **str**  |             | [optional] |
 | **application_name**     | **str**  |             | [optional] |
 | **privacy_schema_name**  | **str**  |             | [optional] |
 

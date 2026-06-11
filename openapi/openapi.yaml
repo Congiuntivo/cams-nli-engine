@@ -113,7 +113,6 @@ paths:
               name: 'My Study Protocol'
               ownerId: '979b408d-784e-4b1b-bb1e-ff9204e072f3'
               protocolVersionTag: 'v1.0.0'
-              protocolApiLevel: '2.0'
               applicationName: 'carp_study_app'
               privacySchemaName: 'default-privacy-schema'
       responses:
@@ -123,6 +122,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateSessionResponse'
+        default:
+          $ref: '#/components/responses/ServerError'
+  /sessions/{sessionId}/application-data:
+    put:
+      summary: 'Set custom application data on the protocol'
+      operationId: 'setApplicationData'
+      tags:
+        - 'Sessions'
+      parameters:
+        -
+          $ref: '#/components/parameters/sessionId'
+      requestBody:
+        description: 'Free-form key/value map to store as custom application data.'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetApplicationDataRequest'
+            example:
+              myKey: 'myValue'
+      responses:
+        '200':
+          description: 'Application data updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionMutationResponse'
+        '404':
+          $ref: '#/components/responses/SessionNotFound'
         default:
           $ref: '#/components/responses/ServerError'
   /sessions/{sessionId}/serialize:
@@ -1775,9 +1803,6 @@ components:
         protocolVersionTag:
           type: 'string'
           example: 'v1.0.0'
-        protocolApiLevel:
-          type: 'string'
-          example: '2.0'
         applicationName:
           type: 'string'
           example: 'carp_study_app'
@@ -1884,6 +1909,12 @@ components:
           type: 'array'
           items:
             type: 'object'
+    SetApplicationDataRequest:
+      type: 'object'
+      properties:
+        applicationData:
+          type: 'object'
+          additionalProperties: true
     ErrorResponse:
       type: 'object'
       required:

@@ -84,6 +84,7 @@ __all__ = [
     "SerializedCarpDataRequest",
     "ServiceRolesResponse",
     "SessionMutationResponse",
+    "SetApplicationDataRequest",
     "TaskControlRequest",
     "TaskControlSummary",
     "TaskControlsResponse",
@@ -304,6 +305,9 @@ from nli_engine.client._generated.authoring_client.models.service_roles_response
 )
 from nli_engine.client._generated.authoring_client.models.session_mutation_response import (
     SessionMutationResponse as SessionMutationResponse,
+)
+from nli_engine.client._generated.authoring_client.models.set_application_data_request import (
+    SetApplicationDataRequest as SetApplicationDataRequest,
 )
 from nli_engine.client._generated.authoring_client.models.task_control_request import (
     TaskControlRequest as TaskControlRequest,
