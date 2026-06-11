@@ -22,22 +22,31 @@ logs.jsonl ──▶ parser.py ──▶ SessionLog ──▶ metrics.py ──�
 
 ## Module structure
 
-| file            | responsibility                                                                 |
-| --------------- | ------------------------------------------------------------------------------ |
-| `parser.py`     | JSONL → `SessionLog` / `TurnLog` / `ToolCallRecord` / `StepRecord`             |
-| `metrics.py`    | `SessionLog` → `SessionMetrics` (frozen dataclass)                             |
-| `hashmatch.py`  | Content-addressed set F1 → `HashMatchScore` (see [hashmatch.md](hashmatch.md)) |
-| `comparison.py` | `compare_protocols(actual, expected)` → `ComparisonResult`                     |
-| `dataset.py`    | Manifest loading (`load_manifest`) and batch evaluation (`evaluate_dataset`)   |
-| `report.py`     | Rich table rendering and `write_json_report`                                   |
-| `cli.py`        | `nli-eval` entry point: `run`, `dataset`, and `extract` subcommands            |
+```
+eval/
+  cli.py                    nli-eval entry point — argument parsing and dispatch only
+  commands/
+    run.py                  handler for the run subcommand
+    dataset.py              handler for the dataset subcommand
+    extract.py              handler for the extract subcommand
+    canonicalize.py         handler for the canonicalize subcommand
+  scoring/
+    hashmatch.py            content-addressed set F1 → HashMatchScore (see hashmatch.md)
+    comparison.py           compare_protocols(actual, expected) → ComparisonResult
+    metrics.py              SessionLog → SessionMetrics (frozen dataclass)
+  io/
+    parser.py               JSONL → SessionLog / TurnLog / ToolCallRecord / StepRecord
+    dataset.py              manifest loading (load_manifest) and batch evaluation
+    report.py               Rich table rendering and write_json_report
+```
 
 ## CLI
 
 ```
-nli-eval run     <LOG>           [--output PATH]
-nli-eval dataset <MANIFEST> [LOG] [--output PATH] [--last-from LOGS_DIR]
-nli-eval extract <LOG>           <OUTPUT>
+nli-eval run         <LOG>                     [--output PATH]
+nli-eval dataset     <MANIFEST> [LOG]          [--output PATH] [--last-from LOGS_DIR]
+nli-eval extract     <LOG>                     <OUTPUT>
+nli-eval canonicalize <FILE> [<FILE>]          [--output PATH] [--out-dir DIR]
 ```
 
 `--output` (on `run` / `dataset`) writes full results as JSON; omitting it prints only the Rich table.
@@ -45,6 +54,11 @@ nli-eval extract <LOG>           <OUTPUT>
 `extract` writes the final protocol from the log as pretty-printed JSON to `OUTPUT`. It picks the
 last turn that contains a non-null protocol, so a failed final turn does not discard an earlier
 successful one. Exits with an error if no protocol is found.
+
+`canonicalize` converts one or two protocols to the content-addressed form used internally by
+HashMatch, for diffing. Each `FILE` can be a `.json` protocol or a `.jsonl` session log (the
+final protocol is extracted automatically). One-file mode writes to stdout or `--output`; two-file
+mode writes both outputs to `--out-dir` (defaults to `.`) named after the input files.
 
 Passing a `LOG` path evaluates exactly one case: the manifest is searched for a
 `(case_id, prompt_key)` pair whose prompt text matches the first `user_turn` in

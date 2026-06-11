@@ -19,8 +19,7 @@ For dataset evaluation::
     results = evaluate_dataset(resolved)
 """
 
-from nli_engine.eval.comparison import ComparisonResult, compare_protocols
-from nli_engine.eval.dataset import (
+from nli_engine.eval.io.dataset import (
     CaseResult,
     DatasetCase,
     ResolvedCase,
@@ -29,9 +28,10 @@ from nli_engine.eval.dataset import (
     resolve_from_log,
     resolve_last_from,
 )
-from nli_engine.eval.hashmatch import HashMatchScore
-from nli_engine.eval.metrics import compute_metrics
-from nli_engine.eval.parser import parse_session
+from nli_engine.eval.io.parser import parse_session
+from nli_engine.eval.scoring.comparison import ComparisonResult, compare_protocols
+from nli_engine.eval.scoring.hashmatch import HashMatchScore
+from nli_engine.eval.scoring.metrics import compute_metrics
 
 __all__ = [
     "parse_session",

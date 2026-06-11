@@ -10,9 +10,9 @@ from typing import Any
 from rich.console import Console
 from rich.table import Table
 
-from nli_engine.eval.comparison import ComparisonResult
-from nli_engine.eval.dataset import CaseResult
-from nli_engine.eval.metrics import SessionMetrics
+from nli_engine.eval.io.dataset import CaseResult
+from nli_engine.eval.scoring.comparison import ComparisonResult
+from nli_engine.eval.scoring.metrics import SessionMetrics
 
 
 def print_run_report(
@@ -67,7 +67,7 @@ def print_comparison_report(comparison: ComparisonResult, console: Console) -> N
     """Print a per-field HashMatch breakdown table to *console*.
 
     Args:
-        comparison: Comparison result containing a :class:`~nli_engine.eval.hashmatch.HashMatchScore`.
+        comparison: Comparison result containing a :class:`~nli_engine.eval.scoring.hashmatch.HashMatchScore`.
         console: Rich Console to write to.
     """
     hm = comparison.hashmatch
@@ -109,7 +109,7 @@ def print_dataset_report(results: list[CaseResult], console: Console) -> None:
     """Print a per-case summary table for a dataset evaluation.
 
     Args:
-        results: List of :class:`~nli_engine.eval.dataset.CaseResult` objects.
+        results: List of :class:`~nli_engine.eval.io.dataset.CaseResult` objects.
         console: Rich Console to write to.
     """
     table = Table(title="Dataset evaluation", show_header=True, header_style="bold")

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from nli_engine.eval.parser import SessionLog
+from nli_engine.eval.io.parser import SessionLog
 
 
 @dataclass(frozen=True)
@@ -48,8 +48,8 @@ def compute_metrics(session: SessionLog) -> SessionMetrics:
     """Compute :class:`SessionMetrics` from a parsed session log.
 
     Args:
-        session: A :class:`~nli_engine.eval.parser.SessionLog` returned by
-            :func:`~nli_engine.eval.parser.parse_session`.
+        session: A :class:`~nli_engine.eval.io.parser.SessionLog` returned by
+            :func:`~nli_engine.eval.io.parser.parse_session`.
 
     Returns:
         A frozen :class:`SessionMetrics` dataclass.

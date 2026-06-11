@@ -157,6 +157,26 @@ uv run nli-eval extract run.jsonl protocol.json
 Writes the protocol from the last completed turn to `protocol.json`. Useful for
 inspecting what the engine actually produced or seeding a new expected-output file.
 
+### Inspect canonicalized protocol JSON
+
+`canonicalize` converts one or two protocols to their content-addressed form — the
+same internal representation used by HashMatch — so you can diff them directly:
+
+```bash
+# Single file → stdout
+uv run nli-eval canonicalize dataset/cases/002_expected.json | jq .
+
+# Single file → output file
+uv run nli-eval canonicalize protocol.json --output ca.json
+
+# Two files → both written to a directory, ready to diff
+uv run nli-eval canonicalize run.jsonl dataset/cases/002_expected.json --out-dir /tmp/diff/
+diff /tmp/diff/run.json /tmp/diff/002_expected.json
+```
+
+A `.jsonl` input is treated as a session log and the final protocol is extracted
+automatically (same as `extract`).
+
 See [eval design doc](docs/design/eval/eval.md) for the full metric reference and comparison model.
 
 ## Design docs

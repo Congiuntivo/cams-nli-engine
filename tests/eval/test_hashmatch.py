@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from nli_engine.eval.hashmatch import (
+from nli_engine.eval.scoring.hashmatch import (
     _build_device_map,
     _build_task_map,
     _build_trigger_map,

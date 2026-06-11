@@ -10,9 +10,9 @@ from typing import Any
 
 import yaml
 
-from nli_engine.eval.comparison import ComparisonResult, compare_protocols
-from nli_engine.eval.metrics import SessionMetrics, compute_metrics
-from nli_engine.eval.parser import parse_session
+from nli_engine.eval.io.parser import parse_session
+from nli_engine.eval.scoring.comparison import ComparisonResult, compare_protocols
+from nli_engine.eval.scoring.metrics import SessionMetrics, compute_metrics
 
 log = logging.getLogger(__name__)
 

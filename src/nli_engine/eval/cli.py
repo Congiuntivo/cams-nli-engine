@@ -3,27 +3,13 @@
 from __future__ import annotations
 
 import argparse
-import dataclasses
-import json
 import sys
 from pathlib import Path
 
-from rich.console import Console
-
-from nli_engine.eval.dataset import (
-    evaluate_dataset,
-    load_manifest,
-    resolve_from_log,
-    resolve_last_from,
-)
-from nli_engine.eval.metrics import compute_metrics
-from nli_engine.eval.parser import parse_session
-from nli_engine.eval.report import (
-    print_comparison_report,
-    print_dataset_report,
-    print_run_report,
-    write_json_report,
-)
+from nli_engine.eval.commands.canonicalize import cmd_canonicalize
+from nli_engine.eval.commands.dataset import cmd_dataset
+from nli_engine.eval.commands.extract import cmd_extract
+from nli_engine.eval.commands.run import cmd_run
 
 
 def main() -> None:
@@ -35,7 +21,6 @@ def main() -> None:
         parser.print_help()
         sys.exit(1)
 
-    # Call the handler function associated with the chosen subcommand, passing the parsed args.
     args.func(args)
 
 
@@ -59,7 +44,7 @@ def _build_parser() -> argparse.ArgumentParser:
         metavar="PATH",
         help="Write metrics as JSON to this file.",
     )
-    run_parser.set_defaults(func=_cmd_run)
+    run_parser.set_defaults(func=cmd_run)
 
     dataset_parser = subs.add_parser(
         "dataset",
@@ -95,7 +80,7 @@ def _build_parser() -> argparse.ArgumentParser:
             "most recent file whose user_turn matches and evaluate it."
         ),
     )
-    dataset_parser.set_defaults(func=_cmd_dataset)
+    dataset_parser.set_defaults(func=cmd_dataset)
 
     extract_parser = subs.add_parser(
         "extract",
@@ -107,71 +92,32 @@ def _build_parser() -> argparse.ArgumentParser:
     extract_parser.add_argument(
         "output", type=Path, metavar="OUTPUT", help="Path to write the protocol JSON."
     )
-    extract_parser.set_defaults(func=_cmd_extract)
+    extract_parser.set_defaults(func=cmd_extract)
+
+    canon_parser = subs.add_parser(
+        "canonicalize",
+        help="Dump content-addressed protocol JSON for diffing.",
+    )
+    canon_parser.add_argument(
+        "files",
+        type=Path,
+        metavar="FILE",
+        nargs="+",
+        help="One or two protocol .json files or .jsonl session logs.",
+    )
+    canon_parser.add_argument(
+        "--output",
+        type=Path,
+        metavar="PATH",
+        help="(single-file mode) Write canonicalized JSON to this file instead of stdout.",
+    )
+    canon_parser.add_argument(
+        "--out-dir",
+        type=Path,
+        metavar="DIR",
+        dest="out_dir",
+        help="(two-file mode) Directory to write both canonicalized files. Defaults to '.'.",
+    )
+    canon_parser.set_defaults(func=cmd_canonicalize)
 
     return root
-
-
-def _cmd_run(args: argparse.Namespace) -> None:
-    console = Console()
-
-    try:
-        session_log = parse_session(args.log)
-    except (FileNotFoundError, ValueError) as exc:
-        console.print(f"[red]Error:[/red] {exc}")
-        sys.exit(1)
-
-    metrics = compute_metrics(session_log)
-    print_run_report(metrics, console)
-
-    if args.output:
-        write_json_report(dataclasses.asdict(metrics), args.output)
-        console.print(f"[dim]Metrics written to {args.output}[/dim]")
-
-
-def _cmd_dataset(args: argparse.Namespace) -> None:
-    console = Console()
-
-    try:
-        cases = load_manifest(args.manifest)
-        if args.log is not None:
-            resolved = [resolve_from_log(cases, args.log)]
-        elif args.last_from is not None:
-            resolved = resolve_last_from(cases, args.last_from)
-        else:
-            console.print("[red]Error:[/red] Provide either a LOG path or --last-from.")
-            sys.exit(1)
-    except (FileNotFoundError, ValueError) as exc:
-        console.print(f"[red]Error:[/red] {exc}")
-        sys.exit(1)
-
-    results = evaluate_dataset(resolved)
-    print_dataset_report(results, console)
-
-    for result in results:
-        if result.comparison is not None:
-            console.rule(f"[cyan]{result.case_id} / {result.prompt_key}[/cyan]")
-            print_comparison_report(result.comparison, console)
-
-    if args.output:
-        write_json_report([dataclasses.asdict(r) for r in results], args.output)
-        console.print(f"[dim]Results written to {args.output}[/dim]")
-
-
-def _cmd_extract(args: argparse.Namespace) -> None:
-    console = Console()
-
-    try:
-        session_log = parse_session(args.log)
-    except (FileNotFoundError, ValueError) as exc:
-        console.print(f"[red]Error:[/red] {exc}")
-        sys.exit(1)
-
-    turns_with_protocol = [t for t in session_log.turns if t.protocol is not None]
-    if not turns_with_protocol:
-        console.print("[red]Error:[/red] No protocol found in session log.")
-        sys.exit(1)
-
-    protocol = turns_with_protocol[-1].protocol
-    args.output.write_text(json.dumps(protocol, indent=2))
-    console.print(f"[dim]Protocol written to {args.output}[/dim]")

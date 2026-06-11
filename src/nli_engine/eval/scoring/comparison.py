@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from nli_engine.eval.hashmatch import HashMatchScore
+from nli_engine.eval.scoring.hashmatch import HashMatchScore
 
 
 @dataclass(frozen=True)
