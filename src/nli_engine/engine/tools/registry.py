@@ -21,6 +21,7 @@ from nli_engine.engine.tools.registries.services import (
     SERVICES_READ_ONLY_TOOLS,
     SERVICES_TOOLS,
 )
+from nli_engine.engine.tools.registries.sessions import SESSIONS_TOOLS
 from nli_engine.engine.tools.registries.task_controls import (
     TASK_CONTROLS_MUTATION_TOOLS,
     TASK_CONTROLS_READ_ONLY_TOOLS,
@@ -123,6 +124,8 @@ TOOL_REGISTRY: list[ToolSpec] = [
     *SERVICES_TOOLS,
     # Data endpoint
     *DATA_ENDPOINT_TOOLS,
+    # Sessions
+    *SESSIONS_TOOLS,
     # Tasks
     *TASKS_MUTATION_TOOLS,
     # Triggers
