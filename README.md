@@ -116,28 +116,36 @@ uv run nli-eval run run.jsonl --output metrics.json
 
 ### Evaluate a dataset
 
-Provide a YAML manifest that maps each run log to its expected protocol output:
+Provide a YAML manifest that describes the dataset — expected outputs and the
+prompts that should produce them:
 
 ```yaml
 # dataset/manifest.yaml
 cases:
   - id: "001_diary_study"
-    prompt: "record steps with the smartphone, heartbeat every hour"
     expected: cases/001_expected.json # relative to this file
-    log: runs/001.jsonl
+    prompts:
+      v1: "record steps with the smartphone, heartbeat every hour"
+      detailed: "record steps and location every hour, collect participant name at enrolment"
 ```
+
+The manifest has no log paths. Logs are resolved at evaluation time in one of two ways:
+
+**Single log** — evaluate exactly one case by passing a log path. The manifest is
+searched for a `(case_id, prompt_key)` pair whose prompt text matches the first
+`user_turn` in the log:
 
 ```bash
-uv run nli-eval dataset dataset/manifest.yaml
-uv run nli-eval dataset dataset/manifest.yaml --output results.json
+uv run nli-eval dataset dataset/manifest.yaml logs/run1.jsonl
 ```
 
-Use `--last-from` to evaluate fresh engine runs without editing the manifest —
-it replaces each case's log path in memory with the most recent file in the
-given directory whose prompt matches:
+**Batch (`--last-from`)** — for each `(case, prompt_key)` pair in the manifest,
+find the most recently modified `.jsonl` file in the given directory whose
+`user_turn` matches the prompt text. Unmatched pairs are skipped with a warning:
 
 ```bash
 uv run nli-eval dataset dataset/manifest.yaml --last-from logs/
+uv run nli-eval dataset dataset/manifest.yaml --last-from logs/ --output results.json
 ```
 
 ### Extract the final protocol from a log

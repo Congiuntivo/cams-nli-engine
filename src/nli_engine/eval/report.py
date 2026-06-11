@@ -133,7 +133,7 @@ def print_dataset_report(results: list[CaseResult], console: Console) -> None:
         f1_str = f"{hm.f1:.1%}" if hm else "—"
 
         table.add_row(
-            result.case_id,
+            f"{result.case_id} / {result.prompt_key}",
             complete_str,
             str(m.n_tool_calls),
             str(m.n_failed_tool_calls),

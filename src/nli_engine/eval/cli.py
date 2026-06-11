@@ -10,7 +10,12 @@ from pathlib import Path
 
 from rich.console import Console
 
-from nli_engine.eval.dataset import evaluate_dataset, load_manifest, resolve_last_from
+from nli_engine.eval.dataset import (
+    evaluate_dataset,
+    load_manifest,
+    resolve_from_log,
+    resolve_last_from,
+)
 from nli_engine.eval.metrics import compute_metrics
 from nli_engine.eval.parser import parse_session
 from nli_engine.eval.report import (
@@ -73,14 +78,21 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Write full results as JSON to this file.",
     )
     dataset_parser.add_argument(
+        "log",
+        type=Path,
+        metavar="LOG",
+        nargs="?",
+        default=None,
+        help="Path to a single .jsonl log file to evaluate (mutually exclusive with --last-from).",
+    )
+    dataset_parser.add_argument(
         "--last-from",
         type=Path,
         metavar="LOGS_DIR",
         dest="last_from",
         help=(
-            "Directory of .jsonl log files. For each manifest case, substitute "
-            "the log path with the most recent file in this directory whose "
-            "user prompt matches."
+            "Directory of .jsonl log files. For each manifest prompt, find the "
+            "most recent file whose user_turn matches and evaluate it."
         ),
     )
     dataset_parser.set_defaults(func=_cmd_dataset)
@@ -122,18 +134,23 @@ def _cmd_dataset(args: argparse.Namespace) -> None:
 
     try:
         cases = load_manifest(args.manifest)
-        if args.last_from:
-            cases = resolve_last_from(cases, args.last_from)
+        if args.log is not None:
+            resolved = [resolve_from_log(cases, args.log)]
+        elif args.last_from is not None:
+            resolved = resolve_last_from(cases, args.last_from)
+        else:
+            console.print("[red]Error:[/red] Provide either a LOG path or --last-from.")
+            sys.exit(1)
     except (FileNotFoundError, ValueError) as exc:
         console.print(f"[red]Error:[/red] {exc}")
         sys.exit(1)
 
-    results = evaluate_dataset(cases)
+    results = evaluate_dataset(resolved)
     print_dataset_report(results, console)
 
     for result in results:
         if result.comparison is not None:
-            console.rule(f"[cyan]{result.case_id}[/cyan]")
+            console.rule(f"[cyan]{result.case_id} / {result.prompt_key}[/cyan]")
             print_comparison_report(result.comparison, console)
 
     if args.output:

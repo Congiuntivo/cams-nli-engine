@@ -35,9 +35,9 @@ logs.jsonl ──▶ parser.py ──▶ SessionLog ──▶ metrics.py ──�
 ## CLI
 
 ```
-nli-eval run     <LOG>      [--output PATH]
-nli-eval dataset <MANIFEST> [--output PATH] [--last-from LOGS_DIR]
-nli-eval extract <LOG>      <OUTPUT>
+nli-eval run     <LOG>           [--output PATH]
+nli-eval dataset <MANIFEST> [LOG] [--output PATH] [--last-from LOGS_DIR]
+nli-eval extract <LOG>           <OUTPUT>
 ```
 
 `--output` (on `run` / `dataset`) writes full results as JSON; omitting it prints only the Rich table.
@@ -46,11 +46,14 @@ nli-eval extract <LOG>      <OUTPUT>
 last turn that contains a non-null protocol, so a failed final turn does not discard an earlier
 successful one. Exits with an error if no protocol is found.
 
-`--last-from LOGS_DIR` substitutes each case's `log` path in memory (the
-manifest file is not modified) with the most recently modified `.jsonl` file in
-`LOGS_DIR` whose first `user_turn` text matches the case's `prompt` exactly.
-This lets you evaluate a fresh batch of engine runs without touching the
-manifest:
+Passing a `LOG` path evaluates exactly one case: the manifest is searched for a
+`(case_id, prompt_key)` pair whose prompt text matches the first `user_turn` in
+the given log. Errors if no match is found.
+
+`--last-from LOGS_DIR` scans all `*.jsonl` files in `LOGS_DIR` and, for each
+`(case, prompt_key)` pair in the manifest, picks the most recently modified file
+whose first `user_turn` text matches the prompt exactly. This lets you evaluate a
+fresh batch of engine runs without touching the manifest:
 
 ```bash
 uv run nli-engine --workflow one_shot_llm --name s1 \
@@ -58,8 +61,8 @@ uv run nli-engine --workflow one_shot_llm --name s1 \
 uv run nli-eval dataset dataset/manifest.yaml --last-from logs/
 ```
 
-Cases with no matching log emit a warning and fall back to the path recorded in
-the manifest.
+Unmatched `(case_id, prompt_key)` pairs are skipped with a warning. Exactly one
+of `LOG` or `--last-from` must be provided.
 
 ## JSONL parsing
 
@@ -118,17 +121,20 @@ directory is self-contained and portable.
 # dataset/manifest.yaml
 cases:
   - id: "001_diary_study"
-    prompt: "record steps with the smartphone, heartbeat every hour"
     expected: cases/001_expected.json
-    log: runs/001.jsonl
+    prompts:
+      v1: "record steps with the smartphone, heartbeat every hour"
+      detailed: "record steps and location every hour..."
   - id: "002_complex_study"
-    prompt: "EMA three times a day, GPS background tracking"
     expected: cases/002_expected.json
-    log: runs/002.jsonl
+    prompts:
+      v1: "EMA three times a day, GPS background tracking"
 ```
 
-Required fields: `id`, `prompt`, `expected`, `log`. The `prompt` field is
-metadata — the evaluator does not use it to run the engine.
+Required fields: `id`, `prompts` (non-empty mapping of prompt_key → prompt text),
+`expected`. Multiple prompts per case represent different "richness" levels that
+should all produce the same gold-standard protocol. Log resolution happens at CLI
+invocation time — the manifest carries no log paths.
 
 ## Comparison model
 

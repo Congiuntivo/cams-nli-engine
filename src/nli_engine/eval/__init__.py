@@ -12,14 +12,23 @@ Typical usage::
 
 For dataset evaluation::
 
-    from nli_engine.eval import load_manifest, evaluate_dataset
+    from nli_engine.eval import load_manifest, evaluate_dataset, resolve_last_from
 
     cases = load_manifest(Path("dataset/manifest.yaml"))
-    results = evaluate_dataset(cases)
+    resolved = resolve_last_from(cases, Path("logs/"))
+    results = evaluate_dataset(resolved)
 """
 
 from nli_engine.eval.comparison import ComparisonResult, compare_protocols
-from nli_engine.eval.dataset import evaluate_dataset, load_manifest
+from nli_engine.eval.dataset import (
+    CaseResult,
+    DatasetCase,
+    ResolvedCase,
+    evaluate_dataset,
+    load_manifest,
+    resolve_from_log,
+    resolve_last_from,
+)
 from nli_engine.eval.hashmatch import HashMatchScore
 from nli_engine.eval.metrics import compute_metrics
 from nli_engine.eval.parser import parse_session
@@ -30,6 +39,11 @@ __all__ = [
     "compare_protocols",
     "ComparisonResult",
     "HashMatchScore",
+    "DatasetCase",
+    "ResolvedCase",
+    "CaseResult",
     "load_manifest",
     "evaluate_dataset",
+    "resolve_last_from",
+    "resolve_from_log",
 ]

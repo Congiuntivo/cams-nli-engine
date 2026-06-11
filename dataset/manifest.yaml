@@ -1,5 +1,9 @@
 cases:
   - id: "001_diary_study"
-    prompt: "Record steps with the smartphone. location every hour. At the beginning of the study ask for the full name. Upload the data to the CARP backend."
     expected: cases/001_expected.json # relative to this file
-    log: ../logs/logs_20260507_124610.jsonl
+    prompts:
+      v1: "Record steps with the smartphone. location every hour. At the beginning of the study ask for the full name. Upload the data to the CARP backend."
+  - id: "002_diary_study"
+    expected: cases/002_expected.json # relative to this file
+    prompts:
+      v1: "I want to set up a study with passive phone sensing (steps, location, battery, screen, ambient light, activity, device info) and connectivity monitoring like mobile connectivity, wifi and bluetooth. Add Sample weather and air quality every 30 minutes. I want Health data every hour such as including weight, BMI, birth date, gender, steps, heart rate, HRV RMSSD and SDNN, and sleep stages. Add two persistent image capture tasks (one demo, one gadget) that always stay on the task list that ask the user to upload a picture of a demo or a picture of a gadget. Retain data locally even after upload. Use CARP Web Service."
