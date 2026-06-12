@@ -251,19 +251,38 @@ def test_build_trigger_map_opaque_key_irrelevant():
 def test_rewrite_trigger_device_refs_rewrites_known():
     device_map = {"Watch": "hash_watch"}
     protocol = {"triggers": {"1": {"type": "manual", "sourceDeviceRoleName": "Watch"}}}
-    _rewrite_trigger_device_refs(protocol, device_map)
+    _rewrite_trigger_device_refs(protocol, device_map, {})
     assert protocol["triggers"]["1"]["sourceDeviceRoleName"] == "hash_watch"
 
 
 def test_rewrite_trigger_device_refs_unknown_left_unchanged():
     device_map = {"Watch": "hash_watch"}
     protocol = {"triggers": {"1": {"sourceDeviceRoleName": "Unknown"}}}
-    _rewrite_trigger_device_refs(protocol, device_map)
+    _rewrite_trigger_device_refs(protocol, device_map, {})
     assert protocol["triggers"]["1"]["sourceDeviceRoleName"] == "Unknown"
 
 
 def test_rewrite_trigger_device_refs_no_triggers():
-    _rewrite_trigger_device_refs({}, {})  # must not raise
+    _rewrite_trigger_device_refs({}, {}, {})  # must not raise
+
+
+def test_rewrite_trigger_device_refs_rewrites_task_name():
+    task_map = {"My Task": "hash_task"}
+    protocol = {
+        "triggers": {
+            "1": {"sourceDeviceRoleName": "", "taskName": "My Task"},
+            "2": {"sourceDeviceRoleName": "", "taskName": "Unknown Task"},
+        }
+    }
+    _rewrite_trigger_device_refs(protocol, {}, task_map)
+    assert protocol["triggers"]["1"]["taskName"] == "hash_task"
+    assert protocol["triggers"]["2"]["taskName"] == "Unknown Task"
+
+
+def test_rewrite_trigger_device_refs_no_task_name_untouched():
+    protocol = {"triggers": {"1": {"sourceDeviceRoleName": ""}}}
+    _rewrite_trigger_device_refs(protocol, {}, {})
+    assert "taskName" not in protocol["triggers"]["1"]
 
 
 # ---------------------------------------------------------------------------

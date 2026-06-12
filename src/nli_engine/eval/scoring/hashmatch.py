@@ -200,7 +200,7 @@ def to_content_addressed(protocol: dict[str, Any]) -> dict[str, Any]:
     """
     device_map = _build_device_map(protocol)
     task_map = _build_task_map(protocol)
-    _rewrite_trigger_device_refs(protocol, device_map)
+    _rewrite_trigger_device_refs(protocol, device_map, task_map)
 
     trigger_map = _build_trigger_map(protocol)
     protocol = _rewrite_refs(protocol, device_map, task_map, trigger_map)
@@ -359,18 +359,23 @@ def _build_task_map(protocol: dict[str, Any]) -> dict[str, str]:
 
 
 def _rewrite_trigger_device_refs(
-    protocol: dict[str, Any], device_map: dict[str, str]
+    protocol: dict[str, Any],
+    device_map: dict[str, str],
+    task_map: dict[str, str],
 ) -> None:
-    """Rewrite ``sourceDeviceRoleName`` in every trigger to its device content hash.
+    """Rewrite cross-reference fields in every trigger to stable content hashes.
 
-    Must be called after :func:`_build_device_map` and before
+    Rewrites ``sourceDeviceRoleName`` via *device_map* and, for trigger types
+    that reference a task by name (``NoUserTaskTrigger``, ``UserTaskTrigger``),
+    rewrites ``taskName`` via *task_map*.  Must be called after
+    :func:`_build_device_map` and :func:`_build_task_map` and before
     :func:`_build_trigger_map` so that trigger hashes are stable regardless of
-    the device label chosen by the LLM.  Mutates ``protocol["triggers"]`` in
-    place.
+    the labels chosen by the LLM.  Mutates ``protocol["triggers"]`` in place.
 
     Args:
         protocol: Protocol dict (mutated in place).
         device_map: ``roleName → content_hash`` map from :func:`_build_device_map`.
+        task_map: ``taskName → content_hash`` map from :func:`_build_task_map`.
     """
     triggers = protocol.get("triggers")
     if not isinstance(triggers, dict):
@@ -378,6 +383,9 @@ def _rewrite_trigger_device_refs(
     for trigger_value in triggers.values():
         source = trigger_value.get("sourceDeviceRoleName", "")
         trigger_value["sourceDeviceRoleName"] = device_map.get(source, source)
+        if "taskName" in trigger_value:
+            raw = trigger_value["taskName"]
+            trigger_value["taskName"] = task_map.get(raw, raw)
 
 
 def _build_trigger_map(protocol: dict[str, Any]) -> dict[str, str]:

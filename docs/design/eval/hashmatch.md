@@ -118,20 +118,26 @@ Several fields in the protocol reference other elements by their natural key:
 | Field                                       | Cross-reference    |
 | ------------------------------------------- | ------------------ |
 | `triggers[*].sourceDeviceRoleName`          | device `roleName`  |
+| `triggers[*].taskName`                      | task `name`        |
 | `connections[*].roleName`                   | device `roleName`  |
 | `connections[*].connectedToRoleName`        | device `roleName`  |
 | `taskControls[*].destinationDeviceRoleName` | device `roleName`  |
 | `taskControls[*].taskName`                  | task `name`        |
 | `taskControls[*].triggerId`                 | trigger opaque key |
 
+`triggers[*].taskName` is present on `NoUserTaskTrigger` (fires when the named
+task is absent) and `UserTaskTrigger` (fires when the named task reaches a given
+state). Without rewriting, two triggers that reference the same task content
+under different names would hash differently.
+
 After step 1, the natural-key → content_hash maps are known. Every cross-reference
 field is rewritten to its stable content hash so that the referencing element's
 own hash is independent of the human-chosen label.
 
-> **Trigger timing:** `triggers[*].sourceDeviceRoleName` must be rewritten
-> _before_ triggers are hashed, so that trigger hashes do not depend on device
-> labels. `_rewrite_trigger_device_refs` is therefore called between the device
-> map build and the trigger map build.
+> **Trigger timing:** `triggers[*].sourceDeviceRoleName` and
+> `triggers[*].taskName` must be rewritten _before_ triggers are hashed, so that
+> trigger hashes depend only on content, not on labels. `_rewrite_trigger_device_refs`
+> is therefore called between the task map build and the trigger map build.
 
 ### Step 3 — Canonicalize remaining arrays
 
