@@ -3,11 +3,13 @@ from __future__ import annotations
 import pytest
 
 from nli_engine.eval.scoring.hashmatch import (
+    HashMatchScore,
     _build_device_map,
     _build_task_map,
     _build_trigger_map,
     _canonical,
     _canonical_hash,
+    _normalize_task_controls,
     _rewrite_refs,
     _rewrite_trigger_device_refs,
     strip_metadata,
@@ -361,6 +363,355 @@ def test_to_content_addressed_task_order_invariant():
     assert set(r1["tasks"].keys()) == set(r2["tasks"].keys())
 
 
+# ---------------------------------------------------------------------------
+# _normalize_task_controls
+# ---------------------------------------------------------------------------
+
+# Synthetic hash strings
+_HTASK_A = "task_a" * 5  # task A hash
+_HTASK_B = "task_b" * 5  # task B hash
+_HTASK_C = "task_c" * 5  # task C hash
+_HTASK_D = "task_d" * 5  # task D hash
+
+_HTR = "trigger" * 5  # trigger hash
+_HTR2 = "trigger2" * 5  # second trigger hash
+_HDEV = "device" * 5  # device hash
+
+_TASK_A = {"__type": "BackgroundTask", "measures": {"m1": {"type": "gps"}}}
+_TASK_B = {"__type": "BackgroundTask", "measures": {"m2": {"type": "hr"}}}
+_TASK_C = {"__type": "OtherTask", "measures": {"m3": {"type": "fr"}}}
+_TASK_D = {
+    "__type": "BackgroundTask",
+    "otherField": 42,
+    "measures": {"m2": {"type": "hr"}},
+}
+
+
+def _proto_with_four_tasks() -> dict:
+    """Canonical-state protocol with four distinct tasks."""
+    return {
+        "tasks": {
+            _HTASK_A: _TASK_A,
+            _HTASK_B: _TASK_B,
+            _HTASK_C: _TASK_C,
+            _HTASK_D: _TASK_D,
+        },
+        "triggers": {},
+        "taskControls": [
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_B,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_C,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HDEV,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+        ],
+    }
+
+
+def test_normalize_merge_A_and_B():
+    result = _normalize_task_controls(_proto_with_four_tasks())
+
+    assert len(result["taskControls"]) == 3  # merged AB + C + D
+
+    assert _HTASK_A not in result["tasks"]
+    assert _HTASK_B not in result["tasks"]
+
+    assert _HTASK_C in result["tasks"]
+    assert _HTASK_D in result["tasks"]
+
+    assert len(result["tasks"]) == 3  # merged_AB + C + D
+
+
+def _proto_with_two_tcs(task_a=None, task_b=None, trigger_ref=None):
+    """Canonical-state protocol with two taskControls sharing the same key."""
+    return {
+        "tasks": {
+            _HTASK_A: task_a or _TASK_A,
+            _HTASK_B: task_b or _TASK_B,
+        },
+        "triggers": {},
+        "taskControls": [
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_B,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+        ],
+    }
+
+
+def test_normalize_basic_merge():
+    result = _normalize_task_controls(_proto_with_two_tcs())
+
+    assert len(result["taskControls"]) == 1
+    assert len(result["tasks"]) == 1
+
+    merged_task = next(iter(result["tasks"].values()))
+    assert merged_task["__type"] == "BackgroundTask"
+    assert "m1" in merged_task["measures"]
+    assert "m2" in merged_task["measures"]
+
+    merged_hash = result["taskControls"][0]["taskName"]
+    assert merged_hash in result["tasks"]
+
+
+def test_normalize_trigger_locked_blocks_merge():
+    protocol = _proto_with_two_tcs()
+    # Lock task A via a trigger taskName reference
+    protocol["triggers"] = {"th": {"sourceDeviceRoleName": _HDEV, "taskName": _HTASK_A}}
+
+    result = _normalize_task_controls(protocol)
+
+    assert len(result["taskControls"]) == 2
+    assert _HTASK_A in result["tasks"]
+    assert _HTASK_B in result["tasks"]
+
+
+def test_normalize_locked_task_excluded_others_still_merge():
+    # 3 tasks in the same group: A (locked), B and C (unlocked).
+    # B and C must merge; A must keep its own taskControl.
+    task_c = {"__type": "BackgroundTask", "measures": {"m3": {"type": "steps"}}}
+    protocol = {
+        "tasks": {_HTASK_A: _TASK_A, _HTASK_B: _TASK_B, _HTASK_C: task_c},
+        "triggers": {"th": {"sourceDeviceRoleName": _HDEV, "taskName": _HTASK_A}},
+        "taskControls": [
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_B,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_C,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+        ],
+    }
+
+    result = _normalize_task_controls(protocol)
+
+    assert len(result["taskControls"]) == 2  # A's TC + merged BC TC
+    assert _HTASK_A in result["tasks"]
+    assert _HTASK_B not in result["tasks"]
+    assert _HTASK_C not in result["tasks"]
+    assert len(result["tasks"]) == 2  # A + merged_BC
+
+    merged_task = next(v for h, v in result["tasks"].items() if h != _HTASK_A)
+    assert "m2" in merged_task["measures"]
+    assert "m3" in merged_task["measures"]
+
+
+def test_normalize_mixed_types_partial_merge():
+    # BackgroundTask A + B share a kind → merge.
+    # AppTask C is a different kind → stays as its own TC.
+    task_c_app = {"__type": "AppTask", "measures": {"m3": {"type": "image"}}}
+    protocol = {
+        "tasks": {_HTASK_A: _TASK_A, _HTASK_B: _TASK_B, _HTASK_C: task_c_app},
+        "triggers": {},
+        "taskControls": [
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_B,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_C,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+        ],
+    }
+
+    result = _normalize_task_controls(protocol)
+
+    assert len(result["taskControls"]) == 2  # merged_AB + C
+    assert _HTASK_A not in result["tasks"]
+    assert _HTASK_B not in result["tasks"]
+    assert _HTASK_C in result["tasks"]
+
+    merged_task = next(v for h, v in result["tasks"].items() if h != _HTASK_C)
+    assert merged_task["__type"] == "BackgroundTask"
+    assert "m1" in merged_task["measures"]
+    assert "m2" in merged_task["measures"]
+
+
+def test_normalize_different_type_blocks_merge():
+    task_b_app = {"__type": "AppTask", "measures": {"m2": {"type": "hr"}}}
+    protocol = _proto_with_two_tcs(task_b=task_b_app)
+
+    result = _normalize_task_controls(protocol)
+
+    assert len(result["taskControls"]) == 2
+    assert _HTASK_A in result["tasks"]
+    assert _HTASK_B in result["tasks"]
+
+
+def test_normalize_different_non_measures_field_blocks_merge():
+    task_b_diff = {
+        "__type": "BackgroundTask",
+        "duration": 999,
+        "measures": {"m2": {"type": "hr"}},
+    }
+    protocol = _proto_with_two_tcs(task_b=task_b_diff)
+
+    result = _normalize_task_controls(protocol)
+
+    assert len(result["taskControls"]) == 2
+
+
+def test_normalize_task_in_multiple_groups():
+    # taskA appears in group1 (trigger _HT / device _HD) and group2 (trigger _HT2 / device _HD)
+    task_c = {"__type": "BackgroundTask", "measures": {"m3": {"type": "steps"}}}
+    protocol = {
+        "tasks": {_HTASK_A: _TASK_A, _HTASK_B: _TASK_B, _HTASK_C: task_c},
+        "triggers": {},
+        "taskControls": [
+            # group1: A + B → mergedAB
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_B,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            # group2: A + C → mergedAC
+            {
+                "triggerId": _HTR2,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR2,
+                "taskName": _HTASK_C,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+        ],
+    }
+
+    result = _normalize_task_controls(protocol)
+
+    assert len(result["taskControls"]) == 2
+    # Two merged tasks; original A, B, C all removed
+    assert _HTASK_A not in result["tasks"]
+    assert _HTASK_B not in result["tasks"]
+    assert _HTASK_C not in result["tasks"]
+    assert len(result["tasks"]) == 2
+
+
+def test_hashmatch_score_split_equals_merged():
+    split = {
+        "primaryDevices": [{"roleName": "Phone", "__type": "Smartphone"}],
+        "connectedDevices": [],
+        "tasks": [
+            {
+                "name": "Task A",
+                "__type": "BackgroundTask",
+                "measures": [{"type": "gps"}],
+            },
+            {
+                "name": "Task B",
+                "__type": "BackgroundTask",
+                "measures": [{"type": "hr"}],
+            },
+        ],
+        "triggers": {
+            "1": {"__type": "ImmediateTrigger", "sourceDeviceRoleName": "Phone"}
+        },
+        "connections": [],
+        "taskControls": [
+            {
+                "destinationDeviceRoleName": "Phone",
+                "taskName": "Task A",
+                "triggerId": "1",
+                "control": "Start",
+            },
+            {
+                "destinationDeviceRoleName": "Phone",
+                "taskName": "Task B",
+                "triggerId": "1",
+                "control": "Start",
+            },
+        ],
+    }
+    merged = {
+        "primaryDevices": [{"roleName": "Phone", "__type": "Smartphone"}],
+        "connectedDevices": [],
+        "tasks": [
+            {
+                "name": "Task AB",
+                "__type": "BackgroundTask",
+                "measures": [{"type": "gps"}, {"type": "hr"}],
+            },
+        ],
+        "triggers": {
+            "1": {"__type": "ImmediateTrigger", "sourceDeviceRoleName": "Phone"}
+        },
+        "connections": [],
+        "taskControls": [
+            {
+                "destinationDeviceRoleName": "Phone",
+                "taskName": "Task AB",
+                "triggerId": "1",
+                "control": "Start",
+            },
+        ],
+    }
+
+    score = HashMatchScore.compute(split, merged)
+
+    assert score.per_field["tasks"].f1 == 1.0
+    assert score.per_field["taskControls"].f1 == 1.0
+    assert score.f1 == 1.0
+
+
 def test_to_content_addressed_device_label_invariant():
     # Renaming a device (same content, different roleName) must not change
     # the device hash or any cross-reference hashes.
@@ -385,3 +736,103 @@ def test_to_content_addressed_device_label_invariant():
     assert set(r1["primaryDevices"].keys()) == set(r2["primaryDevices"].keys())
     assert set(r1["connections"].keys()) == set(r2["connections"].keys())
     assert set(r1["taskControls"].keys()) == set(r2["taskControls"].keys())
+
+
+_HEALTH_MEASURE_A = "WEIGHT"
+_HEALTH_MEASURE_B = "SLEEP_LIGHT"
+_HEALTH_MEASURE_C = "BODY_MASS_INDEX"
+_HEALTH_MEASURE_D = "SLEEP_ASLEEP"
+
+_HASH_HMA = "health_task_a" * 2
+_HASH_HMB = "health_task_b" * 2
+_HASH_HMC = "health_task_c" * 2
+_HASH_HMD = "health_task_d" * 2
+
+_HEALTH_TASK_A = {
+    "__type": "BackgroundTask",
+    "measures": {
+        "m1": {
+            "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+            "type": "dk.cachet.carp.health",
+            "overrideSamplingConfiguration": {
+                "__type": "dk.cachet.carp.common.application.sampling.HealthSamplingConfiguration",
+                "past": 2592000000000,
+                "future": 86400000000,
+                "healthDataTypes": {
+                    _HASH_HMA: _HEALTH_MEASURE_A,
+                    _HASH_HMB: _HEALTH_MEASURE_B,
+                },
+            },
+        }
+    },
+}
+
+_HEALTH_TASK_B = {
+    "__type": "BackgroundTask",
+    "measures": {
+        "m1": {
+            "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+            "type": "dk.cachet.carp.health",
+            "overrideSamplingConfiguration": {
+                "__type": "dk.cachet.carp.common.application.sampling.HealthSamplingConfiguration",
+                "past": 2592000000000,
+                "future": 86400000000,
+                "healthDataTypes": {
+                    _HASH_HMC: _HEALTH_MEASURE_C,
+                    _HASH_HMD: _HEALTH_MEASURE_D,
+                },
+            },
+        }
+    },
+}
+
+_EXPECTED_MERGED_HEALTH_MEASURE = {
+    "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+    "type": "dk.cachet.carp.health",
+    "overrideSamplingConfiguration": {
+        "__type": "dk.cachet.carp.common.application.sampling.HealthSamplingConfiguration",
+        "past": 2592000000000,
+        "future": 86400000000,
+        "healthDataTypes": {
+            _HASH_HMA: _HEALTH_MEASURE_A,
+            _HASH_HMB: _HEALTH_MEASURE_B,
+            _HASH_HMC: _HEALTH_MEASURE_C,
+            _HASH_HMD: _HEALTH_MEASURE_D,
+        },
+    },
+}
+
+
+def _proto_with_health_tasks() -> dict:
+    return {
+        "tasks": {_HTASK_A: _HEALTH_TASK_A, _HTASK_B: _HEALTH_TASK_B},
+        "triggers": {},
+        "taskControls": [
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_A,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+            {
+                "triggerId": _HTR,
+                "taskName": _HTASK_B,
+                "destinationDeviceRoleName": _HDEV,
+                "control": "Start",
+            },
+        ],
+    }
+
+
+def test_normalize_health_tasks_merge():
+    result = _normalize_task_controls(_proto_with_health_tasks())
+
+    assert len(result["taskControls"]) == 1
+    assert len(result["tasks"]) == 1
+
+    merged_task = next(iter(result["tasks"].values()))
+    merged_measure = next(iter(merged_task["measures"].values()))
+
+    assert merged_measure == _EXPECTED_MERGED_HEALTH_MEASURE, (
+        "Health measures should be merged correctly"
+    )

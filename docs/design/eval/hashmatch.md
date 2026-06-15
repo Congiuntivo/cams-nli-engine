@@ -139,9 +139,32 @@ own hash is independent of the human-chosen label.
 > trigger hashes depend only on content, not on labels. `_rewrite_trigger_device_refs`
 > is therefore called between the task map build and the trigger map build.
 
+### Step 2.5 — Normalize split/merged task equivalence
+
+CARP allows the same study behaviour to be expressed in two forms:
+
+- **Split**: two `taskControls` sharing the same `(triggerId, destinationDeviceRoleName, control)` key, each pointing to a separate task with a subset of measures.
+- **Merged**: one `taskControl` pointing to a single task whose `measures` is the union.
+
+`_normalize_task_controls` processes each `(triggerId, destinationDeviceRoleName, control)` group in two stages:
+
+1. **Exclude trigger-locked tasks.** Any task whose content hash is referenced by a trigger `taskName` field (e.g. `NoUserTaskTrigger`, `UserTaskTrigger`) is passed through as its own taskControl and excluded from merging. Changing a locked task's content hash would orphan the trigger reference.
+
+2. **Sub-group by kind.** The remaining unlocked tasks are sub-grouped by their _kind key_ — the JSON-serialised task body with `measures` removed. This captures `__type` and every other structural field. Tasks in the same kind sub-group are structurally compatible; tasks in different kind sub-groups stay as separate taskControls. Within each kind sub-group with 2+ tasks, all measures are merged into a single merged task via `_merge_task_measures`.
+
+3. **Merge measures** (`_merge_task_measures`). Measures are not merged by a plain dict union, because health monitoring introduces a second split/merge ambiguity: the same health measure type can appear in both tasks with different `healthDataTypes` subsets. `_merge_task_measures` handles this in two passes over all constituent tasks' measures:
+   - **Non-health measures** (`type != "dk.cachet.carp.health"`): inserted by key into the result (plain union — equal content = equal key, so duplicates collapse naturally).
+   - **Health measures** (`type == "dk.cachet.carp.health"`): grouped by a _measure kind key_ — the measure serialised with `healthDataTypes` removed from `overrideSamplingConfiguration`. Measures in the same kind group have their `healthDataTypes` dicts unioned, producing one merged measure per group. The merged measure is assigned a new content hash.
+
+   This means a split protocol (two tasks each collecting a subset of health types) and a merged protocol (one task collecting the full set) produce the same merged measure hash after normalization.
+
+Original task hashes are removed from `protocol["tasks"]` only after all groups are fully processed, to handle tasks shared across multiple groups.
+
+Called after step 2 (cross-references are stable content hashes) and before step 3 (`taskControls` is still a plain list).
+
 ### Step 3 — Canonicalize remaining arrays
 
-After steps 1 and 2, `primaryDevices`, `connectedDevices`, `tasks`, and
+After steps 1, 2, and 2.5, `primaryDevices`, `connectedDevices`, `tasks`, and
 `triggers` are already content-addressed dicts. The remaining array fields
 (`connections`, `taskControls`, and any future additions) are still plain lists.
 `_canonical` is applied to the full protocol to convert them:

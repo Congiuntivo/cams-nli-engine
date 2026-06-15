@@ -204,6 +204,7 @@ def to_content_addressed(protocol: dict[str, Any]) -> dict[str, Any]:
 
     trigger_map = _build_trigger_map(protocol)
     protocol = _rewrite_refs(protocol, device_map, task_map, trigger_map)
+    protocol = _normalize_task_controls(protocol)
     protocol = strip_metadata(protocol)
     return _canonical(protocol)
 
@@ -284,6 +285,172 @@ def _canonical_hash(obj: Any) -> tuple[Any, str]:
     """
     c = _canonical(strip_metadata(obj))
     return c, _hash_element(c)
+
+
+def _merge_task_measures(task_bodies: list[dict[str, Any]]) -> dict[str, Any]:
+    """Union measures across tasks, merging health measures by kind.
+
+    Non-health measures are merged by plain dict union (measure key → value).
+    Health measures (``type == "dk.cachet.carp.health"``) are grouped by their
+    structural kind — the measure serialised with ``healthDataTypes`` removed from
+    ``overrideSamplingConfiguration`` — and their ``healthDataTypes`` dicts are
+    unioned within each kind group, producing one merged measure per group.
+
+    This handles both the case where two health measures have different hash keys
+    (real canonicalized data) and the case where they share the same synthetic key
+    (unit tests), in either case producing one measure per kind with the full union
+    of health data types.
+
+    Args:
+        task_bodies: Canonical task dicts (post-``_build_task_map``) whose measures
+            are to be merged.
+
+    Returns:
+        A ``{measure_key: measure}`` dict suitable for use as the ``measures``
+        field of the merged task.
+    """
+    non_health: dict[str, Any] = {}
+    health_groups: dict[str, dict[str, Any]] = {}
+
+    for body in task_bodies:
+        for measure_key, measure in body.get("measures", {}).items():
+            if measure.get("type") != "dk.cachet.carp.health":
+                non_health[measure_key] = measure
+                continue
+
+            sampling_cfg = measure.get("overrideSamplingConfiguration", {})
+            kind_cfg = {k: v for k, v in sampling_cfg.items() if k != "healthDataTypes"}
+            kind_measure = {
+                k: v for k, v in measure.items() if k != "overrideSamplingConfiguration"
+            }
+            kind_measure["overrideSamplingConfiguration"] = kind_cfg
+            kind_key = json.dumps(kind_measure, sort_keys=True)
+
+            if kind_key not in health_groups:
+                health_groups[kind_key] = {
+                    "template": measure,
+                    "healthDataTypes": dict(sampling_cfg.get("healthDataTypes", {})),
+                }
+            else:
+                health_groups[kind_key]["healthDataTypes"].update(
+                    sampling_cfg.get("healthDataTypes", {})
+                )
+
+    result = dict(non_health)
+    for group in health_groups.values():
+        template = group["template"]
+        merged_sampling = {
+            **template["overrideSamplingConfiguration"],
+            "healthDataTypes": group["healthDataTypes"],
+        }
+        merged_measure = {**template, "overrideSamplingConfiguration": merged_sampling}
+        result[_hash_element(merged_measure)] = merged_measure
+
+    return result
+
+
+def _normalize_task_controls(protocol: dict[str, Any]) -> dict[str, Any]:
+    """Normalize split/merged task equivalence before final canonicalization.
+
+    Two CARP protocols that express the same study behaviour — one using
+    separate tasks per taskControl (split form) and one using a single task
+    with merged measures (merged form) — must score identically.  This
+    function detects groups of taskControls sharing the same
+    ``(triggerId, destinationDeviceRoleName, control)`` key and, where all
+    tasks in the group are eligible, replaces them with a single taskControl
+    pointing to a new merged task whose ``measures`` is the union.
+
+    Called after :func:`_rewrite_refs` (all cross-references are stable
+    content hashes) and before :func:`strip_metadata` /
+    :func:`_canonical` (``taskControls`` is still a list).
+
+    Within each group, tasks referenced by a trigger ``taskName`` field
+    (trigger-locked) are passed through as individual taskControls and excluded
+    from merging.  The remaining unlocked tasks are sub-grouped by *kind* —
+    the JSON-serialised non-``measures`` body (which includes ``__type`` and
+    all other structural fields).  Tasks with the same kind key are structurally
+    compatible and have their measures merged; tasks in different kind sub-groups
+    are each left as their own taskControl.  Original task hashes are removed
+    from ``protocol["tasks"]`` only after all groups are processed, to handle
+    tasks shared across groups.
+
+    Args:
+        protocol: Protocol dict after :func:`_rewrite_refs`.
+
+    Returns:
+        A shallow copy of *protocol* with normalized ``taskControls`` (list)
+        and ``tasks`` (dict).
+    """
+    task_controls: list[dict[str, Any]] = protocol.get("taskControls", [])
+    tasks: dict[str, Any] = protocol.get("tasks", {})
+
+    locked_tasks: set[str] = set()
+    for trigger in protocol.get("triggers", {}).values():
+        if "taskName" in trigger:
+            locked_tasks.add(trigger["taskName"])
+
+    groups: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    for tc in task_controls:
+        key = (
+            tc.get("triggerId", ""),
+            tc.get("destinationDeviceRoleName", ""),
+            tc.get("control", ""),
+        )
+        groups.setdefault(key, []).append(tc)
+
+    new_tasks: dict[str, Any] = dict(tasks)
+    new_task_controls: list[dict[str, Any]] = []
+    to_remove: set[str] = set()
+
+    for group in groups.values():
+        # Locked tasks must stay as individual taskControls regardless of group size.
+        # The remaining unlocked tasks are then considered for merging independently.
+        locked_tcs = [tc for tc in group if tc["taskName"] in locked_tasks]
+        unlocked_tcs = [tc for tc in group if tc["taskName"] not in locked_tasks]
+
+        new_task_controls.extend(locked_tcs)
+
+        kind_groups: dict[str, list[dict[str, Any]]] = {}
+        for tc in unlocked_tcs:
+            body = tasks.get(tc["taskName"])
+            if body is None:
+                new_task_controls.append(tc)
+                print(
+                    f"Warning: taskControl references unknown task '{tc['taskName']}'; skipping merge for this taskControl"
+                )
+                continue
+            kind_key = json.dumps(
+                {k: v for k, v in body.items() if k != "measures"},
+                sort_keys=True,
+            )
+            kind_groups.setdefault(kind_key, []).append(tc)
+
+        for kind_tcs in kind_groups.values():
+            if len(kind_tcs) < 2:
+                new_task_controls.extend(kind_tcs)
+                continue
+
+            task_hashes = [tc["taskName"] for tc in kind_tcs]
+            task_bodies = [tasks[h] for h in task_hashes]
+
+            merged_measures = _merge_task_measures(task_bodies)
+
+            merged_task = {**task_bodies[0], "measures": merged_measures}
+            merged_hash = _hash_element(merged_task)
+
+            new_tasks[merged_hash] = merged_task
+            to_remove.update(task_hashes)
+            new_task_controls.append({**kind_tcs[0], "taskName": merged_hash})
+
+    still_referenced = {tc["taskName"] for tc in new_task_controls}
+    for h in to_remove:
+        if h not in still_referenced:
+            new_tasks.pop(h, None)
+
+    result = dict(protocol)
+    result["tasks"] = new_tasks
+    result["taskControls"] = new_task_controls
+    return result
 
 
 def _build_device_map(protocol: dict[str, Any]) -> dict[str, str]:
