@@ -204,6 +204,7 @@ def to_content_addressed(protocol: dict[str, Any]) -> dict[str, Any]:
 
     trigger_map = _build_trigger_map(protocol)
     protocol = _rewrite_refs(protocol, device_map, task_map, trigger_map)
+    protocol = _normalize_location_tasks(protocol)
     protocol = _normalize_task_controls(protocol)
     protocol = strip_metadata(protocol)
     return _canonical(protocol)
@@ -346,6 +347,70 @@ def _merge_task_measures(task_bodies: list[dict[str, Any]]) -> dict[str, Any]:
         merged_measure = {**template, "overrideSamplingConfiguration": merged_sampling}
         result[_hash_element(merged_measure)] = merged_measure
 
+    return result
+
+
+def _normalize_location_tasks(protocol: dict[str, Any]) -> dict[str, Any]:
+    """Redirect location-sensing tasks from LocationService to Smartphone.
+
+    A task is a location-sensing task if any of its measures has
+    ``type == "dk.cachet.carp.location"``.  Such tasks, when assigned to a
+    ``LocationService`` device via ``taskControls.destinationDeviceRoleName``,
+    are semantically equivalent to the same task assigned to the primary
+    ``Smartphone`` device.  This function rewrites
+    ``destinationDeviceRoleName`` in every matching taskControl from the
+    LocationService hash to the Smartphone hash so that subsequent task
+    merging can treat them uniformly.
+
+    Called after :func:`_rewrite_refs` (all cross-references are stable
+    content hashes) and before :func:`_normalize_task_controls`.
+
+    Args:
+        protocol: Protocol dict after :func:`_rewrite_refs`.
+
+    Returns:
+        A shallow copy of *protocol* with taskControls rewritten.
+    """
+    location_service_hashes = {
+        h
+        for h, dev in protocol.get("connectedDevices", {}).items()
+        if dev.get("__type") == "dk.carp.cams.devices.LocationService"
+    }
+    if not location_service_hashes:
+        return protocol
+
+    phone_hash = next(
+        (
+            h
+            for h, dev in protocol.get("primaryDevices", {}).items()
+            if dev.get("__type") == "dk.carp.cams.devices.Smartphone"
+        ),
+        None,
+    )
+    if phone_hash is None:
+        return protocol
+
+    location_task_hashes = {
+        h
+        for h, task in protocol.get("tasks", {}).items()
+        if any(
+            m.get("type") == "dk.cachet.carp.location"
+            for m in task.get("measures", {}).values()
+        )
+    }
+    if not location_task_hashes:
+        return protocol
+
+    result = dict(protocol)
+    result["taskControls"] = [
+        {**tc, "destinationDeviceRoleName": phone_hash}
+        if (
+            tc.get("destinationDeviceRoleName") in location_service_hashes
+            and tc.get("taskName") in location_task_hashes
+        )
+        else tc
+        for tc in protocol.get("taskControls", [])
+    ]
     return result
 
 

@@ -9,6 +9,7 @@ from nli_engine.eval.scoring.hashmatch import (
     _build_trigger_map,
     _canonical,
     _canonical_hash,
+    _normalize_location_tasks,
     _normalize_task_controls,
     _rewrite_refs,
     _rewrite_trigger_device_refs,
@@ -836,3 +837,99 @@ def test_normalize_health_tasks_merge():
     assert merged_measure == _EXPECTED_MERGED_HEALTH_MEASURE, (
         "Health measures should be merged correctly"
     )
+
+
+# ---------------------------------------------------------------------------
+# _normalize_location_tasks
+# ---------------------------------------------------------------------------
+
+_HPHONE = "phone_dev" * 4  # synthetic Smartphone hash
+_HLOC_SVC = "loc_svc_" * 4  # synthetic LocationService hash
+_HLOC_TASK = "loc_task" * 4  # synthetic task hash for location-sensing task
+_HOTHER_TASK = "other_ta" * 4  # synthetic task hash for non-location task
+_HTR_LOC = "trig_loc" * 4  # synthetic trigger hash
+
+
+def _proto_for_location_normalization(
+    *,
+    destination: str = _HLOC_SVC,
+    task_hash: str = _HLOC_TASK,
+    include_location_service: bool = True,
+) -> dict:
+    """Build a canonical-state protocol fragment for location normalization tests."""
+    connected: dict = {}
+    if include_location_service:
+        connected[_HLOC_SVC] = {
+            "__type": "dk.carp.cams.devices.LocationService",
+            "defaultSamplingConfiguration": {},
+        }
+    return {
+        "primaryDevices": {
+            _HPHONE: {
+                "__type": "dk.carp.cams.devices.Smartphone",
+                "isPrimaryDevice": True,
+                "defaultSamplingConfiguration": {},
+            }
+        },
+        "connectedDevices": connected,
+        "tasks": {
+            _HLOC_TASK: {
+                "__type": "dk.cachet.carp.common.application.tasks.BackgroundTask",
+                "measures": {
+                    "m_loc": {
+                        "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+                        "type": "dk.cachet.carp.location",
+                    }
+                },
+            },
+            _HOTHER_TASK: {
+                "__type": "dk.cachet.carp.common.application.tasks.BackgroundTask",
+                "measures": {
+                    "m_hr": {
+                        "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+                        "type": "dk.cachet.carp.heartrate",
+                    }
+                },
+            },
+        },
+        "triggers": {},
+        "taskControls": [
+            {
+                "triggerId": _HTR_LOC,
+                "taskName": task_hash,
+                "destinationDeviceRoleName": destination,
+                "control": "Start",
+            }
+        ],
+    }
+
+
+def test_normalize_location_task_on_location_service_redirected_to_phone():
+    proto = _proto_for_location_normalization(
+        destination=_HLOC_SVC, task_hash=_HLOC_TASK
+    )
+    result = _normalize_location_tasks(proto)
+    assert result["taskControls"][0]["destinationDeviceRoleName"] == _HPHONE
+
+
+def test_normalize_location_task_already_on_phone_unchanged():
+    proto = _proto_for_location_normalization(destination=_HPHONE, task_hash=_HLOC_TASK)
+    result = _normalize_location_tasks(proto)
+    assert result["taskControls"][0]["destinationDeviceRoleName"] == _HPHONE
+
+
+def test_normalize_non_location_task_on_location_service_unchanged():
+    proto = _proto_for_location_normalization(
+        destination=_HLOC_SVC, task_hash=_HOTHER_TASK
+    )
+    result = _normalize_location_tasks(proto)
+    assert result["taskControls"][0]["destinationDeviceRoleName"] == _HLOC_SVC
+
+
+def test_normalize_location_no_location_service_noop():
+    proto = _proto_for_location_normalization(
+        destination=_HLOC_SVC, task_hash=_HLOC_TASK, include_location_service=False
+    )
+    result = _normalize_location_tasks(proto)
+    # No LocationService in connectedDevices → protocol returned unchanged
+    assert result["taskControls"][0]["destinationDeviceRoleName"] == _HLOC_SVC
