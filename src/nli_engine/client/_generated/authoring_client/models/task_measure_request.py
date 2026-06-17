@@ -48,13 +48,21 @@ class TaskMeasureRequest(BaseModel):
                 "dk.cachet.carp.activity",
                 "dk.cachet.carp.airquality",
                 "dk.cachet.carp.ambientlight",
+                "dk.cachet.carp.apps",
+                "dk.cachet.carp.appusage",
+                "dk.cachet.carp.audio",
                 "dk.cachet.carp.batterystate",
+                "dk.cachet.carp.beacon",
+                "dk.cachet.carp.bluetooth",
+                "dk.cachet.carp.calendar",
+                "dk.cachet.carp.connectivity",
                 "dk.cachet.carp.deviceinformation",
                 "dk.cachet.carp.esense.button",
                 "dk.cachet.carp.esense.sensor",
                 "dk.cachet.carp.freememory",
                 "dk.cachet.carp.geofence",
                 "dk.cachet.carp.health",
+                "dk.cachet.carp.image",
                 "dk.cachet.carp.location",
                 "dk.cachet.carp.magneticfield",
                 "dk.cachet.carp.mobility",
@@ -70,7 +78,9 @@ class TaskMeasureRequest(BaseModel):
                 "dk.cachet.carp.movisens.respiration",
                 "dk.cachet.carp.movisens.skin_temperature",
                 "dk.cachet.carp.movisens.tap_marker",
+                "dk.cachet.carp.noise",
                 "dk.cachet.carp.nongravitationalacceleration",
+                "dk.cachet.carp.phonelog",
                 "dk.cachet.carp.polar.accelerometer",
                 "dk.cachet.carp.polar.ecg",
                 "dk.cachet.carp.polar.gyroscope",
@@ -81,12 +91,16 @@ class TaskMeasureRequest(BaseModel):
                 "dk.cachet.carp.rotation",
                 "dk.cachet.carp.screenevent",
                 "dk.cachet.carp.stepevent",
+                "dk.cachet.carp.textmessage",
+                "dk.cachet.carp.textmessagelog",
                 "dk.cachet.carp.timezone",
+                "dk.cachet.carp.video",
                 "dk.cachet.carp.weather",
+                "dk.cachet.carp.wifi",
             ]
         ):
             raise ValueError(
-                "must be one of enum values ('dk.cachet.carp.acceleration', 'dk.cachet.carp.accelerationfeatures', 'dk.cachet.carp.activity', 'dk.cachet.carp.airquality', 'dk.cachet.carp.ambientlight', 'dk.cachet.carp.batterystate', 'dk.cachet.carp.deviceinformation', 'dk.cachet.carp.esense.button', 'dk.cachet.carp.esense.sensor', 'dk.cachet.carp.freememory', 'dk.cachet.carp.geofence', 'dk.cachet.carp.health', 'dk.cachet.carp.location', 'dk.cachet.carp.magneticfield', 'dk.cachet.carp.mobility', 'dk.cachet.carp.movesense.deviceinformation', 'dk.cachet.carp.movesense.ecg', 'dk.cachet.carp.movesense.hr', 'dk.cachet.carp.movesense.imu', 'dk.cachet.carp.movesense.state', 'dk.cachet.carp.movesense.temperature', 'dk.cachet.carp.movisens.activity', 'dk.cachet.carp.movisens.eda', 'dk.cachet.carp.movisens.hr', 'dk.cachet.carp.movisens.respiration', 'dk.cachet.carp.movisens.skin_temperature', 'dk.cachet.carp.movisens.tap_marker', 'dk.cachet.carp.nongravitationalacceleration', 'dk.cachet.carp.polar.accelerometer', 'dk.cachet.carp.polar.ecg', 'dk.cachet.carp.polar.gyroscope', 'dk.cachet.carp.polar.hr', 'dk.cachet.carp.polar.magnetometer', 'dk.cachet.carp.polar.ppg', 'dk.cachet.carp.polar.ppi', 'dk.cachet.carp.rotation', 'dk.cachet.carp.screenevent', 'dk.cachet.carp.stepevent', 'dk.cachet.carp.timezone', 'dk.cachet.carp.weather')"
+                "must be one of enum values ('dk.cachet.carp.acceleration', 'dk.cachet.carp.accelerationfeatures', 'dk.cachet.carp.activity', 'dk.cachet.carp.airquality', 'dk.cachet.carp.ambientlight', 'dk.cachet.carp.apps', 'dk.cachet.carp.appusage', 'dk.cachet.carp.audio', 'dk.cachet.carp.batterystate', 'dk.cachet.carp.beacon', 'dk.cachet.carp.bluetooth', 'dk.cachet.carp.calendar', 'dk.cachet.carp.connectivity', 'dk.cachet.carp.deviceinformation', 'dk.cachet.carp.esense.button', 'dk.cachet.carp.esense.sensor', 'dk.cachet.carp.freememory', 'dk.cachet.carp.geofence', 'dk.cachet.carp.health', 'dk.cachet.carp.image', 'dk.cachet.carp.location', 'dk.cachet.carp.magneticfield', 'dk.cachet.carp.mobility', 'dk.cachet.carp.movesense.deviceinformation', 'dk.cachet.carp.movesense.ecg', 'dk.cachet.carp.movesense.hr', 'dk.cachet.carp.movesense.imu', 'dk.cachet.carp.movesense.state', 'dk.cachet.carp.movesense.temperature', 'dk.cachet.carp.movisens.activity', 'dk.cachet.carp.movisens.eda', 'dk.cachet.carp.movisens.hr', 'dk.cachet.carp.movisens.respiration', 'dk.cachet.carp.movisens.skin_temperature', 'dk.cachet.carp.movisens.tap_marker', 'dk.cachet.carp.noise', 'dk.cachet.carp.nongravitationalacceleration', 'dk.cachet.carp.phonelog', 'dk.cachet.carp.polar.accelerometer', 'dk.cachet.carp.polar.ecg', 'dk.cachet.carp.polar.gyroscope', 'dk.cachet.carp.polar.hr', 'dk.cachet.carp.polar.magnetometer', 'dk.cachet.carp.polar.ppg', 'dk.cachet.carp.polar.ppi', 'dk.cachet.carp.rotation', 'dk.cachet.carp.screenevent', 'dk.cachet.carp.stepevent', 'dk.cachet.carp.textmessage', 'dk.cachet.carp.textmessagelog', 'dk.cachet.carp.timezone', 'dk.cachet.carp.video', 'dk.cachet.carp.weather', 'dk.cachet.carp.wifi')"
             )
         return value
 
