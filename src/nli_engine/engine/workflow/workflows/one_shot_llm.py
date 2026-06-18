@@ -14,7 +14,7 @@ from nli_engine.engine.tools.registry import (
     TRIGGER_SPECIALIST_TOOL_NAMES,
     UNIT_SPECIALIST_NAMES,
 )
-from nli_engine.engine.workflow.assembly import AssemblyPlan
+from nli_engine.engine.workflow.assembly import AssemblyPlan, OrchestratorResult
 from nli_engine.engine.workflow.base import Message, Workflow, WorkflowContext
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.result import TurnResult
@@ -138,6 +138,14 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             system_prompt=_load_prompt("orchestrator.md"),
             max_iterations=config.max_iterations.get("orchestrator", 20),
             retriever=self._retriever,
+        )
+        self._orchestrator_result_step: ExtractionStep[OrchestratorResult] = (
+            ExtractionStep(
+                name="orchestrator_result",
+                client=orchestrator_client,
+                system_prompt=_load_prompt("orchestrator_result_extraction.md"),
+                schema=OrchestratorResult,
+            )
         )
 
     def _tools_for_names(self, names: list[str]) -> list[BoundTool]:
@@ -304,8 +312,14 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
 
         # One orchestrator invocation per assembly unit. The shared context
         # carries full history across units so AU N+1 sees AU N's work.
+        # Failed units are retried up to max_unit_retries times with error context
+        # injected; residual failures are surfaced in TurnResult.partial_failures.
+        max_unit_retries = self.config.parameters.get("max_unit_retries", 1)
+        partial_failures: list[str] = []
         n = len(assembly_plan.units)
         final_text = ""
+        orch_result = OrchestratorResult(success=True)
+
         for i, unit in enumerate(assembly_plan.units):
             context.history.append(
                 Message(
@@ -313,11 +327,39 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                     content=f"Assemble assembly unit {i + 1} of {n}: {unit.description}",
                 )
             )
-            final_text, log = self._orchestrator_step.run(
-                context,
-                self._resolve_tools(self._orchestrator_step),
-            )
-            logs.append(log)
+
+            for attempt in range(max_unit_retries + 1):
+                if attempt > 0:
+                    issues = "; ".join(orch_result.open_questions)
+                    context.history.append(
+                        Message(
+                            role="user",
+                            content=(
+                                f"Assembly unit {i + 1} is incomplete. Issues: {issues}. "
+                                "Retry, resolving the open questions above."
+                            ),
+                        )
+                    )
+
+                final_text, log = self._orchestrator_step.run(
+                    context,
+                    self._resolve_tools(self._orchestrator_step),
+                )
+                logs.append(log)
+
+                extraction_context = OneShotLLMWorkflowContext(
+                    history=[Message(role="user", content=final_text)]
+                )
+                orch_result, extraction_log = self._orchestrator_result_step.run(
+                    extraction_context
+                )
+                logs.append(extraction_log)
+
+                if orch_result.success:
+                    break
+            else:
+                issues = "; ".join(orch_result.open_questions)
+                partial_failures.append(f"Unit {i + 1} ({unit.name}): {issues}")
 
         protocol = self._session.serialize()
         return TurnResult(
@@ -325,4 +367,5 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             logs=logs,
             done=True,
             protocol=protocol,
+            partial_failures=partial_failures,
         )

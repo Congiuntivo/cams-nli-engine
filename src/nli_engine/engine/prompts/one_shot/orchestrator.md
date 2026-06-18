@@ -33,5 +33,8 @@ Final response (after `task_control_assembler` returns):
 
 - Short summary of every entity created for this assembly unit.
 - List Assumptions if any defaults were applied.
-- List Open questions if any parameters were missing or ambiguous.
+- List Open questions if any component is missing, any specialist failed, or any
+  parameter was ambiguous enough that the task control was not fully bound.
+  An open question means this assembly unit is incomplete.
+- If there are no open questions, the assembly unit is complete.
 - Do not include JSON or tool call details.

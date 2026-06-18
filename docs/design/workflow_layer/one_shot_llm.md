@@ -98,6 +98,25 @@ After `task_control_assembler` returns, the orchestrator emits a plain-text summ
 of the entities created for that unit, together with any Assumptions or Open questions.
 All orchestrator invocations share the same context, so AU N+1 sees AU N's history.
 
+**Retry loop.** After each orchestrator invocation, a lightweight
+`ExtractionStep[OrchestratorResult]` classifies the summary text as `success=true`
+or `success=false` (with `open_questions`). This step runs in a throwaway context and
+never touches the shared history. On failure, a retry user message quoting the open
+questions is appended and the orchestrator is re-invoked, up to `max_unit_retries`
+times (default 1). Units that still fail after all retries are recorded in
+`TurnResult.partial_failures` as human-readable strings and the loop continues to the
+next unit.
+
+```mermaid
+flowchart TD
+    PY[Python loop] -->|"Assemble unit N of M"| O[Orchestrator LLMStep]
+    O -->|final_text| CL[ExtractionStep classifier]
+    CL -->|success=true| NEXT[Next unit]
+    CL -->|"success=false\nattempt < max_retries"| RETRY["Inject error context\n(open_questions quoted)"]
+    RETRY --> O
+    CL -->|"success=false\nretries exhausted"| FAIL[Append to partial_failures\nand continue]
+```
+
 ## Specialists
 
 Each per-unit specialist is an `LLMStep` wrapped as a `BoundTool` via
@@ -181,6 +200,7 @@ models:
   # orchestrator: "gpt-5.4"
 parameters:
   api_base: "https://api.openai.com/v1/"
+  max_unit_retries: 1 # retries per assembly unit on failure (default 1)
 max_iterations:
   orchestrator: 20
   # specialist steps default to 5 each; override individually if needed:
@@ -234,28 +254,36 @@ the next.
 
 ## Error handling
 
-Pydantic `ValidationError` (raised when an LLM provides an argument that fails schema
-validation before the API call) is caught in `call_tool()` and returned as a retryable
-`ToolResult.error`. The specialist receives the full validation message — including the
-list of valid enum values — and can correct its arguments on the next iteration.
-`ApiException` from the server follows the same pattern: 4xx responses are retryable,
-5xx and auth failures are not.
+**Per-tool retry (within a specialist).** Pydantic `ValidationError` (raised when an
+LLM provides an argument that fails schema validation before the API call) is caught in
+`call_tool()` and returned as a retryable `ToolResult.error`. The specialist receives
+the full validation message — including the list of valid enum values — and can correct
+its arguments on the next iteration. `ApiException` from the server follows the same
+pattern: 4xx responses are retryable, 5xx and auth failures are not.
+
+**Assembly-unit retry (loop level).** When a specialist exhausts its iterations or
+reports an unrecoverable failure, the orchestrator surfaces it in its plain-text
+summary as an Open question. The Python loop detects this via `OrchestratorResult`
+and retries the unit with the error context quoted back (see [Orchestrator](#orchestrator)
+above). Units that cannot be recovered after `max_unit_retries` retries appear in
+`TurnResult.partial_failures`; the loop continues to the next unit regardless.
 
 ## Prompts
 
 All prompt files live under `engine/prompts/one_shot/`.
 
-| file                          | loaded by              |
-| ----------------------------- | ---------------------- |
-| `refiner.md`                  | Refiner step           |
-| `planner.md`                  | Planner step           |
-| `assembly_plan_extraction.md` | Extractor step         |
-| `orchestrator.md`             | Orchestrator step      |
-| `specialists/setup.md`        | Setup step             |
-| `specialists/device.md`       | device_specialist      |
-| `specialists/trigger.md`      | trigger_specialist     |
-| `specialists/task.md`         | task_specialist        |
-| `specialists/task_control.md` | task_control_assembler |
+| file                                | loaded by                      |
+| ----------------------------------- | ------------------------------ |
+| `refiner.md`                        | Refiner step                   |
+| `planner.md`                        | Planner step                   |
+| `assembly_plan_extraction.md`       | Extractor step                 |
+| `orchestrator.md`                   | Orchestrator step              |
+| `orchestrator_result_extraction.md` | Orchestrator result classifier |
+| `specialists/setup.md`              | Setup step                     |
+| `specialists/device.md`             | device_specialist              |
+| `specialists/trigger.md`            | trigger_specialist             |
+| `specialists/task.md`               | task_specialist                |
+| `specialists/task_control.md`       | task_control_assembler         |
 
 Every prompt receives the `{{inject: CAMS_info}}` substitution, which expands to the
 full CAMS domain reference (devices, measures, trigger types, task types, task

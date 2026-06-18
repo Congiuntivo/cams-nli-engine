@@ -10,3 +10,4 @@ class TurnResult(BaseModel, frozen=True):
     logs: list[StepLog]
     done: bool
     protocol: dict[str, Any] | None = None
+    partial_failures: list[str] = []

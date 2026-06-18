@@ -39,3 +39,26 @@ class AssemblyPlan(BaseModel):
     """
 
     units: list[AssemblyUnit]
+
+
+class OrchestratorResult(BaseModel):
+    """Classification of one orchestrator invocation's summary text.
+
+    Attributes:
+        success: True when all required specialists completed and the task control
+            was bound. False when any component is missing or any specialist failed.
+        open_questions: Unresolved issues or missing components blocking completion.
+            Empty when success is True.
+    """
+
+    success: bool = Field(
+        description=(
+            "True if the assembly unit is complete: all required specialists ran "
+            "and the task control was successfully bound. False if any specialist "
+            "failed or any required component is missing."
+        )
+    )
+    open_questions: list[str] = Field(
+        default_factory=list,
+        description="Unresolved issues or missing components reported by the orchestrator.",
+    )
