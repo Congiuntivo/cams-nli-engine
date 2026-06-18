@@ -61,3 +61,4 @@ Rules:
 - Use plain language. Do not use tool names.
 - Note any assumption in parentheses.
 - Do not call tools. Do not write a specification.
+- If a measure is described as continuous, passive, or always-on and the user gave no sampling interval, use an `immediate` (start-of-study) trigger — not a PeriodicTrigger. Never infer a period from the cadence of a different, unrelated measure.
