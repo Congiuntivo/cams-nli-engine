@@ -50,6 +50,9 @@ def _make_workflow(
     # whether to splice retrieve_docs into the setup step's tools.
     wf._retriever = None
 
+    # run_turn clears and drains this list around the orchestrator step.
+    wf._specialist_logs = []
+
     plan = AssemblyPlan(
         units=units
         or [

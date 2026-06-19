@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 from nli_engine.engine.tools import BoundTool
 from nli_engine.engine.workflow.base import Message, Step, WorkflowContext
+from nli_engine.engine.workflow.log import StepLog
 
 
 class SpecialistContext(WorkflowContext):
@@ -35,6 +36,7 @@ def build_specialist_tool(
     description: str,
     step: Step,
     domain_tools: list[BoundTool],
+    log_sink: list[StepLog],
 ) -> BoundTool:
     """Wrap a specialist Step as a BoundTool callable by the Orchestrator.
 
@@ -48,6 +50,9 @@ def build_specialist_tool(
         description: When the Orchestrator should call this tool.
         step: Specialist Step to invoke on each delegation call.
         domain_tools: BoundTools available to the specialist during its run.
+        log_sink: Mutable list the specialist's ``StepLog`` is appended to on
+            each call. Lets the workflow surface specialist logs in
+            ``TurnResult.logs`` instead of dropping them.
 
     Returns:
         BoundTool wrapping the specialist step with a DelegationRequest
@@ -57,7 +62,8 @@ def build_specialist_tool(
     def _call(req: DelegationRequest) -> str:
         context = SpecialistContext()
         context.history.append(Message(role="user", content=req.instruction))
-        text, _ = step.run(context, domain_tools)
+        text, log = step.run(context, domain_tools)
+        log_sink.append(log)
         return text
 
     return BoundTool(

@@ -18,6 +18,7 @@ from nli_engine.engine.tools.registry import (
 from nli_engine.engine.workflow.assembly import AssemblyPlan, OrchestratorResult
 from nli_engine.engine.workflow.base import Message, Workflow, WorkflowContext
 from nli_engine.engine.workflow.config import WorkflowConfig
+from nli_engine.engine.workflow.log import StepLog
 from nli_engine.engine.workflow.result import TurnResult
 from nli_engine.engine.workflow.retrieval_tool import build_retrieve_docs_tool
 from nli_engine.engine.workflow.specialist import build_specialist_tool
@@ -85,6 +86,10 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         """
         super().__init__(config, session)
 
+        # Per-turn sink that specialist tools append their StepLog into; drained
+        # into the turn's logs after each orchestrator invocation.
+        self._specialist_logs: list[StepLog] = []
+
         self._retriever: Retriever | None = None
         self._retrieval_top_k = 5
         self._retrieval_min_score = 0.0
@@ -105,6 +110,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         # retriever so each step gets a focused query tailored to its current
         # context instead of the raw multi-topic user message.
         self._query_rewriter: QueryExtractor | None = None
+        # Planner-specific rewriter: the planner needs breadth across all
+        # components, not the single "central concept" the shared rewriter picks.
+        self._planner_query_rewriter: QueryExtractor | None = None
         if self._retriever is not None:
             rewriter_client = LLMClient(
                 model=config.models.get("query_rewriter", config.models["default"])
@@ -112,6 +120,10 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             self._query_rewriter = LLMQueryRewriter(
                 client=rewriter_client,
                 system_prompt=_load_prompt("query_rewriter.md"),
+            )
+            self._planner_query_rewriter = LLMQueryRewriter(
+                client=rewriter_client,
+                system_prompt=_load_prompt("planner_query_rewriter.md"),
             )
 
             # On-demand retrieval tool exposed to multi-iteration steps so the
@@ -142,7 +154,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             system_prompt=_load_prompt("planner.md"),
             max_iterations=config.max_iterations.get("planner", 1),
             retriever=self._retriever,
-            query_extractor=self._query_rewriter,
+            query_extractor=self._planner_query_rewriter,
             top_k=self._retrieval_top_k,
             min_score=self._retrieval_min_score,
         )
@@ -271,6 +283,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 step=_make_step("device_specialist"),
                 domain_tools=self._tools_for_names(DEVICE_SPECIALIST_TOOL_NAMES)
                 + retrieve_docs_extras,
+                log_sink=self._specialist_logs,
             ),
             build_specialist_tool(
                 name="trigger_specialist",
@@ -281,6 +294,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 step=_make_step("trigger_specialist"),
                 domain_tools=self._tools_for_names(TRIGGER_SPECIALIST_TOOL_NAMES)
                 + retrieve_docs_extras,
+                log_sink=self._specialist_logs,
             ),
             build_specialist_tool(
                 name="task_specialist",
@@ -291,6 +305,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 step=_make_step("task_specialist"),
                 domain_tools=self._tools_for_names(TASK_SPECIALIST_TOOL_NAMES)
                 + retrieve_docs_extras,
+                log_sink=self._specialist_logs,
             ),
             build_specialist_tool(
                 name="task_control_assembler",
@@ -301,6 +316,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 step=_make_step("task_control_assembler"),
                 domain_tools=self._tools_for_names(TASK_CONTROL_ASSEMBLER_TOOL_NAMES)
                 + retrieve_docs_extras,
+                log_sink=self._specialist_logs,
             ),
         ]
 
@@ -329,6 +345,11 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             the serialised protocol dict.
         """
         context.history.append(Message(role="user", content=user_input))
+
+        # Reset the per-turn specialist log sink; tools mutate it during the
+        # orchestrator's tool-call iterations and we drain it after each
+        # orchestrator invocation.
+        self._specialist_logs.clear()
 
         logs = []
         stop_after = self.config.parameters.get("stop_after")
@@ -399,6 +420,11 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                     self._resolve_tools(self._orchestrator_step),
                 )
                 logs.append(log)
+                # Each specialist call appended its StepLog to the sink during
+                # the orchestrator's tool-call iterations. Drain in invocation
+                # order, right after the orchestrator's own log.
+                logs.extend(self._specialist_logs)
+                self._specialist_logs.clear()
 
                 extraction_context = OneShotLLMWorkflowContext(
                     history=[Message(role="user", content=final_text)]

@@ -21,6 +21,8 @@ Rules:
 - Create only the task described in the instruction.
 - Use only measure types provided in the instruction; do not invent package names.
 - Do not create triggers, devices, or task controls.
+- If a tool returns an error that enumerates valid values (e.g. `Supported values: ...`), pick exactly one value from that list verbatim on the retry. Do not invent prefixes or suffixes, do not abbreviate, and do not guess again with another non-listed value.
+- `healthDataType` values are uppercase canonical names (e.g. `WEIGHT`, `BODY_MASS_INDEX`, `SLEEP_AWAKE`). If you are not sure of the exact spelling of a health data type, call `retrieve_docs` for the health data type catalog before guessing.
 
 samplingConfiguration rules:
 
