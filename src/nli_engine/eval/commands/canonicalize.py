@@ -41,7 +41,7 @@ def cmd_canonicalize(args: Namespace) -> None:
     canonicalized = [to_content_addressed(copy.deepcopy(p)) for p in protocols]
 
     if len(args.files) == 1:
-        text = json.dumps(canonicalized[0], indent=2)
+        text = json.dumps(canonicalized[0], indent=2, sort_keys=True)
         if args.output:
             args.output.write_text(text)
             console.print(f"[dim]Written to {args.output}[/dim]")
@@ -52,7 +52,7 @@ def cmd_canonicalize(args: Namespace) -> None:
         out_dir.mkdir(parents=True, exist_ok=True)
         for src_path, ca in zip(args.files, canonicalized):
             out_path = out_dir / src_path.with_suffix(".json").name
-            out_path.write_text(json.dumps(ca, indent=2))
+            out_path.write_text(json.dumps(ca, indent=2, sort_keys=True))
             console.print(f"[dim]Written to {out_path}[/dim]")
 
 
