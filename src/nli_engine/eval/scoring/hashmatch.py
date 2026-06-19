@@ -40,6 +40,8 @@ STRIPPED_KEYS: frozenset[str] = frozenset(
         "name",
         "ownerId",
         "roleName",
+        "title",
+        "instructions",
     }
 )
 
