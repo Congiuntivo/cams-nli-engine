@@ -9,7 +9,7 @@ from typing import Any
 from nli_engine.engine.llm.client import LLMClient, LLMResponse, ToolCall
 from nli_engine.engine.llm.dispatch import call_tool
 from nli_engine.engine.llm.schema import bound_tool_to_schema
-from nli_engine.engine.retrieval.chunk import RetrievedChunk
+from nli_engine.engine.retrieval.chunk import format_chunks
 from nli_engine.engine.retrieval.query import LastUserMessageExtractor, QueryExtractor
 from nli_engine.engine.retrieval.retriever import Retriever
 from nli_engine.engine.tools import BoundTool
@@ -17,19 +17,6 @@ from nli_engine.engine.workflow.base import Message, Step, WorkflowContext
 from nli_engine.engine.workflow.log import StepLog
 
 _log = logging.getLogger("nli_engine.llm")
-
-
-def _format_chunks(chunks: list[RetrievedChunk]) -> str:
-    """Format retrieved chunks as a source-annotated block for prompt injection."""
-    return (
-        "<context>"
-        + "\n"
-        + "\n".join(
-            f'<document source="{c.source}">\n{c.content}</document>' for c in chunks
-        )
-        + "\n"
-        + "</context>"
-    )  # Anthropic's recommended format for retrieval-augmented generation.
 
 
 class LLMStep(Step):
@@ -55,6 +42,7 @@ class LLMStep(Step):
         retriever: Retriever | None = None,
         query_extractor: QueryExtractor | None = None,
         top_k: int = 5,
+        min_score: float = 0.0,
     ) -> None:
         """
         Args:
@@ -71,6 +59,8 @@ class LLMStep(Step):
                 Defaults to ``LastUserMessageExtractor`` when ``None``.
             top_k: Maximum number of chunks to retrieve. Ignored when ``retriever``
                 is ``None``.
+            min_score: Drop chunks whose relevance score is strictly below this
+                threshold. Ignored when ``retriever`` is ``None``.
         """
         super().__init__(name, tool_names)
         self._client = client
@@ -83,6 +73,7 @@ class LLMStep(Step):
             else LastUserMessageExtractor()
         )
         self._top_k = top_k
+        self._min_score = min_score
 
     def _render_system_prompt(
         self, context: WorkflowContext, extra_variables: dict[str, str] = {}
@@ -267,9 +258,13 @@ class LLMStep(Step):
         retrieval_extra: dict[str, Any] = {}
         if self._retriever is not None:
             query = self._query_extractor.extract(context)
-            chunks = self._retriever.retrieve(query, self._top_k)
-            extra_vars["retrieved_context"] = _format_chunks(chunks) if chunks else ""
-            retrieval_extra = {"query": query, "n_chunks": len(chunks)}
+            chunks = self._retriever.retrieve(query, self._top_k, self._min_score)
+            extra_vars["retrieved_context"] = format_chunks(chunks) if chunks else ""
+            retrieval_extra = {
+                "query": query,
+                "n_chunks": len(chunks),
+                "chunks": [{"source": c.source, "score": c.score} for c in chunks],
+            }
         elif "{{var: retrieved_context}}" in self._system_prompt:
             _log.warning(
                 "System prompt references {{var: retrieved_context}} but no retriever was provided. The variable will be empty."

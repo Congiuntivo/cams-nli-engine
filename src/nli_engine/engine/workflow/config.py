@@ -19,6 +19,9 @@ class RetrievalConfig(BaseModel):
             when ``method`` is ``"hybrid"``.
         prefetch_limit: Candidates fetched per branch before fusion or reranking.
         top_k: Final number of results returned.
+        min_score: Drop chunks whose relevance score is strictly below this
+            threshold. ``0.0`` disables filtering. Calibrate empirically from
+            the per-chunk scores logged in ``StepLog.extra.chunks``.
     """
 
     dense_model: str
@@ -28,6 +31,7 @@ class RetrievalConfig(BaseModel):
     rerank: bool = True
     prefetch_limit: int = 50
     top_k: int = 5
+    min_score: float = 0.0
 
     @model_validator(mode="after")
     def _rerank_requires_hybrid(self) -> RetrievalConfig:

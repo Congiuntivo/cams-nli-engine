@@ -3,6 +3,7 @@ from __future__ import annotations
 from nli_engine.engine.llm import LLMClient
 from nli_engine.engine.prompts import load_prompt
 from nli_engine.engine.retrieval.backends.qdrant import QdrantRetriever
+from nli_engine.engine.retrieval.query import LLMQueryRewriter, QueryExtractor
 from nli_engine.engine.retrieval.retriever import Retriever
 from nli_engine.engine.session import ProtocolSession
 from nli_engine.engine.tools import BoundTool
@@ -18,9 +19,12 @@ from nli_engine.engine.workflow.assembly import AssemblyPlan, OrchestratorResult
 from nli_engine.engine.workflow.base import Message, Workflow, WorkflowContext
 from nli_engine.engine.workflow.config import WorkflowConfig
 from nli_engine.engine.workflow.result import TurnResult
+from nli_engine.engine.workflow.retrieval_tool import build_retrieve_docs_tool
 from nli_engine.engine.workflow.specialist import build_specialist_tool
 from nli_engine.engine.workflow.steps.extraction import ExtractionStep
 from nli_engine.engine.workflow.steps.llm import LLMStep
+
+_RETRIEVE_DOCS_TOOL_NAME = "retrieve_docs"
 
 
 def _load_prompt(filename: str) -> str:
@@ -29,6 +33,14 @@ def _load_prompt(filename: str) -> str:
 
 def _load_specialist_prompt(filename: str) -> str:
     return load_prompt("nli_engine.engine.prompts.one_shot.specialists", filename)
+
+
+_SPECIALIST_PROMPT_BY_NAME: dict[str, str] = {
+    "device_specialist": "device.md",
+    "trigger_specialist": "trigger.md",
+    "task_specialist": "task.md",
+    "task_control_assembler": "task_control.md",
+}
 
 
 class OneShotLLMWorkflowContext(WorkflowContext):
@@ -53,6 +65,11 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
     - ``models["orchestrator"]``: model for the orchestrator step.
     - ``models["specialist"]``: shared model for all specialist steps.
 
+    Optional model keys:
+
+    - ``models["query_rewriter"]``: small/cheap model for the LLM-based
+      retrieval query rewriter. Falls back to ``models["default"]`` when absent.
+
     """
 
     def __init__(self, config: WorkflowConfig, session: ProtocolSession) -> None:
@@ -69,6 +86,8 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         super().__init__(config, session)
 
         self._retriever: Retriever | None = None
+        self._retrieval_top_k = 5
+        self._retrieval_min_score = 0.0
         if config.retrieval is not None:
             rc = config.retrieval
             self._retriever = QdrantRetriever(
@@ -79,6 +98,30 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 rerank=rc.rerank,
                 prefetch_limit=rc.prefetch_limit,
             )
+            self._retrieval_top_k = rc.top_k
+            self._retrieval_min_score = rc.min_score
+
+        # Shared LLM-based query rewriter. Used by every step that has a
+        # retriever so each step gets a focused query tailored to its current
+        # context instead of the raw multi-topic user message.
+        self._query_rewriter: QueryExtractor | None = None
+        if self._retriever is not None:
+            rewriter_client = LLMClient(
+                model=config.models.get("query_rewriter", config.models["default"])
+            )
+            self._query_rewriter = LLMQueryRewriter(
+                client=rewriter_client,
+                system_prompt=_load_prompt("query_rewriter.md"),
+            )
+
+            # On-demand retrieval tool exposed to multi-iteration steps so the
+            # model can refresh its context after the warm injection at
+            # iteration 0 goes stale.
+            self._all_tools[_RETRIEVE_DOCS_TOOL_NAME] = build_retrieve_docs_tool(
+                retriever=self._retriever,
+                top_k=self._retrieval_top_k,
+                min_score=self._retrieval_min_score,
+            )
 
         refiner_client = LLMClient(
             model=config.models.get("refiner", config.models["default"])
@@ -88,7 +131,6 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             client=refiner_client,
             system_prompt=_load_prompt("refiner.md"),
             max_iterations=config.max_iterations.get("refiner", 3),
-            retriever=self._retriever,
         )
 
         planner_client = LLMClient(
@@ -100,6 +142,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             system_prompt=_load_prompt("planner.md"),
             max_iterations=config.max_iterations.get("planner", 1),
             retriever=self._retriever,
+            query_extractor=self._query_rewriter,
+            top_k=self._retrieval_top_k,
+            min_score=self._retrieval_min_score,
         )
 
         extractor_client = LLMClient(
@@ -121,6 +166,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             system_prompt=_load_specialist_prompt("setup.md"),
             max_iterations=config.max_iterations.get("setup_specialist", 5),
             retriever=self._retriever,
+            query_extractor=self._query_rewriter,
+            top_k=self._retrieval_top_k,
+            min_score=self._retrieval_min_score,
         )
 
         for tool in self._build_specialist_steps(
@@ -131,13 +179,19 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         orchestrator_client = LLMClient(
             model=config.models.get("orchestrator", config.models["default"])
         )
+        orchestrator_tools = list(UNIT_SPECIALIST_NAMES)
+        if self._retriever is not None:
+            orchestrator_tools.append(_RETRIEVE_DOCS_TOOL_NAME)
         self._orchestrator_step = LLMStep(
             name="orchestrator",
-            tool_names=UNIT_SPECIALIST_NAMES,
+            tool_names=orchestrator_tools,
             client=orchestrator_client,
             system_prompt=_load_prompt("orchestrator.md"),
             max_iterations=config.max_iterations.get("orchestrator", 20),
             retriever=self._retriever,
+            query_extractor=self._query_rewriter,
+            top_k=self._retrieval_top_k,
+            min_score=self._retrieval_min_score,
         )
         self._orchestrator_result_step: ExtractionStep[OrchestratorResult] = (
             ExtractionStep(
@@ -187,6 +241,24 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             task_control_assembler.
         """
         max_iter = config.max_iterations
+        # When retrieval is configured, expose the on-demand retrieve_docs tool
+        # alongside each specialist's domain tools so high-iteration specialists
+        # can refresh their context as the conversation evolves.
+        retrieve_docs_extras: list[BoundTool] = (
+            [self._all_tools[_RETRIEVE_DOCS_TOOL_NAME]] if retriever is not None else []
+        )
+
+        def _make_step(name: str) -> LLMStep:
+            return LLMStep(
+                name=name,
+                client=client,
+                system_prompt=_load_specialist_prompt(_SPECIALIST_PROMPT_BY_NAME[name]),
+                max_iterations=max_iter.get(name, 5),
+                retriever=retriever,
+                query_extractor=self._query_rewriter,
+                top_k=self._retrieval_top_k,
+                min_score=self._retrieval_min_score,
+            )
 
         return [
             build_specialist_tool(
@@ -196,14 +268,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                     "Polar) or service (location, weather, air quality, health). "
                     "Call once per Assembly Unit when a connected device is needed."
                 ),
-                step=LLMStep(
-                    name="device_specialist",
-                    client=client,
-                    system_prompt=_load_specialist_prompt("device.md"),
-                    max_iterations=max_iter.get("device_specialist", 5),
-                    retriever=retriever,
-                ),
-                domain_tools=self._tools_for_names(DEVICE_SPECIALIST_TOOL_NAMES),
+                step=_make_step("device_specialist"),
+                domain_tools=self._tools_for_names(DEVICE_SPECIALIST_TOOL_NAMES)
+                + retrieve_docs_extras,
             ),
             build_specialist_tool(
                 name="trigger_specialist",
@@ -211,14 +278,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                     "Create a trigger (immediate, delayed, periodic, cron, "
                     "manual, or no_op). Call once per Assembly Unit."
                 ),
-                step=LLMStep(
-                    name="trigger_specialist",
-                    client=client,
-                    system_prompt=_load_specialist_prompt("trigger.md"),
-                    max_iterations=max_iter.get("trigger_specialist", 5),
-                    retriever=retriever,
-                ),
-                domain_tools=self._tools_for_names(TRIGGER_SPECIALIST_TOOL_NAMES),
+                step=_make_step("trigger_specialist"),
+                domain_tools=self._tools_for_names(TRIGGER_SPECIALIST_TOOL_NAMES)
+                + retrieve_docs_extras,
             ),
             build_specialist_tool(
                 name="task_specialist",
@@ -226,14 +288,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                     "Create a task (background, app, health_app, or web). "
                     "Call once per Assembly Unit."
                 ),
-                step=LLMStep(
-                    name="task_specialist",
-                    client=client,
-                    system_prompt=_load_specialist_prompt("task.md"),
-                    max_iterations=max_iter.get("task_specialist", 5),
-                    retriever=retriever,
-                ),
-                domain_tools=self._tools_for_names(TASK_SPECIALIST_TOOL_NAMES),
+                step=_make_step("task_specialist"),
+                domain_tools=self._tools_for_names(TASK_SPECIALIST_TOOL_NAMES)
+                + retrieve_docs_extras,
             ),
             build_specialist_tool(
                 name="task_control_assembler",
@@ -241,14 +298,9 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                     "Bind a trigger, a task, and a device role into a TaskControl. "
                     "Call last within each Assembly Unit, after all prerequisites exist."
                 ),
-                step=LLMStep(
-                    name="task_control_assembler",
-                    client=client,
-                    system_prompt=_load_specialist_prompt("task_control.md"),
-                    max_iterations=max_iter.get("task_control_assembler", 5),
-                    retriever=retriever,
-                ),
-                domain_tools=self._tools_for_names(TASK_CONTROL_ASSEMBLER_TOOL_NAMES),
+                step=_make_step("task_control_assembler"),
+                domain_tools=self._tools_for_names(TASK_CONTROL_ASSEMBLER_TOOL_NAMES)
+                + retrieve_docs_extras,
             ),
         ]
 
@@ -303,9 +355,10 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         # Setup runs once as a plain step: its tool calls and result are appended
         # to the shared history, giving every subsequent orchestrator invocation
         # full visibility into what was created.
-        _, log = self._setup_step.run(
-            context, self._tools_for_names(SETUP_SPECIALIST_TOOL_NAMES)
-        )
+        setup_tools = self._tools_for_names(SETUP_SPECIALIST_TOOL_NAMES)
+        if self._retriever is not None:
+            setup_tools = setup_tools + [self._all_tools[_RETRIEVE_DOCS_TOOL_NAME]]
+        _, log = self._setup_step.run(context, setup_tools)
         logs.append(log)
         if stop_after == "setup":
             return TurnResult(message="", logs=logs, done=True)

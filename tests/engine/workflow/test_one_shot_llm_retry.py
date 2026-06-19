@@ -46,6 +46,10 @@ def _make_workflow(
     wf._session = MagicMock()
     wf._session.serialize.return_value = {}
 
+    # Retrieval is not exercised here; run_turn checks _retriever to decide
+    # whether to splice retrieve_docs into the setup step's tools.
+    wf._retriever = None
+
     plan = AssemblyPlan(
         units=units
         or [

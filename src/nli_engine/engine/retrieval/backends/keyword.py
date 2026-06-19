@@ -26,16 +26,23 @@ class KeywordRetriever(Retriever):
         """
         self._corpus = corpus
 
-    def retrieve(self, query: str, top_k: int = 5) -> list[RetrievedChunk]:
+    def retrieve(
+        self, query: str, top_k: int = 5, min_score: float = 0.0
+    ) -> list[RetrievedChunk]:
         """Return the top-k chunks whose text contains the most query tokens.
 
         Args:
             query: Free-text query; split on whitespace and lowercased before matching.
             top_k: Maximum number of results to return.
+            min_score: Drop chunks whose match fraction is strictly below this
+                threshold. ``0.0`` disables filtering (matching legacy behavior
+                of also excluding zero-score docs since they never appear in
+                ``scored``).
 
         Returns:
-            Up to ``top_k`` chunks with score > 0, sorted by descending score.
-            Returns an empty list when the query is blank or no document matches.
+            Up to ``top_k`` chunks with score >= ``min_score`` (and > 0),
+            sorted by descending score. Returns an empty list when the query is
+            blank or no document matches.
         """
         tokens = set(query.lower().split())
         if not tokens:
@@ -46,9 +53,9 @@ class KeywordRetriever(Retriever):
             content_lower = doc.content.lower()
             hits = sum(1 for token in tokens if token in content_lower)
             if hits:
-                scored.append(
-                    RetrievedChunk(doc.content, hits / len(tokens), doc.source)
-                )
+                score = hits / len(tokens)
+                if score >= min_score:
+                    scored.append(RetrievedChunk(doc.content, score, doc.source))
 
         scored.sort(key=lambda c: c.score, reverse=True)
         return scored[:top_k]

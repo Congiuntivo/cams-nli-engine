@@ -20,10 +20,13 @@ class _FixedRetriever(Retriever):
         self._chunks = chunks
         self._captured = captured
 
-    def retrieve(self, query: str, top_k: int = 5) -> list[RetrievedChunk]:
+    def retrieve(
+        self, query: str, top_k: int = 5, min_score: float = 0.0
+    ) -> list[RetrievedChunk]:
         if self._captured is not None:
             self._captured.append(query)
-        return self._chunks[:top_k]
+        filtered = [c for c in self._chunks if c.score >= min_score]
+        return filtered[:top_k]
 
 
 CHUNKS = [
