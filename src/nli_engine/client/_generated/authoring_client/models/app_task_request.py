@@ -18,7 +18,15 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StrictBool,
+    StrictInt,
+    StrictStr,
+    field_validator,
+)
 from pydantic_core import to_jsonable_python
 from typing_extensions import Self
 
@@ -57,6 +65,26 @@ class AppTaskRequest(BaseModel):
         "expire",
         "notification",
     ]
+
+    @field_validator("type")
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(
+            [
+                "sensing",
+                "survey",
+                "cognition",
+                "audio",
+                "video",
+                "image",
+                "informed_consent",
+                "health",
+            ]
+        ):
+            raise ValueError(
+                "must be one of enum values ('sensing', 'survey', 'cognition', 'audio', 'video', 'image', 'informed_consent', 'health')"
+            )
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

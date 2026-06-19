@@ -2344,6 +2344,15 @@ components:
             $ref: '#/components/schemas/TaskMeasureRequest'
         type:
           type: 'string'
+          enum:
+            - 'sensing'
+            - 'survey'
+            - 'cognition'
+            - 'audio'
+            - 'video'
+            - 'image'
+            - 'informed_consent'
+            - 'health'
           example: 'survey'
         title:
           type: 'string'

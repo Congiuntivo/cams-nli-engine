@@ -10,6 +10,7 @@ from nli_engine.eval.scoring.hashmatch import (
     _canonical,
     _canonical_hash,
     _normalize_location_tasks,
+    _normalize_location_trigger_sources,
     _normalize_task_controls,
     _rewrite_refs,
     _rewrite_trigger_device_refs,
@@ -933,3 +934,111 @@ def test_normalize_location_no_location_service_noop():
     result = _normalize_location_tasks(proto)
     # No LocationService in connectedDevices → protocol returned unchanged
     assert result["taskControls"][0]["destinationDeviceRoleName"] == _HLOC_SVC
+
+
+# ---------------------------------------------------------------------------
+# _normalize_location_trigger_sources
+# ---------------------------------------------------------------------------
+
+
+def _proto_for_location_trigger_normalization(
+    *,
+    trigger_source: str = _HLOC_SVC,
+    raw_task_name: str = "loc_task",
+    include_location_service: bool = True,
+    include_phone: bool = True,
+) -> tuple[dict, dict[str, str]]:
+    """Build a partially content-addressed protocol for trigger-source tests.
+
+    Mirrors the state at the call site of
+    :func:`_normalize_location_trigger_sources`: devices and tasks are
+    content-addressed; triggers and taskControls still use raw labels, with
+    trigger ``sourceDeviceRoleName`` already rewritten to a device hash.
+    """
+    primary: dict = {}
+    if include_phone:
+        primary[_HPHONE] = {
+            "__type": "dk.carp.cams.devices.Smartphone",
+            "isPrimaryDevice": True,
+            "defaultSamplingConfiguration": {},
+        }
+    connected: dict = {}
+    if include_location_service:
+        connected[_HLOC_SVC] = {
+            "__type": "dk.carp.cams.devices.LocationService",
+            "defaultSamplingConfiguration": {},
+        }
+    proto = {
+        "primaryDevices": primary,
+        "connectedDevices": connected,
+        "tasks": {
+            _HLOC_TASK: {
+                "__type": "dk.cachet.carp.common.application.tasks.BackgroundTask",
+                "measures": {
+                    "m_loc": {
+                        "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+                        "type": "dk.cachet.carp.location",
+                    }
+                },
+            },
+            _HOTHER_TASK: {
+                "__type": "dk.cachet.carp.common.application.tasks.BackgroundTask",
+                "measures": {
+                    "m_hr": {
+                        "__type": "dk.cachet.carp.common.application.tasks.Measure.DataStream",
+                        "type": "dk.cachet.carp.heartrate",
+                    }
+                },
+            },
+        },
+        "triggers": {
+            "0": {
+                "__type": "dk.cachet.carp.common.application.triggers.ImmediateTrigger",
+                "sourceDeviceRoleName": trigger_source,
+            }
+        },
+        "taskControls": [
+            {
+                "triggerId": "0",
+                "taskName": raw_task_name,
+                "destinationDeviceRoleName": _HPHONE,
+                "control": "Start",
+            }
+        ],
+    }
+    task_map = {"loc_task": _HLOC_TASK, "other_task": _HOTHER_TASK}
+    return proto, task_map
+
+
+def test_normalize_location_trigger_source_rewritten_to_phone():
+    proto, task_map = _proto_for_location_trigger_normalization(
+        trigger_source=_HLOC_SVC, raw_task_name="loc_task"
+    )
+    _normalize_location_trigger_sources(proto, device_map={}, task_map=task_map)
+    assert proto["triggers"]["0"]["sourceDeviceRoleName"] == _HPHONE
+
+
+def test_normalize_non_location_task_trigger_source_unchanged():
+    proto, task_map = _proto_for_location_trigger_normalization(
+        trigger_source=_HLOC_SVC, raw_task_name="other_task"
+    )
+    _normalize_location_trigger_sources(proto, device_map={}, task_map=task_map)
+    assert proto["triggers"]["0"]["sourceDeviceRoleName"] == _HLOC_SVC
+
+
+def test_normalize_location_trigger_source_no_location_service_noop():
+    proto, task_map = _proto_for_location_trigger_normalization(
+        trigger_source=_HLOC_SVC,
+        raw_task_name="loc_task",
+        include_location_service=False,
+    )
+    _normalize_location_trigger_sources(proto, device_map={}, task_map=task_map)
+    assert proto["triggers"]["0"]["sourceDeviceRoleName"] == _HLOC_SVC
+
+
+def test_normalize_location_trigger_source_no_smartphone_noop():
+    proto, task_map = _proto_for_location_trigger_normalization(
+        trigger_source=_HLOC_SVC, raw_task_name="loc_task", include_phone=False
+    )
+    _normalize_location_trigger_sources(proto, device_map={}, task_map=task_map)
+    assert proto["triggers"]["0"]["sourceDeviceRoleName"] == _HLOC_SVC

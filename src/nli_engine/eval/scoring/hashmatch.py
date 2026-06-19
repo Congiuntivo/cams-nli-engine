@@ -181,7 +181,10 @@ def to_content_addressed(protocol: dict[str, Any]) -> dict[str, Any]:
            dict ``{sha256_hex: canonical_element}``.
            :func:`_rewrite_trigger_device_refs` is called between the task and
            trigger map builds so that trigger hashes are stable with respect to
-           device labels.
+           device labels, followed by
+           :func:`_normalize_location_trigger_sources` which rewrites
+           ``LocationService`` trigger sources to ``Smartphone`` for triggers
+           driving location-sensing tasks.
         2. Rewrite remaining cross-references (``connections``,
            ``taskControls``) from human-chosen labels to stable content hashes
            via :func:`_rewrite_refs`.
@@ -201,6 +204,7 @@ def to_content_addressed(protocol: dict[str, Any]) -> dict[str, Any]:
     device_map = _build_device_map(protocol)
     task_map = _build_task_map(protocol)
     _rewrite_trigger_device_refs(protocol, device_map, task_map)
+    _normalize_location_trigger_sources(protocol, device_map, task_map)
 
     trigger_map = _build_trigger_map(protocol)
     protocol = _rewrite_refs(protocol, device_map, task_map, trigger_map)
@@ -618,6 +622,87 @@ def _rewrite_trigger_device_refs(
         if "taskName" in trigger_value:
             raw = trigger_value["taskName"]
             trigger_value["taskName"] = task_map.get(raw, raw)
+
+
+def _normalize_location_trigger_sources(
+    protocol: dict[str, Any],
+    device_map: dict[str, str],
+    task_map: dict[str, str],
+) -> None:
+    """Rewrite ``LocationService`` trigger sources to ``Smartphone`` for triggers
+    driving location-sensing tasks.
+
+    A trigger sourced from ``LocationService`` that drives a task containing a
+    ``dk.cachet.carp.location`` measure is semantically equivalent to the same
+    trigger sourced from the primary ``Smartphone`` device.  This is the
+    trigger-side mirror of :func:`_normalize_location_tasks`, needed so that two
+    protocols expressing the same study — one wiring the location task via an
+    ``ImmediateTrigger`` from ``LocationService`` and another via an
+    ``ImmediateTrigger`` from ``Smartphone`` — hash identically.
+
+    Must be called after :func:`_rewrite_trigger_device_refs` (so
+    ``sourceDeviceRoleName`` is already a device content hash) and before
+    :func:`_build_trigger_map` (so the rewritten source is reflected in the
+    trigger's stable content hash).  Mutates ``protocol["triggers"]`` in place.
+
+    Triggers whose ``triggerId`` is not referenced by any taskControl targeting
+    a location task are left untouched, even when sourced from
+    ``LocationService``.
+
+    Args:
+        protocol: Protocol dict (mutated in place).
+        device_map: ``roleName → content_hash`` map from :func:`_build_device_map`.
+        task_map: ``taskName → content_hash`` map from :func:`_build_task_map`.
+    """
+    del device_map  # device hashes are read directly off protocol contents
+    location_service_hashes = {
+        h
+        for h, dev in protocol.get("connectedDevices", {}).items()
+        if dev.get("__type") == "dk.carp.cams.devices.LocationService"
+    }
+    if not location_service_hashes:
+        return
+
+    phone_hash = next(
+        (
+            h
+            for h, dev in protocol.get("primaryDevices", {}).items()
+            if dev.get("__type") == "dk.carp.cams.devices.Smartphone"
+        ),
+        None,
+    )
+    if phone_hash is None:
+        return
+
+    location_task_hashes = {
+        h
+        for h, task in protocol.get("tasks", {}).items()
+        if any(
+            m.get("type") == "dk.cachet.carp.location"
+            for m in task.get("measures", {}).values()
+        )
+    }
+    if not location_task_hashes:
+        return
+
+    location_task_raw_names = {
+        raw for raw, h in task_map.items() if h in location_task_hashes
+    }
+    location_trigger_raw_ids = {
+        str(tc.get("triggerId", ""))
+        for tc in protocol.get("taskControls", [])
+        if tc.get("taskName") in location_task_raw_names
+    }
+
+    triggers = protocol.get("triggers")
+    if not isinstance(triggers, dict):
+        return
+    for tid, trigger in triggers.items():
+        if (
+            str(tid) in location_trigger_raw_ids
+            and trigger.get("sourceDeviceRoleName") in location_service_hashes
+        ):
+            trigger["sourceDeviceRoleName"] = phone_hash
 
 
 def _build_trigger_map(protocol: dict[str, Any]) -> dict[str, str]:
