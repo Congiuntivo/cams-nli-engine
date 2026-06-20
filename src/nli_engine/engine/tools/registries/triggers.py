@@ -5,7 +5,6 @@ from nli_engine.client._generated.authoring_client import (
     ElapsedTimeTriggerRequest,
     ImmediateTriggerRequest,
     ManualTriggerRequest,
-    NoOpTriggerRequest,
     NoUserTaskTriggerRequest,
     OneTimeTriggerRequest,
     PassiveTriggerRequest,
@@ -54,13 +53,6 @@ TRIGGERS_MUTATION_TOOLS: list[ToolSpec] = [
         method="add_manual_trigger",
         request_model=ManualTriggerRequest,
         description="Add a trigger that fires when manually activated by the researcher.",
-    ),
-    ToolSpec(
-        name="add_no_op_trigger",
-        api_class=TriggersApi,
-        method="add_no_op_trigger",
-        request_model=NoOpTriggerRequest,
-        description="Add a no-op placeholder trigger.",
     ),
     ToolSpec(
         name="add_date_time_trigger",

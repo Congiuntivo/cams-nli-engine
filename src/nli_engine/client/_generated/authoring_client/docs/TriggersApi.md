@@ -10,7 +10,6 @@ All URIs are relative to _http://localhost:8080_
 | [**add_elapsed_time_trigger**](TriggersApi.md#add_elapsed_time_trigger)               | **POST** /sessions/{sessionId}/triggers/elapsed-time        | Add an elapsed-time trigger to the session protocol       |
 | [**add_immediate_trigger**](TriggersApi.md#add_immediate_trigger)                     | **POST** /sessions/{sessionId}/triggers/immediate           | Add an immediate trigger to the session protocol          |
 | [**add_manual_trigger**](TriggersApi.md#add_manual_trigger)                           | **POST** /sessions/{sessionId}/triggers/manual              | Add a manual trigger to the session protocol              |
-| [**add_no_op_trigger**](TriggersApi.md#add_no_op_trigger)                             | **POST** /sessions/{sessionId}/triggers/no-op               | Add a no-op trigger to the session protocol               |
 | [**add_no_user_task_trigger**](TriggersApi.md#add_no_user_task_trigger)               | **POST** /sessions/{sessionId}/triggers/no-user-task        | Add a no-user-task trigger to the session protocol        |
 | [**add_one_time_trigger**](TriggersApi.md#add_one_time_trigger)                       | **POST** /sessions/{sessionId}/triggers/one-time            | Add a one-time trigger to the session protocol            |
 | [**add_passive_trigger**](TriggersApi.md#add_passive_trigger)                         | **POST** /sessions/{sessionId}/triggers/passive             | Add a passive trigger to the session protocol             |
@@ -442,77 +441,6 @@ No authorization required
 | Status code | Description                                       | Response headers |
 | ----------- | ------------------------------------------------- | ---------------- |
 | **201**     | Manual trigger added                              | -                |
-| **400**     | Invalid request payload or duplicate trigger name | -                |
-| **404**     | Session id not found.                             | -                |
-| **0**       | Unexpected server error.                          | -                |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **add_no_op_trigger**
-
-> SessionMutationResponse add_no_op_trigger(session_id, no_op_trigger_request)
-
-Add a no-op trigger to the session protocol
-
-Adds a no-op trigger that starts immediately and never stops. Used to model tasks that run continuously from the moment sensing starts. triggerName must be unique within the protocol. Returns 400 if triggerName is a duplicate.
-
-### Example
-
-```python
-import nli_engine.client._generated.authoring_client
-from nli_engine.client._generated.authoring_client.models.no_op_trigger_request import NoOpTriggerRequest
-from nli_engine.client._generated.authoring_client.models.session_mutation_response import SessionMutationResponse
-from nli_engine.client._generated.authoring_client.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost:8080
-# See configuration.py for a list of all supported configuration parameters.
-configuration = nli_engine.client._generated.authoring_client.Configuration(
-    host = "http://localhost:8080"
-)
-
-
-# Enter a context with an instance of the API client
-with nli_engine.client._generated.authoring_client.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = nli_engine.client._generated.authoring_client.TriggersApi(api_client)
-    session_id = 'session_1234567890_1' # str | Session identifier returned by POST /sessions.
-    no_op_trigger_request = {"triggerName":"always_on"} # NoOpTriggerRequest | No-op trigger payload.
-
-    try:
-        # Add a no-op trigger to the session protocol
-        api_response = api_instance.add_no_op_trigger(session_id, no_op_trigger_request)
-        print("The response of TriggersApi->add_no_op_trigger:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling TriggersApi->add_no_op_trigger: %s\n" % e)
-```
-
-### Parameters
-
-| Name                      | Type                                            | Description                                    | Notes |
-| ------------------------- | ----------------------------------------------- | ---------------------------------------------- | ----- |
-| **session_id**            | **str**                                         | Session identifier returned by POST /sessions. |
-| **no_op_trigger_request** | [**NoOpTriggerRequest**](NoOpTriggerRequest.md) | No-op trigger payload.                         |
-
-### Return type
-
-[**SessionMutationResponse**](SessionMutationResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description                                       | Response headers |
-| ----------- | ------------------------------------------------- | ---------------- |
-| **201**     | No-op trigger added                               | -                |
 | **400**     | Invalid request payload or duplicate trigger name | -                |
 | **404**     | Session id not found.                             | -                |
 | **0**       | Unexpected server error.                          | -                |

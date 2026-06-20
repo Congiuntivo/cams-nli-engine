@@ -91,9 +91,6 @@ from nli_engine.client._generated.authoring_client.models.movisens_device_reques
 from nli_engine.client._generated.authoring_client.models.named_device import (
     NamedDevice,
 )
-from nli_engine.client._generated.authoring_client.models.no_op_trigger_request import (
-    NoOpTriggerRequest,
-)
 from nli_engine.client._generated.authoring_client.models.no_user_task_trigger_request import (
     NoUserTaskTriggerRequest,
 )

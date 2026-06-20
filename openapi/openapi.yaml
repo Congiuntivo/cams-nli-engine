@@ -1366,42 +1366,6 @@ paths:
           $ref: '#/components/responses/SessionNotFound'
         default:
           $ref: '#/components/responses/ServerError'
-  /sessions/{sessionId}/triggers/no-op:
-    post:
-      summary: 'Add a no-op trigger to the session protocol'
-      operationId: 'addNoOpTrigger'
-      description: 'Adds a no-op trigger that starts immediately and never stops. Used to model tasks that run continuously from the moment sensing starts. triggerName must be unique within the protocol. Returns 400 if triggerName is a duplicate.'
-      tags:
-        - 'Triggers'
-      parameters:
-        -
-          $ref: '#/components/parameters/sessionId'
-      requestBody:
-        description: 'No-op trigger payload.'
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NoOpTriggerRequest'
-            example:
-              triggerName: 'always_on'
-      responses:
-        '201':
-          description: 'No-op trigger added'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SessionMutationResponse'
-        '400':
-          description: 'Invalid request payload or duplicate trigger name'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          $ref: '#/components/responses/SessionNotFound'
-        default:
-          $ref: '#/components/responses/ServerError'
   /sessions/{sessionId}/triggers/no-user-task:
     post:
       summary: 'Add a no-user-task trigger to the session protocol'
@@ -2549,14 +2513,6 @@ components:
         description:
           type: 'string'
           example: 'Shown manually by the participant.'
-    NoOpTriggerRequest:
-      type: 'object'
-      required:
-        - 'triggerName'
-      properties:
-        triggerName:
-          type: 'string'
-          example: 'always_on'
     NoUserTaskTriggerRequest:
       type: 'object'
       required:

@@ -67,13 +67,6 @@ class TestTriggersApi(unittest.TestCase):
         """
         pass
 
-    def test_add_no_op_trigger(self) -> None:
-        """Test case for add_no_op_trigger
-
-        Add a no-op trigger to the session protocol
-        """
-        pass
-
     def test_add_no_user_task_trigger(self) -> None:
         """Test case for add_no_user_task_trigger
 

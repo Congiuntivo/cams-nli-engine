@@ -72,7 +72,6 @@ TRIGGER_SPECIALIST_TOOL_NAMES: list[str] = [
     "add_periodic_trigger",
     "add_cron_trigger",
     "add_manual_trigger",
-    "add_no_op_trigger",
     "add_date_time_trigger",
     "add_elapsed_time_trigger",
     "add_no_user_task_trigger",
