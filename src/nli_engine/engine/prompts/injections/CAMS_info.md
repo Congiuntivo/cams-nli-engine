@@ -59,7 +59,7 @@ A trigger defines when a task starts or stops. The trigger type must match the m
 - **EB measures**: a one-shot trigger (e.g. `ImmediateTrigger`) is sufficient — the task runs continuously once started.
 - **OT measures**: require a recurring trigger (e.g. `PeriodicTrigger`, `CronScheduledTrigger`) so sampling fires repeatedly over time.
 
-Other trigger types: `DelayedTrigger`, `ManualTrigger`, `NoOpTrigger`.
+Other trigger types: `OneTimeTrigger`, `DelayedTrigger`, `ElapsedTimeTrigger`, `PassiveTrigger`, `DateTimeTrigger`, `RecurrentScheduledTrigger`, `SamplingEventTrigger`, `ConditionalSamplingEventTrigger`, `ConditionalPeriodicTrigger`, `RandomRecurrentTrigger`, `UserTaskTrigger`, `NoUserTaskTrigger`.
 
 ### Task Controls
 
@@ -68,5 +68,3 @@ A `TaskControl` is the binding that connects a trigger to a task on a specific d
 ```
 trigger → task → device role
 ```
-
-It also specifies whether the control **starts** or **stops** the task. A protocol typically has one task control per (trigger, task, device) combination.
