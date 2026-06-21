@@ -28,10 +28,12 @@ Rules:
 - Default parameters are always preferred if there is no reason to specify otherwise.
 - Do not stop to ask for clarification. Assemble the protocol as best you can with
   the information given.
-- Before calling `device_specialist`, scan the prior tool calls and their results
-  for connected devices and services already created during setup. If the
-  requested device or service is already present, skip the `device_specialist`
-  call and reuse its existing `roleName` directly in the
+- Before calling `device_specialist`, scan the full prior history — both the
+  setup step and every prior assembly unit in this turn — for connected devices
+  and services already created. Match by device/service type (e.g.
+  WeatherService, AirQualityService, LocationService) regardless of `roleName`.
+  If the requested device or service is already present, skip the
+  `device_specialist` call and reuse its existing `roleName` directly in the
   `task_control_assembler` instruction.
 
 Final response (after `task_control_assembler` returns):
