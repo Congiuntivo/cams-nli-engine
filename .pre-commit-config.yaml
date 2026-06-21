@@ -22,6 +22,7 @@ repos:
     hooks:
       - id: prettier
         types_or: [markdown, json]
+        exclude: ^dataset/prompts/
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.2.0
     hooks:

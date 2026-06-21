@@ -2,9 +2,116 @@ cases:
   - id: "001_diary_study"
     expected: cases/001_expected.json # relative to this file
     prompts:
-      v1: "Record steps with the smartphone. location every hour. At the beginning of the study ask for the full name. Upload the data to the CARP backend."
+      poor: "Record steps with the smartphone. location every hour. At the beginning of the study ask for the full name. Upload the data to the CARP backend."
+      medium: "I want to set up a simple study using the participant's smartphone. The phone should continuously record step events in the background, and the location service should sample the user's location once every hour. At the start of the study, the participant should be asked to provide their full name. All collected data should be uploaded to the CARP Web Service."
+      rich: |-
+        # Diary Study — Study Protocol
+
+        ## Devices
+        - **Primary**: Smartphone
+        - **Connected service**: Location Service
+
+        ## Background sensing (`ImmediateTrigger` + `BackgroundTask`)
+        - Smartphone — `step events`
+
+        ## Periodic sensing (`PeriodicTrigger` + `BackgroundTask`)
+        - Location Service — measure `location`, period **1 hour**
+
+        ## Expected participant data
+        - `full_name`, assigned to the `Participant` role, requested at study start
+
+        ## Data endpoint
+        - CARP Web Service (`CarpDataEndPoint`, stream upload)
+
   - id: "002_diary_study"
     expected: cases/002_expected.json # relative to this file
     prompts:
-      v1: "I want to set up a study with passive phone sensing (steps, location, battery, screen, ambient light, activity, device info) and connectivity monitoring (connectivity, wifi, bluetooth). Sample weather and air quality every 30 minutes. Collect health data every hour: weight, BMI, birth date, gender, steps, heart rate, HRV RMSSD and SDNN, and all sleep stages (awake, in bed, asleep, deep, light, REM). Add two persistent image app tasks that always stay on the app task list with an estimated competion time of 3 minutes — one asking the user to upload a picture of the best demo they've seen, one asking for the best gadget they received. Create both the same way. Retain data locally even after upload. Use CARP Web Service."
-      v2: "I want to set up a study with passive phone sensing (steps, location, battery, screen, ambient light, activity, device info) and connectivity monitoring (connectivity, wifi, bluetooth). Sample weather and air quality every 30 minutes. Collect health data every hour: weight, BMI, birth date, gender, steps, heart rate, HRV RMSSD and SDNN, and all sleep stages (awake, in bed, asleep, deep, light, REM). Add two persistent image capture tasks in the app that always stay on the task list with an estimated competion time of 3 minutes — one asking the user to upload a picture of the best demo they've seen, one asking for the best gadget they received. Create both the same way. Retain data locally even after upload. Use CARP Web Service."
+      poor: "I want a study that quietly tracks the phone in the background — steps, location, battery, screen, ambient light, activity, and device info — plus network info, wifi, and nearby bluetooth devices. Pull weather and air quality data every half hour. Every hour, grab from the health app weight, BMI, date of birth, gender, steps, heart rate, both HRV measures (RMSSD and SDNN), and all the sleep stages (awake, in bed, asleep, deep, light, REM). I also want two image tasks the user can do whenever — one for the best demo they've seen, one for the best gadget they received. Each takes about 3 minutes and should always be available on the task list. Keep the data on the phone after uploading. Send it to the CARP web service."
+      medium: "I want to set up a study with passive phone sensing (steps, location, battery, screen, ambient light, activity, device info) and connectivity monitoring (connectivity, wifi, bluetooth). Sample weather and air quality every 30 minutes. Collect health data every hour: weight, BMI, birth date, gender, steps, heart rate, HRV RMSSD and SDNN, and all sleep stages (awake, in bed, asleep, deep, light, REM). Add two persistent image app tasks that always stay on the app task list with an estimated competion time of 3 minutes — one asking the user to upload a picture of the best demo they've seen, one asking for the best gadget they received. Create both the same way. Retain data locally even after upload. Use CARP Web Service."
+      rich: |-
+        # Study Protocol
+
+        ## Data endpoint
+        - CARP Web Service (`CarpDataEndPoint`, stream upload)
+        - `deleteWhenUploaded: false` — retain data on device after upload
+
+        ## Devices
+        - **Primary**: Smartphone
+        - **Connected services**: Location Service, Weather Service, Air Quality Service, Health Service
+
+        ## Background sensing (`ImmediateTrigger` + `BackgroundTask`)
+
+        | source device | measures |
+        |---|---|
+        | Smartphone | step events, location, battery state, screen events, ambient light, activity, device info |
+        | Smartphone | connectivity, wifi, bluetooth |
+
+        ## Periodic sensing (`PeriodicTrigger` + `BackgroundTask`)
+        - **Weather Service** — period 30 min — measure: `weather`
+        - **Air Quality Service** — period 30 min — measure: `air quality`
+        - **Health Service** — period 60 min — types: weight, BMI, birth date, gender, steps, heart rate, HRV RMSSD, HRV SDNN, sleep awake, sleep in bed, sleep asleep, sleep deep, sleep light, sleep REM
+
+        ## App tasks (`AppTask` image, persistent via `NoUserTaskTrigger`)
+        - **Best Demo Photo** — user uploads a picture of the best demo they have seen — ~3 min
+        - **Best Gadget Photo** — user uploads a picture of the best gadget they received — ~3 min
+
+  - id: "003_cardio_wellness"
+    expected: cases/003_expected.json # relative to this file
+    prompts:
+      poor: "I want a wellness study using the phone and two wearables — a Polar HR sensor and a Movesense device. The phone should keep running in the background to collect timezone, free memory, device info, battery, screen events, ambient light, step events, and activity. It should also track network info, wifi, and nearby bluetooth devices. Also track location and mobility. From the Polar collect heart rate and ECG; from the Movesense collect its state, heart rate, and IMU. Every half hour grab weather and air quality. Add some user tasks: right at the start, ask the user to take a photo of how they set up their wearables (3 minutes). One hour after the study starts, ask them to record a short voice sample, one minute long, as a baseline. Every morning around 9, prompt them for a 3-minute photo of their morning meal. Every evening around 8, the same for their evening meal. The user should always be able to record a 2-minute voice diary entry whenever they want. After they finish that diary, ask them to take a 3-minute photo of what they're currently doing. Also give the user three health-data tasks they can do whenever. The first is physical data: weight, height, body fat percentage, and body temperature. The second is cardiovascular data: heart rate, resting heart rate, both HRV measures (RMSSD and SDNN), both blood pressures (systolic and diastolic), and blood oxygen. The third is activity data: steps, exercise time, walking/running distance, cycling distance, active and basal energy burned, total calories burned, flights climbed, respiratory rate, and all sleep stages (awake, in bed, asleep, deep, light, REM). Send the data to the CARP web service, with uploads grouped every 10 minutes, and delete it from the phone after upload."
+      medium: "I want to set up a cardio-wellness monitoring study. The participant uses their smartphone as the primary device, with a Polar HR sensor and a Movesense device connected as wearables. The protocol also uses location, weather, air quality, and health online services. In the background, the phone continuously collects timezone, free memory, device info, battery state, screen events, ambient light, step events, and activity. A second background task tracks connectivity, wifi, and bluetooth. A third uses the location service to record location and mobility. The Polar streams heart rate and ECG continuously, and the Movesense streams its state, heart rate, and IMU. Weather and air quality are sampled every 30 minutes. At the start of the study, the participant is prompted with a one-time image task to photograph their wearable setup (3 minutes). One hour after the study starts, an audio task is triggered for a 1-minute baseline voice recording. Every day at 09:00 an image task is scheduled for a morning meal photo, and at 20:00 one for an evening meal photo (3 minutes each). Three persistent health-data tasks are always on the task list. Physical Health Data collects weight, height, body fat percentage, and body temperature. Cardiovascular Health Data collects heart rate, resting heart rate, HRV RMSSD, HRV SDNN, blood pressure systolic, blood pressure diastolic, and blood oxygen. Activity Health Data collects steps, exercise time, distance walking/running, distance cycling, active energy burned, basal energy burned, total calories burned, flights climbed, respiratory rate, and all sleep stages (awake, in bed, asleep, deep, light, REM). A 2-minute audio voice diary task is also always on the task list. When the participant completes the voice diary, a 3-minute image task is triggered asking them to photograph what they are currently doing. Use the CARP Web Service as the data endpoint, with stream upload, batching uploads every 10 minutes, and delete data from the phone after upload."
+      rich: |-
+        # Cardio-wellness Monitoring — Study Protocol
+
+        ## Data endpoint
+        - CARP Web Service (`CarpDataEndPoint`)
+        - Upload method: stream
+        - Upload interval: **10 minutes**
+        - `deleteWhenUploaded: true`
+
+        ## Participant roles
+        - `Participant` (single role)
+
+        ## Devices
+        - **Primary**: Smartphone
+        - **Connected wearables**:
+          - Polar HR Sensor (`PolarDevice`)
+          - Movesense (`MovesenseDevice`)
+        - **Connected services**:
+          - Location Service
+          - Weather Service
+          - Air Quality Service
+          - Health Service
+
+        ## Background sensing (`ImmediateTrigger` + `BackgroundTask`)
+
+        | source device | measures |
+        |---|---|
+        | Smartphone | timezone, free memory, device info, battery state, screen events, ambient light, step events, activity |
+        | Smartphone | connectivity, wifi, bluetooth |
+        | Location Service | location, mobility |
+        | Polar HR Sensor | HR, ECG |
+        | Movesense | state, HR, IMU |
+
+        ## Periodic sensing (`PeriodicTrigger` + `BackgroundTask`)
+        - **Weather Service** — period 30 min (measure: `weather`)
+        - **Air Quality Service** — period 30 min (measure: `air quality`)
+
+        ## App tasks
+
+        ### One-shot
+        - **`OneTimeTrigger` → Wearable Setup Photo** (`AppTask`, image, 3 min) — at study start, photograph the wearable setup
+        - **`ElapsedTimeTrigger(1 h)` → Baseline Voice Recording** (`AppTask`, audio, 1 min) — one hour after study start
+
+        ### Daily scheduled (`RecurrentScheduledTrigger(daily)`)
+        - **09:00** → Morning Meal Photo (`AppTask`, image, 3 min)
+        - **20:00** → Evening Meal Photo (`AppTask`, image, 3 min)
+
+        ### Persistent (`NoUserTaskTrigger`, always on task list)
+        - **Voice Diary** (`AppTask`, audio, 2 min)
+        - **Physical Health Data** (`HealthAppTask`): weight, height, body fat percentage, body temperature
+        - **Cardiovascular Health Data** (`HealthAppTask`): heart rate, resting heart rate, HRV RMSSD, HRV SDNN, blood pressure systolic, blood pressure diastolic, blood oxygen
+        - **Activity Health Data** (`HealthAppTask`): steps, exercise time, distance walking/running, distance cycling, active energy burned, basal energy burned, total calories burned, flights climbed, respiratory rate, sleep awake, sleep in bed, sleep asleep, sleep deep, sleep light, sleep REM
+
+        ### Chained (`UserTaskTrigger`)
+        - When **Voice Diary** is `done` → **Current Activity Photo** (`AppTask`, image, 3 min)
