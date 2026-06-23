@@ -79,6 +79,12 @@ def _make_workflow(
 
     wf._orchestrator_result_step = MagicMock()
 
+    wf._explainer_step = MagicMock()
+    wf._explainer_step.run.return_value = (
+        "user-friendly explanation",
+        _make_log("explainer"),
+    )
+
     # Shadow the tool-resolution methods — tests exercise the retry loop, not tool wiring.
     wf._tools_for_names = MagicMock(return_value=[])  # type: ignore[method-assign]
     wf._resolve_tools = MagicMock(return_value=[])  # type: ignore[method-assign]

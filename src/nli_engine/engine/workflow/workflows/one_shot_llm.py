@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from nli_engine.engine.llm import LLMClient
 from nli_engine.engine.prompts import load_prompt
 from nli_engine.engine.retrieval.backends.qdrant import QdrantRetriever
@@ -49,14 +51,16 @@ class OneShotLLMWorkflowContext(WorkflowContext):
 
 
 class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
-    """Five-step LLM workflow: refiner → planner → extractor → setup → orchestrator loop.
+    """Six-step LLM workflow: refiner → planner → extractor → setup → orchestrator loop → explainer.
 
     The refiner rewrites the raw user message into a clean, unambiguous natural
     language description. The planner produces a concise ordered action plan.
     The extractor parses that plan into a structured ``AssemblyPlan``. Python
     then drives the assembly: the setup step runs once against the shared context,
     and the orchestrator is invoked once per assembly unit, delegating to domain
-    specialists — device, trigger, task, and task_control_assembler.
+    specialists — device, trigger, task, and task_control_assembler. Finally the
+    explainer rewrites the orchestrator's technical summary into a plain-language
+    explanation for a non-technical user.
 
     Required model keys in WorkflowConfig:
 
@@ -70,6 +74,8 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
 
     - ``models["query_rewriter"]``: small/cheap model for the LLM-based
       retrieval query rewriter. Falls back to ``models["default"]`` when absent.
+    - ``models["explainer"]``: model for the final user-facing explainer step.
+      Falls back to ``models["default"]`` when absent.
 
     """
 
@@ -212,6 +218,16 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 system_prompt=_load_prompt("orchestrator_result_extraction.md"),
                 schema=OrchestratorResult,
             )
+        )
+
+        explainer_client = LLMClient(
+            model=config.models.get("explainer", config.models["default"])
+        )
+        self._explainer_step = LLMStep(
+            name="explainer",
+            client=explainer_client,
+            system_prompt=_load_prompt("explainer.md"),
+            max_iterations=1,
         )
 
     def _tools_for_names(self, names: list[str]) -> list[BoundTool]:
@@ -441,8 +457,32 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
                 partial_failures.append(f"Unit {i + 1} ({unit.name}): {issues}")
 
         protocol = self._session.serialize()
+
+        if stop_after == "orchestrator":
+            return TurnResult(
+                message=final_text,
+                logs=logs,
+                done=True,
+                protocol=protocol,
+                partial_failures=partial_failures,
+            )
+
+        explainer_input = (
+            "User's original intent (refined):\n"
+            f"{refiner_text}\n\n"
+            "Orchestrator's technical summary of the last unit:\n"
+            f"{final_text}\n\n"
+            "Final serialized protocol (JSON):\n"
+            f"{json.dumps(protocol, indent=2)}"
+        )
+        explainer_context = OneShotLLMWorkflowContext(
+            history=[Message(role="user", content=explainer_input)]
+        )
+        explanation, explainer_log = self._explainer_step.run(explainer_context)
+        logs.append(explainer_log)
+
         return TurnResult(
-            message=final_text,
+            message=explanation,
             logs=logs,
             done=True,
             protocol=protocol,
