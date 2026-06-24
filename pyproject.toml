@@ -17,9 +17,11 @@ dependencies = [
 
 [project.optional-dependencies]
 cli = ["rich>=13.0"]
+gui = ["nicegui>=2.0"]
 
 [project.scripts]
 nli-engine = "nli_engine:main"
+nli-engine-gui = "nli_engine.gui:run"
 nli-eval = "nli_engine.eval.cli:main"
 
 [build-system]
