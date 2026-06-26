@@ -36,7 +36,12 @@ class DummyLLMWorkflow(Workflow[DummyLLMWorkflowContext]):
             KeyError: If ``config.models["planner"]`` is not set.
         """
         super().__init__(config, session)
-        client = LLMClient(model=config.models["planner"])
+        client = LLMClient(
+            model=config.models["planner"],
+            temperature=config.temperatures.get(
+                "planner", config.temperatures.get("default")
+            ),
+        )
         system_prompt = _load_prompt("dummy_llm_setup.md")
         self._step = LLMStep(
             name="dummy_llm_setup",

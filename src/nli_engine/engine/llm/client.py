@@ -67,9 +67,12 @@ class LLMClient:
 
     Attributes:
         model: LiteLLM model identifier, e.g. ``"ollama/qwen2.5:7b"`` or ``"gpt-4o"``.
+        temperature: Sampling temperature forwarded to the provider. ``None``
+            leaves it unset so the provider applies its own default.
     """
 
     model: str
+    temperature: float | None = None
 
     def complete(self, messages: list[dict], tools: list[dict]) -> LLMResponse:
         """Send a chat completion request and return the parsed response.
@@ -85,6 +88,8 @@ class LLMClient:
         kwargs: dict = {"model": self.model, "messages": messages}
         if tools:
             kwargs["tools"] = tools
+        if self.temperature is not None:
+            kwargs["temperature"] = self.temperature
 
         raw = litellm.completion(**kwargs)
         choice = raw.choices[0].message
@@ -123,11 +128,15 @@ class LLMClient:
         Returns:
             StructuredResponse with the parsed model instance and token counts.
         """
-        raw = litellm.completion(
-            model=self.model,
-            messages=messages,
-            response_format=schema,
-        )
+        kwargs: dict = {
+            "model": self.model,
+            "messages": messages,
+            "response_format": schema,
+        }
+        if self.temperature is not None:
+            kwargs["temperature"] = self.temperature
+
+        raw = litellm.completion(**kwargs)
         choice = raw.choices[0].message
         parsed = schema.model_validate_json(choice.content)
         return StructuredResponse(

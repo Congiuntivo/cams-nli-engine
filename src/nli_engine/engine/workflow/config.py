@@ -46,6 +46,16 @@ class WorkflowConfig(BaseModel):
         default_factory=dict,
         description="Mapping from model purpose name to model identifier.",
     )
+    temperatures: dict[str, float] = Field(
+        default_factory=dict,
+        description=(
+            "Mapping from model purpose name to sampling temperature. "
+            "Use the ``default`` key as a fallback for purposes without an "
+            "explicit entry. Purposes without an entry and without a "
+            "``default`` are sent without a temperature, letting the provider "
+            "apply its own default."
+        ),
+    )
     parameters: dict[str, Any] = Field(
         default_factory=dict, description="Additional parameters for the workflow."
     )
