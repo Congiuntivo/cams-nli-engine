@@ -32,12 +32,12 @@ MANIFEST_PATH = REPO_ROOT / "dataset" / "manifest.yaml"
 
 def log_path_for(config_stem: str, prompt_key: str, run_number: int) -> Path:
     """Return the log path for a (config, prompt, run) triple."""
-    return RESULTS_DIR / f"{config_stem}_{prompt_key}_run{run_number:02d}.log"
+    return RESULTS_DIR / f"{config_stem}_{prompt_key}_run{run_number:02d}.jsonl"
 
 
 def existing_run_count(config_stem: str, prompt_key: str) -> int:
     """Count logs already on disk for this (config, prompt) pair."""
-    return len(list(RESULTS_DIR.glob(f"{config_stem}_{prompt_key}_run*.log")))
+    return len(list(RESULTS_DIR.glob(f"{config_stem}_{prompt_key}_run*.jsonl")))
 
 
 def invoke_engine(
