@@ -12,6 +12,8 @@ Run from the repo root::
 
     uv run python study/runs/models/run_study.py            # 1 run / pair
     uv run python study/runs/models/run_study.py --runs 3   # 3 runs / pair
+
+Log filename convention: ``<config>_<CASE_ID>_<prompt>_run<NN>.jsonl``.
 """
 
 from __future__ import annotations
@@ -32,12 +34,16 @@ MANIFEST_PATH = REPO_ROOT / "dataset" / "manifest.yaml"
 
 def log_path_for(config_stem: str, prompt_key: str, run_number: int) -> Path:
     """Return the log path for a (config, prompt, run) triple."""
-    return RESULTS_DIR / f"{config_stem}_{prompt_key}_run{run_number:02d}.jsonl"
+    return (
+        RESULTS_DIR / f"{config_stem}_{CASE_ID}_{prompt_key}_run{run_number:02d}.jsonl"
+    )
 
 
 def existing_run_count(config_stem: str, prompt_key: str) -> int:
     """Count logs already on disk for this (config, prompt) pair."""
-    return len(list(RESULTS_DIR.glob(f"{config_stem}_{prompt_key}_run*.jsonl")))
+    return len(
+        list(RESULTS_DIR.glob(f"{config_stem}_{CASE_ID}_{prompt_key}_run*.jsonl"))
+    )
 
 
 def invoke_engine(
@@ -45,7 +51,7 @@ def invoke_engine(
 ) -> int:
     """Run ``nli-engine`` once and return its exit code."""
     log_path = log_path_for(config_path.stem, prompt_key, run_number)
-    name = f"{config_path.stem}_{prompt_key}_run{run_number:02d}"
+    name = f"{config_path.stem}_{CASE_ID}_{prompt_key}_run{run_number:02d}"
     cmd = [
         "uv",
         "run",
