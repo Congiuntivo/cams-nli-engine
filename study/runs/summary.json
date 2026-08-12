@@ -190,38 +190,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 1
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 4
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -238,7 +206,39 @@
           "fp": 0,
           "fn": 3
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -268,24 +268,8 @@
     "hashmatch": {
       "f1": 0.5375,
       "precision": 0.75,
-      "recall": 0.4791666666666667,
+      "recall": 0.47916666666666663,
       "per_field": {
-        "triggers": {
-          "precision": 1.0,
-          "recall": 0.25,
-          "f1": 0.4,
-          "tp": 1,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -294,7 +278,7 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -310,13 +294,13 @@
           "fp": 0,
           "fn": 2
         },
-        "connections": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "applicationData": {
           "precision": 1.0,
@@ -327,6 +311,22 @@
           "fn": 0
         },
         "taskControls": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
           "precision": 1.0,
           "recall": 0.25,
           "f1": 0.4,
@@ -492,38 +492,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 1
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 4
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -540,7 +508,39 @@
           "fp": 0,
           "fn": 3
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -580,38 +580,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 1
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 4
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -628,7 +596,39 @@
           "fp": 0,
           "fn": 3
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -668,38 +668,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 1
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 4
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -716,7 +684,39 @@
           "fp": 0,
           "fn": 3
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -756,38 +756,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 4
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 10
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 6
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -804,7 +772,39 @@
           "fp": 0,
           "fn": 3
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 10
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -916,38 +916,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 6
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 21
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 12
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -964,7 +932,39 @@
           "fp": 0,
           "fn": 2
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 12
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 21
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -994,24 +994,8 @@
     "hashmatch": {
       "f1": 0.5375,
       "precision": 0.75,
-      "recall": 0.4791666666666667,
+      "recall": 0.47916666666666663,
       "per_field": {
-        "triggers": {
-          "precision": 1.0,
-          "recall": 0.25,
-          "f1": 0.4,
-          "tp": 1,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -1020,7 +1004,7 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -1036,13 +1020,13 @@
           "fp": 0,
           "fn": 2
         },
-        "connections": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "applicationData": {
           "precision": 1.0,
@@ -1053,6 +1037,22 @@
           "fn": 0
         },
         "taskControls": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
           "precision": 1.0,
           "recall": 0.25,
           "f1": 0.4,
@@ -1082,24 +1082,8 @@
     "hashmatch": {
       "f1": 0.48839285714285713,
       "precision": 0.6875,
-      "recall": 0.4479166666666667,
+      "recall": 0.44791666666666663,
       "per_field": {
-        "triggers": {
-          "precision": 1.0,
-          "recall": 0.25,
-          "f1": 0.4,
-          "tp": 1,
-          "fp": 0,
-          "fn": 3
-        },
-        "other": {
-          "precision": 0.75,
-          "recall": 0.75,
-          "f1": 0.75,
-          "tp": 3,
-          "fp": 1,
-          "fn": 1
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -1108,7 +1092,7 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -1124,12 +1108,12 @@
           "fp": 0,
           "fn": 2
         },
-        "connections": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
           "fn": 1
         },
         "applicationData": {
@@ -1141,6 +1125,22 @@
           "fn": 0
         },
         "taskControls": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
           "precision": 1.0,
           "recall": 0.25,
           "f1": 0.4,
@@ -1198,38 +1198,6 @@
           "fp": 0,
           "fn": 1
         },
-        "connectedDevices": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 4
-        },
-        "triggers": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 10
-        },
-        "tasks": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 0,
-          "fn": 6
-        },
-        "other": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 1,
-          "fn": 4
-        },
         "connections": {
           "precision": 0.0,
           "recall": 0.0,
@@ -1246,7 +1214,39 @@
           "fp": 0,
           "fn": 3
         },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6
+        },
         "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 10
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
@@ -1276,24 +1276,8 @@
     "hashmatch": {
       "f1": 0.4561688311688311,
       "precision": 0.75,
-      "recall": 0.42083333333333334,
+      "recall": 0.4208333333333334,
       "per_field": {
-        "triggers": {
-          "precision": 1.0,
-          "recall": 0.1,
-          "f1": 0.18181818181818182,
-          "tp": 1,
-          "fp": 0,
-          "fn": 9
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -1302,13 +1286,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
           "tp": 0,
           "fp": 0,
-          "fn": 4
+          "fn": 1
         },
         "tasks": {
           "precision": 1.0,
@@ -1318,13 +1302,13 @@
           "fp": 0,
           "fn": 5
         },
-        "connections": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "applicationData": {
           "precision": 1.0,
@@ -1335,6 +1319,22 @@
           "fn": 0
         },
         "taskControls": {
+          "precision": 1.0,
+          "recall": 0.1,
+          "f1": 0.18181818181818182,
+          "tp": 1,
+          "fp": 0,
+          "fn": 9
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "triggers": {
           "precision": 1.0,
           "recall": 0.1,
           "f1": 0.18181818181818182,
@@ -1363,25 +1363,9 @@
     "total_latency_ms": 3554183.472,
     "hashmatch": {
       "f1": 0.7142857142857143,
-      "precision": 0.8958333333333333,
-      "recall": 0.6583333333333333,
+      "precision": 0.8958333333333334,
+      "recall": 0.6583333333333332,
       "per_field": {
-        "triggers": {
-          "precision": 0.75,
-          "recall": 0.3,
-          "f1": 0.4285714285714285,
-          "tp": 3,
-          "fp": 1,
-          "fn": 7
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -1390,13 +1374,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
-          "precision": 0.6666666666666666,
-          "recall": 0.5,
-          "f1": 0.5714285714285715,
-          "tp": 2,
-          "fp": 1,
-          "fn": 2
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
         },
         "tasks": {
           "precision": 1.0,
@@ -1406,11 +1390,11 @@
           "fp": 0,
           "fn": 5
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -1423,6 +1407,22 @@
           "fn": 0
         },
         "taskControls": {
+          "precision": 0.75,
+          "recall": 0.3,
+          "f1": 0.4285714285714285,
+          "tp": 3,
+          "fp": 1,
+          "fn": 7
+        },
+        "connectedDevices": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5,
+          "f1": 0.5714285714285715,
+          "tp": 2,
+          "fp": 1,
+          "fn": 2
+        },
+        "triggers": {
           "precision": 0.75,
           "recall": 0.3,
           "f1": 0.4285714285714285,
@@ -1814,6 +1814,534 @@
   {
     "source": "models",
     "model": "gpt-4o-mini",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 77,
+    "n_tool_rounds": 49,
+    "n_tool_calls": 90,
+    "n_failed_tool_calls": 3,
+    "tool_failure_rate": 0.03333333333333333,
+    "total_input_tokens": 322164,
+    "total_output_tokens": 5500,
+    "total_latency_ms": 215175.343,
+    "hashmatch": {
+      "f1": 0.689484126984127,
+      "precision": 0.675,
+      "recall": 0.7083333333333333,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.5,
+          "recall": 0.6666666666666666,
+          "f1": 0.5714285714285715,
+          "tp": 2,
+          "fp": 2,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.4,
+          "recall": 0.5,
+          "f1": 0.4444444444444445,
+          "tp": 2,
+          "fp": 3,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 66,
+    "n_tool_rounds": 44,
+    "n_tool_calls": 68,
+    "n_failed_tool_calls": 4,
+    "tool_failure_rate": 0.058823529411764705,
+    "total_input_tokens": 282412,
+    "total_output_tokens": 4144,
+    "total_latency_ms": 191687.253,
+    "hashmatch": {
+      "f1": 0.6830357142857143,
+      "precision": 0.6875,
+      "recall": 0.6875,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 58,
+    "n_tool_rounds": 38,
+    "n_tool_calls": 58,
+    "n_failed_tool_calls": 2,
+    "tool_failure_rate": 0.034482758620689655,
+    "total_input_tokens": 221366,
+    "total_output_tokens": 3717,
+    "total_latency_ms": 126410.651,
+    "hashmatch": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 496,
+    "n_tool_rounds": 318,
+    "n_tool_calls": 545,
+    "n_failed_tool_calls": 8,
+    "tool_failure_rate": 0.014678899082568808,
+    "total_input_tokens": 3802707,
+    "total_output_tokens": 32532,
+    "total_latency_ms": 1283696.649,
+    "hashmatch": {
+      "f1": 0.42232142857142857,
+      "precision": 0.46875,
+      "recall": 0.4020833333333334,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 0.25,
+          "recall": 0.16666666666666666,
+          "f1": 0.2,
+          "tp": 1,
+          "fp": 3,
+          "fn": 5
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.25,
+          "recall": 0.1,
+          "f1": 0.14285714285714288,
+          "tp": 1,
+          "fp": 3,
+          "fn": 9
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "triggers": {
+          "precision": 0.5,
+          "recall": 0.2,
+          "f1": 0.28571428571428575,
+          "tp": 2,
+          "fp": 2,
+          "fn": 8
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 488,
+    "n_tool_rounds": 325,
+    "n_tool_calls": 524,
+    "n_failed_tool_calls": 26,
+    "tool_failure_rate": 0.04961832061068702,
+    "total_input_tokens": 3362618,
+    "total_output_tokens": 30050,
+    "total_latency_ms": 1291840.121,
+    "hashmatch": {
+      "f1": 0.8558802308802307,
+      "precision": 0.903125,
+      "recall": 0.81875,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.6,
+          "recall": 0.5,
+          "f1": 0.5454545454545454,
+          "tp": 3,
+          "fp": 2,
+          "fn": 3
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.6,
+          "f1": 0.6666666666666665,
+          "tp": 6,
+          "fp": 2,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.875,
+          "recall": 0.7,
+          "f1": 0.7777777777777777,
+          "tp": 7,
+          "fp": 1,
+          "fn": 3
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 201,
+    "n_tool_rounds": 132,
+    "n_tool_calls": 217,
+    "n_failed_tool_calls": 5,
+    "tool_failure_rate": 0.02304147465437788,
+    "total_input_tokens": 1186241,
+    "total_output_tokens": 14982,
+    "total_latency_ms": 545907.205,
+    "hashmatch": {
+      "f1": 0.8226033834586466,
+      "precision": 0.8506944444444444,
+      "recall": 0.7999999999999999,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "tp": 3,
+          "fp": 3,
+          "fn": 3
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6,
+          "f1": 0.631578947368421,
+          "tp": 6,
+          "fp": 3,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
     "case_id": "003_cardio_wellness",
     "prompt_key": "medium",
     "run": 1,
@@ -1829,25 +2357,9 @@
     "total_latency_ms": 2344940.352,
     "hashmatch": {
       "f1": 0.7704681954681954,
-      "precision": 0.8010416666666668,
+      "precision": 0.8010416666666667,
       "recall": 0.7604166666666667,
       "per_field": {
-        "triggers": {
-          "precision": 0.8666666666666667,
-          "recall": 0.6190476190476191,
-          "f1": 0.7222222222222222,
-          "tp": 13,
-          "fp": 2,
-          "fn": 8
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -1856,13 +2368,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.8333333333333334,
-          "f1": 0.9090909090909091,
-          "tp": 5,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "tasks": {
           "precision": 0.375,
@@ -1872,11 +2384,11 @@
           "fp": 5,
           "fn": 9
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -1895,6 +2407,22 @@
           "tp": 8,
           "fp": 8,
           "fn": 13
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8666666666666667,
+          "recall": 0.6190476190476191,
+          "f1": 0.7222222222222222,
+          "tp": 13,
+          "fp": 2,
+          "fn": 8
         }
       }
     }
@@ -1917,25 +2445,9 @@
     "total_latency_ms": 1992273.704,
     "hashmatch": {
       "f1": 0.6257470212965569,
-      "precision": 0.7029532967032968,
+      "precision": 0.7029532967032966,
       "recall": 0.6116071428571429,
       "per_field": {
-        "triggers": {
-          "precision": 0.5833333333333334,
-          "recall": 0.3333333333333333,
-          "f1": 0.4242424242424242,
-          "tp": 7,
-          "fp": 5,
-          "fn": 14
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -1944,13 +2456,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.3333333333333333,
-          "f1": 0.5,
-          "tp": 2,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 4
+          "fn": 0
         },
         "tasks": {
           "precision": 0.14285714285714285,
@@ -1960,11 +2472,11 @@
           "fp": 6,
           "fn": 11
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -1983,6 +2495,22 @@
           "tp": 3,
           "fp": 10,
           "fn": 18
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "tp": 2,
+          "fp": 0,
+          "fn": 4
+        },
+        "triggers": {
+          "precision": 0.5833333333333334,
+          "recall": 0.3333333333333333,
+          "f1": 0.4242424242424242,
+          "tp": 7,
+          "fp": 5,
+          "fn": 14
         }
       }
     }
@@ -2004,26 +2532,10 @@
     "total_output_tokens": 29536,
     "total_latency_ms": 934210.052,
     "hashmatch": {
-      "f1": 0.7883116883116883,
+      "f1": 0.7883116883116884,
       "precision": 0.8145363408521304,
       "recall": 0.78125,
       "per_field": {
-        "triggers": {
-          "precision": 0.9285714285714286,
-          "recall": 0.6190476190476191,
-          "f1": 0.742857142857143,
-          "tp": 13,
-          "fp": 1,
-          "fn": 8
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2032,13 +2544,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.8333333333333334,
-          "f1": 0.9090909090909091,
-          "tp": 5,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "tasks": {
           "precision": 0.5,
@@ -2048,11 +2560,11 @@
           "fp": 5,
           "fn": 7
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2071,6 +2583,550 @@
           "tp": 8,
           "fp": 11,
           "fn": 13
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.9285714285714286,
+          "recall": 0.6190476190476191,
+          "f1": 0.742857142857143,
+          "tp": 13,
+          "fp": 1,
+          "fn": 8
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 56,
+    "n_tool_rounds": 39,
+    "n_tool_calls": 60,
+    "n_failed_tool_calls": 4,
+    "tool_failure_rate": 0.06666666666666667,
+    "total_input_tokens": 259822,
+    "total_output_tokens": 66411,
+    "total_latency_ms": 820681.3570000001,
+    "hashmatch": {
+      "f1": 0.7083333333333333,
+      "precision": 0.7083333333333333,
+      "recall": 0.7083333333333333,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "tp": 2,
+          "fp": 2,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 45,
+    "n_tool_rounds": 30,
+    "n_tool_calls": 42,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.023809523809523808,
+    "total_input_tokens": 200761,
+    "total_output_tokens": 41513,
+    "total_latency_ms": 545144.398,
+    "hashmatch": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 66,
+    "n_tool_rounds": 47,
+    "n_tool_calls": 67,
+    "n_failed_tool_calls": 4,
+    "tool_failure_rate": 0.05970149253731343,
+    "total_input_tokens": 316716,
+    "total_output_tokens": 78121,
+    "total_latency_ms": 901129.711,
+    "hashmatch": {
+      "f1": 0.9270833333333333,
+      "precision": 0.9270833333333333,
+      "recall": 0.9270833333333333,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 155,
+    "n_tool_rounds": 115,
+    "n_tool_calls": 166,
+    "n_failed_tool_calls": 14,
+    "tool_failure_rate": 0.08433734939759036,
+    "total_input_tokens": 1206070,
+    "total_output_tokens": 242361,
+    "total_latency_ms": 2781717.33,
+    "hashmatch": {
+      "f1": 0.8105178812415654,
+      "precision": 0.8601190476190477,
+      "recall": 0.7854166666666667,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.7142857142857143,
+          "recall": 0.8333333333333334,
+          "f1": 0.7692307692307692,
+          "tp": 5,
+          "fp": 2,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6,
+          "f1": 0.631578947368421,
+          "tp": 6,
+          "fp": 3,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.6,
+          "f1": 0.6666666666666665,
+          "tp": 6,
+          "fp": 2,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 164,
+    "n_tool_rounds": 118,
+    "n_tool_calls": 164,
+    "n_failed_tool_calls": 12,
+    "tool_failure_rate": 0.07317073170731707,
+    "total_input_tokens": 1110781,
+    "total_output_tokens": 200083,
+    "total_latency_ms": 2380633.121,
+    "hashmatch": {
+      "f1": 0.7949561403508771,
+      "precision": 0.8506944444444444,
+      "recall": 0.7625,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "tp": 3,
+          "fp": 3,
+          "fn": 3
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5555555555555556,
+          "recall": 0.5,
+          "f1": 0.5263157894736842,
+          "tp": 5,
+          "fp": 4,
+          "fn": 5
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.6,
+          "f1": 0.6666666666666665,
+          "tp": 6,
+          "fp": 2,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 150,
+    "n_tool_rounds": 112,
+    "n_tool_calls": 173,
+    "n_failed_tool_calls": 10,
+    "tool_failure_rate": 0.057803468208092484,
+    "total_input_tokens": 1039549,
+    "total_output_tokens": 213924,
+    "total_latency_ms": 2575654.386,
+    "hashmatch": {
+      "f1": 0.8905858395989975,
+      "precision": 0.9201388888888891,
+      "recall": 0.8666666666666667,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1": 0.8333333333333334,
+          "tp": 5,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
         }
       }
     }
@@ -2093,25 +3149,9 @@
     "total_latency_ms": 4424215.653,
     "hashmatch": {
       "f1": 0.7389069264069265,
-      "precision": 0.7454887218045114,
-      "recall": 0.7470238095238095,
+      "precision": 0.7454887218045112,
+      "recall": 0.7470238095238096,
       "per_field": {
-        "triggers": {
-          "precision": 0.6428571428571429,
-          "recall": 0.42857142857142855,
-          "f1": 0.5142857142857143,
-          "tp": 9,
-          "fp": 5,
-          "fn": 12
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2120,13 +3160,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
-          "precision": 0.8333333333333334,
-          "recall": 0.8333333333333334,
-          "f1": 0.8333333333333334,
-          "tp": 5,
-          "fp": 1,
-          "fn": 1
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
         },
         "tasks": {
           "precision": 0.4,
@@ -2136,11 +3176,11 @@
           "fp": 6,
           "fn": 8
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2159,6 +3199,22 @@
           "tp": 8,
           "fp": 11,
           "fn": 13
+        },
+        "connectedDevices": {
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1": 0.8333333333333334,
+          "tp": 5,
+          "fp": 1,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.6428571428571429,
+          "recall": 0.42857142857142855,
+          "f1": 0.5142857142857143,
+          "tp": 9,
+          "fp": 5,
+          "fn": 12
         }
       }
     }
@@ -2181,25 +3237,9 @@
     "total_latency_ms": 47916669.698,
     "hashmatch": {
       "f1": 0.758753465003465,
-      "precision": 0.7829861111111112,
+      "precision": 0.782986111111111,
       "recall": 0.7544642857142857,
       "per_field": {
-        "triggers": {
-          "precision": 0.625,
-          "recall": 0.47619047619047616,
-          "f1": 0.5405405405405405,
-          "tp": 10,
-          "fp": 6,
-          "fn": 11
-        },
-        "other": {
-          "precision": 0.75,
-          "recall": 0.75,
-          "f1": 0.75,
-          "tp": 3,
-          "fp": 1,
-          "fn": 1
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2208,13 +3248,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.6666666666666666,
-          "f1": 0.8,
-          "tp": 4,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 2
+          "fn": 0
         },
         "tasks": {
           "precision": 0.6666666666666666,
@@ -2224,13 +3264,13 @@
           "fp": 4,
           "fn": 4
         },
-        "connections": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 1,
-          "fp": 0,
-          "fn": 0
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
         },
         "applicationData": {
           "precision": 0.6666666666666666,
@@ -2246,6 +3286,22 @@
           "f1": 0.5128205128205129,
           "tp": 10,
           "fp": 8,
+          "fn": 11
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "tp": 4,
+          "fp": 0,
+          "fn": 2
+        },
+        "triggers": {
+          "precision": 0.625,
+          "recall": 0.47619047619047616,
+          "f1": 0.5405405405405405,
+          "tp": 10,
+          "fp": 6,
           "fn": 11
         }
       }
@@ -2268,26 +3324,10 @@
     "total_output_tokens": 266429,
     "total_latency_ms": 2148359.181,
     "hashmatch": {
-      "f1": 0.7446267696267697,
-      "precision": 0.7994791666666667,
+      "f1": 0.7446267696267698,
+      "precision": 0.7994791666666666,
       "recall": 0.7261904761904762,
       "per_field": {
-        "triggers": {
-          "precision": 0.6875,
-          "recall": 0.5238095238095238,
-          "f1": 0.5945945945945946,
-          "tp": 11,
-          "fp": 5,
-          "fn": 10
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2296,13 +3336,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.5,
-          "f1": 0.6666666666666666,
-          "tp": 3,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 3
+          "fn": 0
         },
         "tasks": {
           "precision": 0.6666666666666666,
@@ -2312,11 +3352,11 @@
           "fp": 3,
           "fn": 6
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2335,6 +3375,550 @@
           "tp": 6,
           "fp": 10,
           "fn": 15
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 3,
+          "fp": 0,
+          "fn": 3
+        },
+        "triggers": {
+          "precision": 0.6875,
+          "recall": 0.5238095238095238,
+          "f1": 0.5945945945945946,
+          "tp": 11,
+          "fp": 5,
+          "fn": 10
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 36,
+    "n_tool_rounds": 23,
+    "n_tool_calls": 37,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.02702702702702703,
+    "total_input_tokens": 157199,
+    "total_output_tokens": 2641,
+    "total_latency_ms": 65574.189,
+    "hashmatch": {
+      "f1": 0.9080357142857142,
+      "precision": 0.96875,
+      "recall": 0.8645833333333333,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 0,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 36,
+    "n_tool_rounds": 23,
+    "n_tool_calls": 38,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.02631578947368421,
+    "total_input_tokens": 154180,
+    "total_output_tokens": 2325,
+    "total_latency_ms": 63347.25,
+    "hashmatch": {
+      "f1": 0.96875,
+      "precision": 0.96875,
+      "recall": 0.96875,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 38,
+    "n_tool_rounds": 26,
+    "n_tool_calls": 37,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 157959,
+    "total_output_tokens": 2325,
+    "total_latency_ms": 81061.652,
+    "hashmatch": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 123,
+    "n_tool_rounds": 86,
+    "n_tool_calls": 127,
+    "n_failed_tool_calls": 5,
+    "tool_failure_rate": 0.03937007874015748,
+    "total_input_tokens": 694455,
+    "total_output_tokens": 9829,
+    "total_latency_ms": 228584.90399999998,
+    "hashmatch": {
+      "f1": 0.9113095238095238,
+      "precision": 0.9291666666666667,
+      "recall": 0.8979166666666667,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1": 0.8333333333333334,
+          "tp": 5,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 8,
+          "fp": 2,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 8,
+          "fp": 2,
+          "fn": 2
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 128,
+    "n_tool_rounds": 89,
+    "n_tool_calls": 136,
+    "n_failed_tool_calls": 9,
+    "tool_failure_rate": 0.0661764705882353,
+    "total_input_tokens": 713215,
+    "total_output_tokens": 9734,
+    "total_latency_ms": 303750.83999999997,
+    "hashmatch": {
+      "f1": 0.8734402852049912,
+      "precision": 0.9642857142857142,
+      "recall": 0.8166666666666667,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8571428571428571,
+          "recall": 0.6,
+          "f1": 0.7058823529411764,
+          "tp": 6,
+          "fp": 1,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2
+        },
+        "triggers": {
+          "precision": 0.8571428571428571,
+          "recall": 0.6,
+          "f1": 0.7058823529411764,
+          "tp": 6,
+          "fp": 1,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 117,
+    "n_tool_rounds": 82,
+    "n_tool_calls": 117,
+    "n_failed_tool_calls": 8,
+    "tool_failure_rate": 0.06837606837606838,
+    "total_input_tokens": 665070,
+    "total_output_tokens": 9338,
+    "total_latency_ms": 237846.00900000002,
+    "hashmatch": {
+      "f1": 0.9218358395989975,
+      "precision": 0.9513888888888891,
+      "recall": 0.8979166666666667,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1": 0.8333333333333334,
+          "tp": 5,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
         }
       }
     }
@@ -2358,24 +3942,8 @@
     "hashmatch": {
       "f1": 0.8407401719901719,
       "precision": 0.849451754385965,
-      "recall": 0.8452380952380952,
+      "recall": 0.8452380952380951,
       "per_field": {
-        "triggers": {
-          "precision": 0.75,
-          "recall": 0.5714285714285714,
-          "f1": 0.6486486486486486,
-          "tp": 12,
-          "fp": 4,
-          "fn": 9
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2384,11 +3952,11 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 6,
+          "tp": 1,
           "fp": 0,
           "fn": 0
         },
@@ -2400,11 +3968,11 @@
           "fp": 2,
           "fn": 4
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2423,6 +3991,22 @@
           "tp": 11,
           "fp": 8,
           "fn": 10
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.5714285714285714,
+          "f1": 0.6486486486486486,
+          "tp": 12,
+          "fp": 4,
+          "fn": 9
         }
       }
     }
@@ -2444,26 +4028,10 @@
     "total_output_tokens": 17657,
     "total_latency_ms": 445006.153,
     "hashmatch": {
-      "f1": 0.6828947368421052,
+      "f1": 0.6828947368421053,
       "precision": 0.6909313725490196,
-      "recall": 0.6904761904761905,
+      "recall": 0.6904761904761904,
       "per_field": {
-        "triggers": {
-          "precision": 0.4,
-          "recall": 0.2857142857142857,
-          "f1": 0.3333333333333333,
-          "tp": 6,
-          "fp": 9,
-          "fn": 15
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2472,13 +4040,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
-          "precision": 0.5,
-          "recall": 0.3333333333333333,
-          "f1": 0.4,
-          "tp": 2,
-          "fp": 2,
-          "fn": 4
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
         },
         "tasks": {
           "precision": 0.6666666666666666,
@@ -2488,11 +4056,11 @@
           "fp": 4,
           "fn": 4
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2511,6 +4079,22 @@
           "tp": 5,
           "fp": 12,
           "fn": 16
+        },
+        "connectedDevices": {
+          "precision": 0.5,
+          "recall": 0.3333333333333333,
+          "f1": 0.4,
+          "tp": 2,
+          "fp": 2,
+          "fn": 4
+        },
+        "triggers": {
+          "precision": 0.4,
+          "recall": 0.2857142857142857,
+          "f1": 0.3333333333333333,
+          "tp": 6,
+          "fp": 9,
+          "fn": 15
         }
       }
     }
@@ -2532,26 +4116,10 @@
     "total_output_tokens": 18816,
     "total_latency_ms": 531064.051,
     "hashmatch": {
-      "f1": 0.8126053770790612,
-      "precision": 0.8465686274509805,
+      "f1": 0.8126053770790614,
+      "precision": 0.8465686274509804,
       "recall": 0.7991071428571428,
       "per_field": {
-        "triggers": {
-          "precision": 0.8,
-          "recall": 0.5714285714285714,
-          "f1": 0.6666666666666666,
-          "tp": 12,
-          "fp": 3,
-          "fn": 9
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2560,13 +4128,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
-          "precision": 0.6,
-          "recall": 0.5,
-          "f1": 0.5454545454545454,
-          "tp": 3,
-          "fp": 2,
-          "fn": 3
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
         },
         "tasks": {
           "precision": 1.0,
@@ -2576,11 +4144,11 @@
           "fp": 0,
           "fn": 3
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2599,6 +4167,550 @@
           "tp": 12,
           "fp": 5,
           "fn": 9
+        },
+        "connectedDevices": {
+          "precision": 0.6,
+          "recall": 0.5,
+          "f1": 0.5454545454545454,
+          "tp": 3,
+          "fp": 2,
+          "fn": 3
+        },
+        "triggers": {
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "tp": 12,
+          "fp": 3,
+          "fn": 9
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 64,
+    "n_tool_rounds": 44,
+    "n_tool_calls": 61,
+    "n_failed_tool_calls": 2,
+    "tool_failure_rate": 0.03278688524590164,
+    "total_input_tokens": 332083,
+    "total_output_tokens": 6168,
+    "total_latency_ms": 119104.994,
+    "hashmatch": {
+      "f1": 0.9682539682539684,
+      "precision": 0.94375,
+      "recall": 1.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "tp": 4,
+          "fp": 1,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 43,
+    "n_tool_rounds": 27,
+    "n_tool_calls": 45,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.022222222222222223,
+    "total_input_tokens": 182111,
+    "total_output_tokens": 3494,
+    "total_latency_ms": 81639.38799999999,
+    "hashmatch": {
+      "f1": 0.8125,
+      "precision": 0.8125,
+      "recall": 0.8125,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 39,
+    "n_tool_rounds": 26,
+    "n_tool_calls": 39,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.02564102564102564,
+    "total_input_tokens": 172636,
+    "total_output_tokens": 3091,
+    "total_latency_ms": 70752.957,
+    "hashmatch": {
+      "f1": 0.8125,
+      "precision": 0.8125,
+      "recall": 0.8125,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 219,
+    "n_tool_rounds": 149,
+    "n_tool_calls": 242,
+    "n_failed_tool_calls": 8,
+    "tool_failure_rate": 0.03305785123966942,
+    "total_input_tokens": 1783478,
+    "total_output_tokens": 20543,
+    "total_latency_ms": 441181.695,
+    "hashmatch": {
+      "f1": 0.8406954887218044,
+      "precision": 0.8680555555555556,
+      "recall": 0.81875,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "tp": 3,
+          "fp": 3,
+          "fn": 3
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6,
+          "f1": 0.631578947368421,
+          "tp": 6,
+          "fp": 3,
+          "fn": 4
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.7777777777777778,
+          "recall": 0.7,
+          "f1": 0.7368421052631577,
+          "tp": 7,
+          "fp": 2,
+          "fn": 3
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 138,
+    "n_tool_rounds": 96,
+    "n_tool_calls": 140,
+    "n_failed_tool_calls": 10,
+    "tool_failure_rate": 0.07142857142857142,
+    "total_input_tokens": 967121,
+    "total_output_tokens": 14719,
+    "total_latency_ms": 284425.211,
+    "hashmatch": {
+      "f1": 0.7853174603174602,
+      "precision": 0.8333333333333334,
+      "recall": 0.75,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.75,
+          "recall": 0.5,
+          "f1": 0.6,
+          "tp": 3,
+          "fp": 1,
+          "fn": 3
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.625,
+          "recall": 0.5,
+          "f1": 0.5555555555555556,
+          "tp": 5,
+          "fp": 3,
+          "fn": 5
+        },
+        "connectedDevices": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5,
+          "f1": 0.5714285714285715,
+          "tp": 2,
+          "fp": 1,
+          "fn": 2
+        },
+        "triggers": {
+          "precision": 0.625,
+          "recall": 0.5,
+          "f1": 0.5555555555555556,
+          "tp": 5,
+          "fp": 3,
+          "fn": 5
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 132,
+    "n_tool_rounds": 92,
+    "n_tool_calls": 129,
+    "n_failed_tool_calls": 9,
+    "tool_failure_rate": 0.06976744186046512,
+    "total_input_tokens": 837225,
+    "total_output_tokens": 13748,
+    "total_latency_ms": 277277.61,
+    "hashmatch": {
+      "f1": 0.932142857142857,
+      "precision": 0.95,
+      "recall": 0.91875,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 8,
+          "fp": 2,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8000000000000002,
+          "tp": 8,
+          "fp": 2,
+          "fn": 2
         }
       }
     }
@@ -2620,26 +4732,10 @@
     "total_output_tokens": 20974,
     "total_latency_ms": 489449.453,
     "hashmatch": {
-      "f1": 0.7262943137943139,
-      "precision": 0.7605654761904762,
-      "recall": 0.7157738095238095,
+      "f1": 0.7262943137943138,
+      "precision": 0.7605654761904763,
+      "recall": 0.7157738095238096,
       "per_field": {
-        "triggers": {
-          "precision": 0.6428571428571429,
-          "recall": 0.42857142857142855,
-          "f1": 0.5142857142857143,
-          "tp": 9,
-          "fp": 5,
-          "fn": 12
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2648,13 +4744,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
-          "precision": 0.4,
-          "recall": 0.3333333333333333,
-          "f1": 0.3636363636363636,
-          "tp": 2,
-          "fp": 3,
-          "fn": 4
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
         },
         "tasks": {
           "precision": 0.875,
@@ -2664,11 +4760,11 @@
           "fp": 1,
           "fn": 5
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2687,6 +4783,22 @@
           "tp": 8,
           "fp": 8,
           "fn": 13
+        },
+        "connectedDevices": {
+          "precision": 0.4,
+          "recall": 0.3333333333333333,
+          "f1": 0.3636363636363636,
+          "tp": 2,
+          "fp": 3,
+          "fn": 4
+        },
+        "triggers": {
+          "precision": 0.6428571428571429,
+          "recall": 0.42857142857142855,
+          "f1": 0.5142857142857143,
+          "tp": 9,
+          "fp": 5,
+          "fn": 12
         }
       }
     }
@@ -2708,26 +4820,10 @@
     "total_output_tokens": 28189,
     "total_latency_ms": 703823.2239999999,
     "hashmatch": {
-      "f1": 0.8394230769230768,
+      "f1": 0.8394230769230769,
       "precision": 0.8611111111111112,
-      "recall": 0.8363095238095237,
+      "recall": 0.836309523809524,
       "per_field": {
-        "triggers": {
-          "precision": 0.7222222222222222,
-          "recall": 0.6190476190476191,
-          "f1": 0.6666666666666666,
-          "tp": 13,
-          "fp": 5,
-          "fn": 8
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2736,13 +4832,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.6666666666666666,
-          "f1": 0.8,
-          "tp": 4,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 2
+          "fn": 0
         },
         "tasks": {
           "precision": 0.8333333333333334,
@@ -2752,11 +4848,11 @@
           "fp": 2,
           "fn": 2
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2775,6 +4871,22 @@
           "tp": 12,
           "fp": 6,
           "fn": 9
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "tp": 4,
+          "fp": 0,
+          "fn": 2
+        },
+        "triggers": {
+          "precision": 0.7222222222222222,
+          "recall": 0.6190476190476191,
+          "f1": 0.6666666666666666,
+          "tp": 13,
+          "fp": 5,
+          "fn": 8
         }
       }
     }
@@ -2797,25 +4909,9 @@
     "total_latency_ms": 575470.02,
     "hashmatch": {
       "f1": 0.8331815511163337,
-      "precision": 0.8380432615629985,
-      "recall": 0.8407738095238095,
+      "precision": 0.8380432615629984,
+      "recall": 0.8407738095238096,
       "per_field": {
-        "triggers": {
-          "precision": 0.875,
-          "recall": 0.6666666666666666,
-          "f1": 0.7567567567567567,
-          "tp": 14,
-          "fp": 2,
-          "fn": 7
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2824,11 +4920,11 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 6,
+          "tp": 1,
           "fp": 0,
           "fn": 0
         },
@@ -2840,11 +4936,11 @@
           "fp": 4,
           "fn": 5
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2863,6 +4959,550 @@
           "tp": 10,
           "fp": 9,
           "fn": 11
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 0.875,
+          "recall": 0.6666666666666666,
+          "f1": 0.7567567567567567,
+          "tp": 14,
+          "fp": 2,
+          "fn": 7
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 37,
+    "n_tool_rounds": 24,
+    "n_tool_calls": 37,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 153632,
+    "total_output_tokens": 2623,
+    "total_latency_ms": 86435.759,
+    "hashmatch": {
+      "f1": 0.8958333333333333,
+      "precision": 0.8958333333333333,
+      "recall": 0.8958333333333333,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 38,
+    "n_tool_rounds": 26,
+    "n_tool_calls": 37,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 157133,
+    "total_output_tokens": 2304,
+    "total_latency_ms": 94913.60500000001,
+    "hashmatch": {
+      "f1": 0.8958333333333333,
+      "precision": 0.8958333333333333,
+      "recall": 0.8958333333333333,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 2,
+          "fp": 1,
+          "fn": 1
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 38,
+    "n_tool_rounds": 26,
+    "n_tool_calls": 37,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 156615,
+    "total_output_tokens": 2365,
+    "total_latency_ms": 87758.79500000001,
+    "hashmatch": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 111,
+    "n_tool_rounds": 75,
+    "n_tool_calls": 116,
+    "n_failed_tool_calls": 2,
+    "tool_failure_rate": 0.017241379310344827,
+    "total_input_tokens": 647010,
+    "total_output_tokens": 10526,
+    "total_latency_ms": 308239.464,
+    "hashmatch": {
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 10,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 128,
+    "n_tool_rounds": 86,
+    "n_tool_calls": 134,
+    "n_failed_tool_calls": 6,
+    "tool_failure_rate": 0.04477611940298507,
+    "total_input_tokens": 772352,
+    "total_output_tokens": 12396,
+    "total_latency_ms": 331699.381,
+    "hashmatch": {
+      "f1": 0.9426691729323308,
+      "precision": 0.9722222222222223,
+      "recall": 0.91875,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8,
+          "f1": 0.8421052631578948,
+          "tp": 8,
+          "fp": 1,
+          "fn": 2
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 132,
+    "n_tool_rounds": 89,
+    "n_tool_calls": 135,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.007407407407407408,
+    "total_input_tokens": 809594,
+    "total_output_tokens": 11832,
+    "total_latency_ms": 329877.658,
+    "hashmatch": {
+      "f1": 0.9571428571428572,
+      "precision": 0.9750000000000001,
+      "recall": 0.9437500000000001,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.9,
+          "recall": 0.9,
+          "f1": 0.9,
+          "tp": 9,
+          "fp": 1,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.9,
+          "recall": 0.9,
+          "f1": 0.9,
+          "tp": 9,
+          "fp": 1,
+          "fn": 1
         }
       }
     }
@@ -2886,24 +5526,8 @@
     "hashmatch": {
       "f1": 0.8505723443223443,
       "precision": 0.839781746031746,
-      "recall": 0.8705357142857143,
+      "recall": 0.8705357142857142,
       "per_field": {
-        "triggers": {
-          "precision": 0.6111111111111112,
-          "recall": 0.5238095238095238,
-          "f1": 0.5641025641025642,
-          "tp": 11,
-          "fp": 7,
-          "fn": 10
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -2912,11 +5536,11 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 6,
+          "tp": 1,
           "fp": 0,
           "fn": 0
         },
@@ -2928,11 +5552,11 @@
           "fp": 1,
           "fn": 1
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -2950,6 +5574,22 @@
           "f1": 0.5238095238095238,
           "tp": 11,
           "fp": 10,
+          "fn": 10
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "triggers": {
+          "precision": 0.6111111111111112,
+          "recall": 0.5238095238095238,
+          "f1": 0.5641025641025642,
+          "tp": 11,
+          "fp": 7,
           "fn": 10
         }
       }
@@ -2974,24 +5614,8 @@
     "hashmatch": {
       "f1": 0.9107656835917705,
       "precision": 0.9247076023391814,
-      "recall": 0.9092261904761905,
+      "recall": 0.9092261904761904,
       "per_field": {
-        "triggers": {
-          "precision": 0.8888888888888888,
-          "recall": 0.7619047619047619,
-          "f1": 0.8205128205128205,
-          "tp": 16,
-          "fp": 2,
-          "fn": 5
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -3000,13 +5624,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.8333333333333334,
-          "f1": 0.9090909090909091,
-          "tp": 5,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "tasks": {
           "precision": 1.0,
@@ -3016,11 +5640,11 @@
           "fp": 0,
           "fn": 1
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -3038,6 +5662,22 @@
           "f1": 0.8,
           "tp": 16,
           "fp": 3,
+          "fn": 5
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.7619047619047619,
+          "f1": 0.8205128205128205,
+          "tp": 16,
+          "fp": 2,
           "fn": 5
         }
       }
@@ -3064,22 +5704,6 @@
       "precision": 0.8717171717171717,
       "recall": 0.8645833333333333,
       "per_field": {
-        "triggers": {
-          "precision": 0.8888888888888888,
-          "recall": 0.7619047619047619,
-          "f1": 0.8205128205128205,
-          "tp": 16,
-          "fp": 2,
-          "fn": 5
-        },
-        "other": {
-          "precision": 1.0,
-          "recall": 1.0,
-          "f1": 1.0,
-          "tp": 4,
-          "fp": 0,
-          "fn": 0
-        },
         "primaryDevices": {
           "precision": 1.0,
           "recall": 1.0,
@@ -3088,13 +5712,13 @@
           "fp": 0,
           "fn": 0
         },
-        "connectedDevices": {
+        "connections": {
           "precision": 1.0,
-          "recall": 0.8333333333333334,
-          "f1": 0.9090909090909091,
-          "tp": 5,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
           "fp": 0,
-          "fn": 1
+          "fn": 0
         },
         "tasks": {
           "precision": 0.8181818181818182,
@@ -3104,11 +5728,11 @@
           "fp": 2,
           "fn": 3
         },
-        "connections": {
+        "other": {
           "precision": 1.0,
           "recall": 1.0,
           "f1": 1.0,
-          "tp": 1,
+          "tp": 4,
           "fp": 0,
           "fn": 0
         },
@@ -3127,6 +5751,22 @@
           "tp": 12,
           "fp": 8,
           "fn": 9
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.7619047619047619,
+          "f1": 0.8205128205128205,
+          "tp": 16,
+          "fp": 2,
+          "fn": 5
         }
       }
     }
