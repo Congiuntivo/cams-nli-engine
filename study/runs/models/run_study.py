@@ -1,19 +1,19 @@
 """Batch runner for the model-comparison study.
 
-For every ``*.yaml`` config in this directory and every prompt richness
-variant of case ``003_cardio_wellness`` in the dataset manifest, invoke
+For every ``*.yaml`` config in this directory, every case in the dataset
+manifest, and every prompt richness variant of that case, invoke
 ``nli-engine`` once and dump its JSONL session log into ``results/``.
 
-The runner is resumable: it skips (config, prompt) pairs that already
-have the requested number of logs. Bumping ``--runs`` only fills in the
-gap.
+The runner is resumable: it skips (config, case, prompt) triples that
+already have the requested number of logs. Bumping ``--runs`` only fills
+in the gap.
 
 Run from the repo root::
 
-    uv run python study/runs/models/run_study.py            # 1 run / pair
-    uv run python study/runs/models/run_study.py --runs 3   # 3 runs / pair
+    uv run python study/runs/models/run_study.py            # 1 run / triple
+    uv run python study/runs/models/run_study.py --runs 3   # 3 runs / triple
 
-Log filename convention: ``<config>_<CASE_ID>_<prompt>_run<NN>.jsonl``.
+Log filename convention: ``<config>_<caseId>_<prompt>_run<NN>.jsonl``.
 """
 
 from __future__ import annotations
@@ -25,33 +25,38 @@ from pathlib import Path
 
 from nli_engine.eval import load_manifest
 
-CASE_ID = "003_cardio_wellness"
 CONFIGS_DIR = Path(__file__).resolve().parent
 RESULTS_DIR = CONFIGS_DIR / "results"
 REPO_ROOT = CONFIGS_DIR.parents[2]
 MANIFEST_PATH = REPO_ROOT / "dataset" / "manifest.yaml"
 
 
-def log_path_for(config_stem: str, prompt_key: str, run_number: int) -> Path:
-    """Return the log path for a (config, prompt, run) triple."""
+def log_path_for(
+    config_stem: str, case_id: str, prompt_key: str, run_number: int
+) -> Path:
+    """Return the log path for a (config, case, prompt, run) tuple."""
     return (
-        RESULTS_DIR / f"{config_stem}_{CASE_ID}_{prompt_key}_run{run_number:02d}.jsonl"
+        RESULTS_DIR / f"{config_stem}_{case_id}_{prompt_key}_run{run_number:02d}.jsonl"
     )
 
 
-def existing_run_count(config_stem: str, prompt_key: str) -> int:
-    """Count logs already on disk for this (config, prompt) pair."""
+def existing_run_count(config_stem: str, case_id: str, prompt_key: str) -> int:
+    """Count logs already on disk for this (config, case, prompt) triple."""
     return len(
-        list(RESULTS_DIR.glob(f"{config_stem}_{CASE_ID}_{prompt_key}_run*.jsonl"))
+        list(RESULTS_DIR.glob(f"{config_stem}_{case_id}_{prompt_key}_run*.jsonl"))
     )
 
 
 def invoke_engine(
-    config_path: Path, prompt_key: str, prompt_text: str, run_number: int
+    config_path: Path,
+    case_id: str,
+    prompt_key: str,
+    prompt_text: str,
+    run_number: int,
 ) -> int:
     """Run ``nli-engine`` once and return its exit code."""
-    log_path = log_path_for(config_path.stem, prompt_key, run_number)
-    name = f"{config_path.stem}_{CASE_ID}_{prompt_key}_run{run_number:02d}"
+    log_path = log_path_for(config_path.stem, case_id, prompt_key, run_number)
+    name = f"{config_path.stem}_{case_id}_{prompt_key}_run{run_number:02d}"
     cmd = [
         "uv",
         "run",
@@ -87,9 +92,8 @@ def main() -> int:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     cases = load_manifest(MANIFEST_PATH)
-    case = next((c for c in cases if c.id == CASE_ID), None)
-    if case is None:
-        sys.exit(f"Case {CASE_ID!r} not found in {MANIFEST_PATH}")
+    if not cases:
+        sys.exit(f"No cases found in {MANIFEST_PATH}")
 
     configs = sorted(CONFIGS_DIR.glob("*.yaml"))
     if not configs:
@@ -100,27 +104,31 @@ def main() -> int:
     failed: list[str] = []
 
     for config in configs:
-        for prompt_key, prompt_text in case.prompts.items():
-            existing = existing_run_count(config.stem, prompt_key)
-            needed = max(0, args.runs - existing)
-            if needed == 0:
-                print(
-                    f"[skip] {config.stem} / {prompt_key}: "
-                    f"{existing} run(s) already present",
-                    flush=True,
-                )
-                continue
-            for offset in range(needed):
-                run_number = existing + offset + 1
-                planned += 1
-                rc = invoke_engine(config, prompt_key, prompt_text, run_number)
-                if rc == 0:
-                    succeeded += 1
-                else:
-                    failed.append(
-                        f"{config.stem}/{prompt_key}/run{run_number:02d} (exit {rc})"
+        for case in cases:
+            for prompt_key, prompt_text in case.prompts.items():
+                existing = existing_run_count(config.stem, case.id, prompt_key)
+                needed = max(0, args.runs - existing)
+                if needed == 0:
+                    print(
+                        f"[skip] {config.stem} / {case.id} / {prompt_key}: "
+                        f"{existing} run(s) already present",
+                        flush=True,
                     )
-                    print(f"[fail] exit code {rc}", file=sys.stderr, flush=True)
+                    continue
+                for offset in range(needed):
+                    run_number = existing + offset + 1
+                    planned += 1
+                    rc = invoke_engine(
+                        config, case.id, prompt_key, prompt_text, run_number
+                    )
+                    if rc == 0:
+                        succeeded += 1
+                    else:
+                        failed.append(
+                            f"{config.stem}/{case.id}/{prompt_key}/"
+                            f"run{run_number:02d} (exit {rc})"
+                        )
+                        print(f"[fail] exit code {rc}", file=sys.stderr, flush=True)
 
     print(f"\nDone. {succeeded}/{planned} runs succeeded.")
     if failed:
