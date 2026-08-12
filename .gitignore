@@ -30,3 +30,6 @@ gui_logs/
 
 # Embedding models
 .models/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
