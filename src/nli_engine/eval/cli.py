@@ -6,6 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from nli_engine.eval.commands.aggregate import cmd_aggregate
 from nli_engine.eval.commands.canonicalize import cmd_canonicalize
 from nli_engine.eval.commands.dataset import cmd_dataset
 from nli_engine.eval.commands.extract import cmd_extract
@@ -93,6 +94,38 @@ def _build_parser() -> argparse.ArgumentParser:
         "output", type=Path, metavar="OUTPUT", help="Path to write the protocol JSON."
     )
     extract_parser.set_defaults(func=cmd_extract)
+
+    agg_parser = subs.add_parser(
+        "aggregate",
+        help="Aggregate metrics + HashMatch across a batch of session logs.",
+    )
+    agg_parser.add_argument(
+        "--manifest",
+        type=Path,
+        required=True,
+        metavar="MANIFEST",
+        help="Path to the manifest .yaml file (used to look up expected protocols).",
+    )
+    agg_parser.add_argument(
+        "--base",
+        type=Path,
+        default=Path("study/runs"),
+        metavar="DIR",
+        help="Base directory scanned as <base>/*/results/*.jsonl (default: study/runs).",
+    )
+    agg_parser.add_argument(
+        "--csv",
+        type=Path,
+        metavar="PATH",
+        help="Write a flat CSV row per log (macro-only HashMatch).",
+    )
+    agg_parser.add_argument(
+        "--json",
+        type=Path,
+        metavar="PATH",
+        help="Write a JSON list with per-field HashMatch nested.",
+    )
+    agg_parser.set_defaults(func=cmd_aggregate)
 
     canon_parser = subs.add_parser(
         "canonicalize",

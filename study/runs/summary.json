@@ -1,0 +1,3134 @@
+[
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "deepseek-r1-8b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 11,
+    "n_tool_rounds": 5,
+    "n_tool_calls": 7,
+    "n_failed_tool_calls": 5,
+    "tool_failure_rate": 0.7142857142857143,
+    "total_input_tokens": 36840,
+    "total_output_tokens": 5935,
+    "total_latency_ms": 978295.9670000001,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 13,
+    "n_tool_rounds": 7,
+    "n_tool_calls": 7,
+    "n_failed_tool_calls": 2,
+    "tool_failure_rate": 0.2857142857142857,
+    "total_input_tokens": 45215,
+    "total_output_tokens": 5225,
+    "total_latency_ms": 1029682.2910000001,
+    "hashmatch": {
+      "f1": 0.5375,
+      "precision": 0.75,
+      "recall": 0.4791666666666667,
+      "per_field": {
+        "triggers": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "tp": 1,
+          "fp": 0,
+          "fn": 2
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "gemma4-latest",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 124,
+    "n_tool_rounds": 108,
+    "n_tool_calls": 108,
+    "n_failed_tool_calls": 18,
+    "tool_failure_rate": 0.16666666666666666,
+    "total_input_tokens": 449529,
+    "total_output_tokens": 7125,
+    "total_latency_ms": 7173508.496,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 87,
+    "n_tool_rounds": 73,
+    "n_tool_calls": 76,
+    "n_failed_tool_calls": 5,
+    "tool_failure_rate": 0.06578947368421052,
+    "total_input_tokens": 321002,
+    "total_output_tokens": 6479,
+    "total_latency_ms": 5921237.632999999,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 4,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 8810,
+    "total_output_tokens": 407,
+    "total_latency_ms": 247988.94100000002,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 4,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 10158,
+    "total_output_tokens": 769,
+    "total_latency_ms": 356114.679,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 10
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 10
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "granite4.1-8b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 4,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 10761,
+    "total_output_tokens": 753,
+    "total_latency_ms": 420873.17100000003,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 21
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 12
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 2
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 21
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 22,
+    "n_tool_rounds": 13,
+    "n_tool_calls": 24,
+    "n_failed_tool_calls": 4,
+    "tool_failure_rate": 0.16666666666666666,
+    "total_input_tokens": 78861,
+    "total_output_tokens": 4598,
+    "total_latency_ms": 1624608.284,
+    "hashmatch": {
+      "f1": 0.5375,
+      "precision": 0.75,
+      "recall": 0.4791666666666667,
+      "per_field": {
+        "triggers": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "tp": 1,
+          "fp": 0,
+          "fn": 2
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 7,
+    "n_tool_rounds": 3,
+    "n_tool_calls": 6,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.16666666666666666,
+    "total_input_tokens": 20020,
+    "total_output_tokens": 1057,
+    "total_latency_ms": 417808.17000000004,
+    "hashmatch": {
+      "f1": 0.48839285714285713,
+      "precision": 0.6875,
+      "recall": 0.4479166666666667,
+      "per_field": {
+        "triggers": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "tp": 1,
+          "fp": 0,
+          "fn": 2
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "tp": 1,
+          "fp": 0,
+          "fn": 3
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 53,
+    "n_tool_rounds": 36,
+    "n_tool_calls": 68,
+    "n_failed_tool_calls": 21,
+    "tool_failure_rate": 0.3088235294117647,
+    "total_input_tokens": 179167,
+    "total_output_tokens": 13032,
+    "total_latency_ms": 3984445.874,
+    "hashmatch": {
+      "f1": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "per_field": {
+        "primaryDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "triggers": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 10
+        },
+        "tasks": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6
+        },
+        "other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 3
+        },
+        "taskControls": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 10
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 40,
+    "n_tool_rounds": 30,
+    "n_tool_calls": 45,
+    "n_failed_tool_calls": 10,
+    "tool_failure_rate": 0.2222222222222222,
+    "total_input_tokens": 141128,
+    "total_output_tokens": 4443,
+    "total_latency_ms": 1969539.9270000001,
+    "hashmatch": {
+      "f1": 0.4561688311688311,
+      "precision": 0.75,
+      "recall": 0.42083333333333334,
+      "per_field": {
+        "triggers": {
+          "precision": 1.0,
+          "recall": 0.1,
+          "f1": 0.18181818181818182,
+          "tp": 1,
+          "fp": 0,
+          "fn": 9
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.16666666666666666,
+          "f1": 0.2857142857142857,
+          "tp": 1,
+          "fp": 0,
+          "fn": 5
+        },
+        "connections": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 1.0,
+          "recall": 0.1,
+          "f1": 0.18181818181818182,
+          "tp": 1,
+          "fp": 0,
+          "fn": 9
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 44,
+    "n_tool_rounds": 29,
+    "n_tool_calls": 40,
+    "n_failed_tool_calls": 14,
+    "tool_failure_rate": 0.35,
+    "total_input_tokens": 164220,
+    "total_output_tokens": 10324,
+    "total_latency_ms": 3554183.472,
+    "hashmatch": {
+      "f1": 0.7142857142857143,
+      "precision": 0.8958333333333333,
+      "recall": 0.6583333333333333,
+      "per_field": {
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.3,
+          "f1": 0.4285714285714285,
+          "tp": 3,
+          "fp": 1,
+          "fn": 7
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5,
+          "f1": 0.5714285714285715,
+          "tp": 2,
+          "fp": 1,
+          "fn": 2
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.16666666666666666,
+          "f1": 0.2857142857142857,
+          "tp": 1,
+          "fp": 0,
+          "fn": 5
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.75,
+          "recall": 0.3,
+          "f1": 0.4285714285714285,
+          "tp": 3,
+          "fp": 1,
+          "fn": 7
+        }
+      }
+    }
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen2.5-7b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-4b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "001_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "001_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "001_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "002_diary_study",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "002_diary_study",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "002_diary_study",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "local_models",
+    "model": "qwen3.5-9b",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": false,
+    "n_turns": 0,
+    "n_llm_calls": 0,
+    "n_tool_rounds": 0,
+    "n_tool_calls": 0,
+    "n_failed_tool_calls": 0,
+    "tool_failure_rate": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_latency_ms": 0.0,
+    "hashmatch": null
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 464,
+    "n_tool_rounds": 304,
+    "n_tool_calls": 523,
+    "n_failed_tool_calls": 15,
+    "tool_failure_rate": 0.028680688336520075,
+    "total_input_tokens": 3807818,
+    "total_output_tokens": 33713,
+    "total_latency_ms": 2344940.352,
+    "hashmatch": {
+      "f1": 0.7704681954681954,
+      "precision": 0.8010416666666668,
+      "recall": 0.7604166666666667,
+      "per_field": {
+        "triggers": {
+          "precision": 0.8666666666666667,
+          "recall": 0.6190476190476191,
+          "f1": 0.7222222222222222,
+          "tp": 13,
+          "fp": 2,
+          "fn": 8
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 0.375,
+          "recall": 0.25,
+          "f1": 0.3,
+          "tp": 3,
+          "fp": 5,
+          "fn": 9
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5,
+          "recall": 0.38095238095238093,
+          "f1": 0.4324324324324324,
+          "tp": 8,
+          "fp": 8,
+          "fn": 13
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 524,
+    "n_tool_rounds": 343,
+    "n_tool_calls": 524,
+    "n_failed_tool_calls": 14,
+    "tool_failure_rate": 0.026717557251908396,
+    "total_input_tokens": 4232518,
+    "total_output_tokens": 31863,
+    "total_latency_ms": 1992273.704,
+    "hashmatch": {
+      "f1": 0.6257470212965569,
+      "precision": 0.7029532967032968,
+      "recall": 0.6116071428571429,
+      "per_field": {
+        "triggers": {
+          "precision": 0.5833333333333334,
+          "recall": 0.3333333333333333,
+          "f1": 0.4242424242424242,
+          "tp": 7,
+          "fp": 5,
+          "fn": 14
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "tp": 2,
+          "fp": 0,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.14285714285714285,
+          "recall": 0.08333333333333333,
+          "f1": 0.10526315789473685,
+          "tp": 1,
+          "fp": 6,
+          "fn": 11
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.23076923076923078,
+          "recall": 0.14285714285714285,
+          "f1": 0.17647058823529413,
+          "tp": 3,
+          "fp": 10,
+          "fn": 18
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-4o-mini",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 405,
+    "n_tool_rounds": 272,
+    "n_tool_calls": 458,
+    "n_failed_tool_calls": 17,
+    "tool_failure_rate": 0.03711790393013101,
+    "total_input_tokens": 3300362,
+    "total_output_tokens": 29536,
+    "total_latency_ms": 934210.052,
+    "hashmatch": {
+      "f1": 0.7883116883116883,
+      "precision": 0.8145363408521304,
+      "recall": 0.78125,
+      "per_field": {
+        "triggers": {
+          "precision": 0.9285714285714286,
+          "recall": 0.6190476190476191,
+          "f1": 0.742857142857143,
+          "tp": 13,
+          "fp": 1,
+          "fn": 8
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 0.5,
+          "recall": 0.4166666666666667,
+          "f1": 0.45454545454545453,
+          "tp": 5,
+          "fp": 5,
+          "fn": 7
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.42105263157894735,
+          "recall": 0.38095238095238093,
+          "f1": 0.4,
+          "tp": 8,
+          "fp": 11,
+          "fn": 13
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 484,
+    "n_tool_rounds": 383,
+    "n_tool_calls": 521,
+    "n_failed_tool_calls": 40,
+    "tool_failure_rate": 0.07677543186180422,
+    "total_input_tokens": 5024139,
+    "total_output_tokens": 609541,
+    "total_latency_ms": 4424215.653,
+    "hashmatch": {
+      "f1": 0.7389069264069265,
+      "precision": 0.7454887218045114,
+      "recall": 0.7470238095238095,
+      "per_field": {
+        "triggers": {
+          "precision": 0.6428571428571429,
+          "recall": 0.42857142857142855,
+          "f1": 0.5142857142857143,
+          "tp": 9,
+          "fp": 5,
+          "fn": 12
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1": 0.8333333333333334,
+          "tp": 5,
+          "fp": 1,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 0.4,
+          "recall": 0.3333333333333333,
+          "f1": 0.3636363636363636,
+          "tp": 4,
+          "fp": 6,
+          "fn": 8
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.42105263157894735,
+          "recall": 0.38095238095238093,
+          "f1": 0.4,
+          "tp": 8,
+          "fp": 11,
+          "fn": 13
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 367,
+    "n_tool_rounds": 290,
+    "n_tool_calls": 424,
+    "n_failed_tool_calls": 38,
+    "tool_failure_rate": 0.08962264150943396,
+    "total_input_tokens": 3613711,
+    "total_output_tokens": 508902,
+    "total_latency_ms": 47916669.698,
+    "hashmatch": {
+      "f1": 0.758753465003465,
+      "precision": 0.7829861111111112,
+      "recall": 0.7544642857142857,
+      "per_field": {
+        "triggers": {
+          "precision": 0.625,
+          "recall": 0.47619047619047616,
+          "f1": 0.5405405405405405,
+          "tp": 10,
+          "fp": 6,
+          "fn": 11
+        },
+        "other": {
+          "precision": 0.75,
+          "recall": 0.75,
+          "f1": 0.75,
+          "tp": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "tp": 4,
+          "fp": 0,
+          "fn": 2
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 8,
+          "fp": 4,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5555555555555556,
+          "recall": 0.47619047619047616,
+          "f1": 0.5128205128205129,
+          "tp": 10,
+          "fp": 8,
+          "fn": 11
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5-nano",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 241,
+    "n_tool_rounds": 176,
+    "n_tool_calls": 282,
+    "n_failed_tool_calls": 7,
+    "tool_failure_rate": 0.024822695035460994,
+    "total_input_tokens": 1927323,
+    "total_output_tokens": 266429,
+    "total_latency_ms": 2148359.181,
+    "hashmatch": {
+      "f1": 0.7446267696267697,
+      "precision": 0.7994791666666667,
+      "recall": 0.7261904761904762,
+      "per_field": {
+        "triggers": {
+          "precision": 0.6875,
+          "recall": 0.5238095238095238,
+          "f1": 0.5945945945945946,
+          "tp": 11,
+          "fp": 5,
+          "fn": 10
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "tp": 3,
+          "fp": 0,
+          "fn": 3
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5,
+          "f1": 0.5714285714285715,
+          "tp": 6,
+          "fp": 3,
+          "fn": 6
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.375,
+          "recall": 0.2857142857142857,
+          "f1": 0.3243243243243243,
+          "tp": 6,
+          "fp": 10,
+          "fn": 15
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 237,
+    "n_tool_rounds": 163,
+    "n_tool_calls": 249,
+    "n_failed_tool_calls": 7,
+    "tool_failure_rate": 0.028112449799196786,
+    "total_input_tokens": 1744550,
+    "total_output_tokens": 18036,
+    "total_latency_ms": 501138.807,
+    "hashmatch": {
+      "f1": 0.8407401719901719,
+      "precision": 0.849451754385965,
+      "recall": 0.8452380952380952,
+      "per_field": {
+        "triggers": {
+          "precision": 0.75,
+          "recall": 0.5714285714285714,
+          "f1": 0.6486486486486486,
+          "tp": 12,
+          "fp": 4,
+          "fn": 9
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.8,
+          "recall": 0.6666666666666666,
+          "f1": 0.7272727272727272,
+          "tp": 8,
+          "fp": 2,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5789473684210527,
+          "recall": 0.5238095238095238,
+          "f1": 0.5500000000000002,
+          "tp": 11,
+          "fp": 8,
+          "fn": 10
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 216,
+    "n_tool_rounds": 153,
+    "n_tool_calls": 237,
+    "n_failed_tool_calls": 10,
+    "tool_failure_rate": 0.04219409282700422,
+    "total_input_tokens": 1584888,
+    "total_output_tokens": 17657,
+    "total_latency_ms": 445006.153,
+    "hashmatch": {
+      "f1": 0.6828947368421052,
+      "precision": 0.6909313725490196,
+      "recall": 0.6904761904761905,
+      "per_field": {
+        "triggers": {
+          "precision": 0.4,
+          "recall": 0.2857142857142857,
+          "f1": 0.3333333333333333,
+          "tp": 6,
+          "fp": 9,
+          "fn": 15
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.5,
+          "recall": 0.3333333333333333,
+          "f1": 0.4,
+          "tp": 2,
+          "fp": 2,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "tp": 8,
+          "fp": 4,
+          "fn": 4
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.29411764705882354,
+          "recall": 0.23809523809523808,
+          "f1": 0.2631578947368421,
+          "tp": 5,
+          "fp": 12,
+          "fn": 16
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-mini",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 250,
+    "n_tool_rounds": 174,
+    "n_tool_calls": 248,
+    "n_failed_tool_calls": 11,
+    "tool_failure_rate": 0.04435483870967742,
+    "total_input_tokens": 1844066,
+    "total_output_tokens": 18816,
+    "total_latency_ms": 531064.051,
+    "hashmatch": {
+      "f1": 0.8126053770790612,
+      "precision": 0.8465686274509805,
+      "recall": 0.7991071428571428,
+      "per_field": {
+        "triggers": {
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "tp": 12,
+          "fp": 3,
+          "fn": 9
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.6,
+          "recall": 0.5,
+          "f1": 0.5454545454545454,
+          "tp": 3,
+          "fp": 2,
+          "fn": 3
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571428571428571,
+          "tp": 9,
+          "fp": 0,
+          "fn": 3
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.7058823529411765,
+          "recall": 0.5714285714285714,
+          "f1": 0.6315789473684211,
+          "tp": 12,
+          "fp": 5,
+          "fn": 9
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 239,
+    "n_tool_rounds": 166,
+    "n_tool_calls": 256,
+    "n_failed_tool_calls": 8,
+    "tool_failure_rate": 0.03125,
+    "total_input_tokens": 1869744,
+    "total_output_tokens": 20974,
+    "total_latency_ms": 489449.453,
+    "hashmatch": {
+      "f1": 0.7262943137943139,
+      "precision": 0.7605654761904762,
+      "recall": 0.7157738095238095,
+      "per_field": {
+        "triggers": {
+          "precision": 0.6428571428571429,
+          "recall": 0.42857142857142855,
+          "f1": 0.5142857142857143,
+          "tp": 9,
+          "fp": 5,
+          "fn": 12
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 0.4,
+          "recall": 0.3333333333333333,
+          "f1": 0.3636363636363636,
+          "tp": 2,
+          "fp": 3,
+          "fn": 4
+        },
+        "tasks": {
+          "precision": 0.875,
+          "recall": 0.5833333333333334,
+          "f1": 0.7000000000000001,
+          "tp": 7,
+          "fp": 1,
+          "fn": 5
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5,
+          "recall": 0.38095238095238093,
+          "f1": 0.4324324324324324,
+          "tp": 8,
+          "fp": 8,
+          "fn": 13
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 331,
+    "n_tool_rounds": 238,
+    "n_tool_calls": 350,
+    "n_failed_tool_calls": 25,
+    "tool_failure_rate": 0.07142857142857142,
+    "total_input_tokens": 2926577,
+    "total_output_tokens": 28189,
+    "total_latency_ms": 703823.2239999999,
+    "hashmatch": {
+      "f1": 0.8394230769230768,
+      "precision": 0.8611111111111112,
+      "recall": 0.8363095238095237,
+      "per_field": {
+        "triggers": {
+          "precision": 0.7222222222222222,
+          "recall": 0.6190476190476191,
+          "f1": 0.6666666666666666,
+          "tp": 13,
+          "fp": 5,
+          "fn": 8
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "tp": 4,
+          "fp": 0,
+          "fn": 2
+        },
+        "tasks": {
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "f1": 0.8333333333333334,
+          "tp": 10,
+          "fp": 2,
+          "fn": 2
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1": 0.6153846153846153,
+          "tp": 12,
+          "fp": 6,
+          "fn": 9
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4-nano",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 277,
+    "n_tool_rounds": 190,
+    "n_tool_calls": 285,
+    "n_failed_tool_calls": 12,
+    "tool_failure_rate": 0.042105263157894736,
+    "total_input_tokens": 2277907,
+    "total_output_tokens": 24513,
+    "total_latency_ms": 575470.02,
+    "hashmatch": {
+      "f1": 0.8331815511163337,
+      "precision": 0.8380432615629985,
+      "recall": 0.8407738095238095,
+      "per_field": {
+        "triggers": {
+          "precision": 0.875,
+          "recall": 0.6666666666666666,
+          "f1": 0.7567567567567567,
+          "tp": 14,
+          "fp": 2,
+          "fn": 7
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.6363636363636364,
+          "recall": 0.5833333333333334,
+          "f1": 0.6086956521739131,
+          "tp": 7,
+          "fp": 4,
+          "fn": 5
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5263157894736842,
+          "recall": 0.47619047619047616,
+          "f1": 0.5,
+          "tp": 10,
+          "fp": 9,
+          "fn": 11
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "medium",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 263,
+    "n_tool_rounds": 182,
+    "n_tool_calls": 273,
+    "n_failed_tool_calls": 1,
+    "tool_failure_rate": 0.003663003663003663,
+    "total_input_tokens": 2133288,
+    "total_output_tokens": 21880,
+    "total_latency_ms": 585776.189,
+    "hashmatch": {
+      "f1": 0.8505723443223443,
+      "precision": 0.839781746031746,
+      "recall": 0.8705357142857143,
+      "per_field": {
+        "triggers": {
+          "precision": 0.6111111111111112,
+          "recall": 0.5238095238095238,
+          "f1": 0.5641025641025642,
+          "tp": 11,
+          "fp": 7,
+          "fn": 10
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "tasks": {
+          "precision": 0.9166666666666666,
+          "recall": 0.9166666666666666,
+          "f1": 0.9166666666666666,
+          "tp": 11,
+          "fp": 1,
+          "fn": 1
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.5238095238095238,
+          "recall": 0.5238095238095238,
+          "f1": 0.5238095238095238,
+          "tp": 11,
+          "fp": 10,
+          "fn": 10
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "poor",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 256,
+    "n_tool_rounds": 175,
+    "n_tool_calls": 273,
+    "n_failed_tool_calls": 4,
+    "tool_failure_rate": 0.014652014652014652,
+    "total_input_tokens": 2205011,
+    "total_output_tokens": 22722,
+    "total_latency_ms": 602744.661,
+    "hashmatch": {
+      "f1": 0.9107656835917705,
+      "precision": 0.9247076023391814,
+      "recall": 0.9092261904761905,
+      "per_field": {
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.7619047619047619,
+          "f1": 0.8205128205128205,
+          "tp": 16,
+          "fp": 2,
+          "fn": 5
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 1.0,
+          "recall": 0.9166666666666666,
+          "f1": 0.9565217391304348,
+          "tp": 11,
+          "fp": 0,
+          "fn": 1
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.8421052631578947,
+          "recall": 0.7619047619047619,
+          "f1": 0.8,
+          "tp": 16,
+          "fp": 3,
+          "fn": 5
+        }
+      }
+    }
+  },
+  {
+    "source": "models",
+    "model": "gpt-5.4",
+    "case_id": "003_cardio_wellness",
+    "prompt_key": "rich",
+    "run": 1,
+    "workflow_complete": true,
+    "n_turns": 1,
+    "n_llm_calls": 244,
+    "n_tool_rounds": 167,
+    "n_tool_calls": 253,
+    "n_failed_tool_calls": 2,
+    "tool_failure_rate": 0.007905138339920948,
+    "total_input_tokens": 1872115,
+    "total_output_tokens": 19241,
+    "total_latency_ms": 531405.639,
+    "hashmatch": {
+      "f1": 0.8621972848643049,
+      "precision": 0.8717171717171717,
+      "recall": 0.8645833333333333,
+      "per_field": {
+        "triggers": {
+          "precision": 0.8888888888888888,
+          "recall": 0.7619047619047619,
+          "f1": 0.8205128205128205,
+          "tp": 16,
+          "fp": 2,
+          "fn": 5
+        },
+        "other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "primaryDevices": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "connectedDevices": {
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "tp": 5,
+          "fp": 0,
+          "fn": 1
+        },
+        "tasks": {
+          "precision": 0.8181818181818182,
+          "recall": 0.75,
+          "f1": 0.7826086956521738,
+          "tp": 9,
+          "fp": 2,
+          "fn": 3
+        },
+        "connections": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "applicationData": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0
+        },
+        "taskControls": {
+          "precision": 0.6,
+          "recall": 0.5714285714285714,
+          "f1": 0.5853658536585366,
+          "tp": 12,
+          "fp": 8,
+          "fn": 9
+        }
+      }
+    }
+  }
+]
