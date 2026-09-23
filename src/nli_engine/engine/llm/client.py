@@ -1,13 +1,37 @@
 from __future__ import annotations
 
 import json
+import logging
 from dataclasses import dataclass
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 import litellm
 from pydantic import BaseModel
 
+_log = logging.getLogger("nli_engine.llm")
+
 T = TypeVar("T", bound=BaseModel)
+
+
+def _completion_or_log(kwargs: dict[str, Any], model: str) -> Any:
+    """Call ``litellm.completion`` and emit an ``llm_error`` event on failure.
+
+    The exception is re-raised after logging so upstream behaviour is unchanged;
+    the log event exists solely to leave a diagnostic trail in the session JSONL.
+    """
+    try:
+        return litellm.completion(**kwargs)
+    except Exception as exc:
+        _log.error(
+            "llm_error",
+            extra={
+                "event": "llm_error",
+                "model": model,
+                "error_type": type(exc).__name__,
+                "error": str(exc),
+            },
+        )
+        raise
 
 
 @dataclass(frozen=True)
@@ -91,7 +115,7 @@ class LLMClient:
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
 
-        raw = litellm.completion(**kwargs)
+        raw = _completion_or_log(kwargs, self.model)
         choice = raw.choices[0].message
 
         parsed_calls: list[ToolCall] = []
@@ -136,7 +160,7 @@ class LLMClient:
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
 
-        raw = litellm.completion(**kwargs)
+        raw = _completion_or_log(kwargs, self.model)
         choice = raw.choices[0].message
         parsed = schema.model_validate_json(choice.content)
         return StructuredResponse(
