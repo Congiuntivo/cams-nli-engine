@@ -63,7 +63,9 @@ class RowGroupSpec:
 
     Attributes:
         column: Column whose value transitions trigger the group break.
-        style: ``"cmidrule"`` for a full-width rule, ``"label"`` for a label row.
+        style: ``"cmidrule"`` for a full-width rule, ``"label"`` for a label row,
+            ``"merge"`` for a vertically-merged cell in the group column that spans
+            the group's rows (via ``\\SetCell[r=n]{c}``).
     """
 
     column: str

@@ -6,6 +6,9 @@ sort_by:
   - column: case
   - column: richness
     order: [poor, medium, rich]
+row_group:
+  column: case
+  style: merge
 columns:
   - name: case
     header: Case
@@ -18,18 +21,10 @@ columns:
     type: numeric
     decimals: 0
   - name: markdown_elements
-    header: Markdown elements
+    header: Markdown
     type: numeric
     decimals: 0
   - name: carp_terms
-    header: CARP terms
+    header: CARP
     type: numeric
     decimals: 0
-  - name: mtld
-    header: MTLD
-    type: numeric
-    decimals: 2
-  - name: fkgl
-    header: FKGL
-    type: numeric
-    decimals: 2
