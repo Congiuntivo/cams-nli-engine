@@ -1,0 +1,13 @@
+name: example
+source: data.csv
+sort_by:
+  - column: model
+columns:
+  - name: model
+    header: Model
+    type: text
+  - name: accuracy
+    header: Accuracy
+    type: numeric
+    decimals: 3
+    highlight: max
