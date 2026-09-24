@@ -187,6 +187,12 @@ def render(spec: TableSpec, root: Path) -> str:
         span_row, span_rules = _span_header_row(spec, layout)
     header_row_count = 2 if span_row else 1
 
+    group_sizes: dict[str, int] = {}
+    if spec.row_group and spec.row_group.style == "merge":
+        for r in rows:
+            key = r[spec.row_group.column]
+            group_sizes[key] = group_sizes.get(key, 0) + 1
+
     body_lines = []
     prev_group = object()
     for i, r in enumerate(rows):
@@ -201,14 +207,34 @@ def render(spec: TableSpec, root: Path) -> str:
                         + " & " * (len(spec.columns) - 1)
                         + r"\\"
                     )
-        if spec.row_group:
-            prev_group = r[spec.row_group.column]
+                elif spec.row_group.style == "merge":
+                    group_col_idx = next(
+                        j
+                        for j, c in enumerate(spec.columns)
+                        if c.name == spec.row_group.column
+                    )
+                    lo = group_col_idx + 2 if group_col_idx == 0 else 1
+                    body_lines.append(rf"\cmidrule[lr]{{{lo}-{len(spec.columns)}}}")
         cells = []
         for c in spec.columns:
+            if (
+                spec.row_group
+                and spec.row_group.style == "merge"
+                and c.name == spec.row_group.column
+            ):
+                cur = r[c.name]
+                if cur != prev_group:
+                    size = group_sizes[cur]
+                    cells.append(rf"\SetCell[r={size}]{{c}} {fmt_cell(cur, c)}")
+                else:
+                    cells.append("")
+                continue
             cell = fmt_cell(r[c.name], c)
             if i in highlights[c.name] and cell != "{--}":
                 cell = r"\bfseries " + cell
             cells.append(cell)
+        if spec.row_group:
+            prev_group = r[spec.row_group.column]
         body_lines.append(" & ".join(cells) + r" \\")
 
     try:

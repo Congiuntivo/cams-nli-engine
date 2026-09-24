@@ -50,7 +50,7 @@ def main() -> None:
         for richness, text in case["prompts"].items():
             rows.append(
                 {
-                    "case": case["id"],
+                    "case": case["id"].split("_", 1)[0],
                     "richness": richness,
                     "word_count": len(text.split()),
                     "markdown_elements": markdown_elements(text),
