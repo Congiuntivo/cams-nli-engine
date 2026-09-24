@@ -1,0 +1,35 @@
+name: prompt_richness
+source: dataset/prompt_richness.csv
+csv_options:
+  comment: "#"
+sort_by:
+  - column: case
+  - column: richness
+    order: [poor, medium, rich]
+columns:
+  - name: case
+    header: Case
+    type: text
+  - name: richness
+    header: Richness
+    type: text
+  - name: word_count
+    header: Words
+    type: numeric
+    decimals: 0
+  - name: markdown_elements
+    header: Markdown elements
+    type: numeric
+    decimals: 0
+  - name: carp_terms
+    header: CARP terms
+    type: numeric
+    decimals: 0
+  - name: mtld
+    header: MTLD
+    type: numeric
+    decimals: 2
+  - name: fkgl
+    header: FKGL
+    type: numeric
+    decimals: 2

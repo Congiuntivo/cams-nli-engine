@@ -1,0 +1,12 @@
+# MTLD reflects general lexical diversity and is not designed to track the case's rendering-formality axis; it is reported descriptively.
+# Flesch-Kincaid Grade Level assumes prose; markdown bullets and CamelCase identifiers inflate the score on rich prompts. Directional, not literal.
+case,richness,word_count,markdown_elements,carp_terms,mtld,fkgl
+001_diary_study,poor,26,0,0,37.86,4.65
+001_diary_study,medium,61,0,0,53.92,9.12
+001_diary_study,rich,67,12,5,49.05,31.99
+002_diary_study,poor,130,0,0,152.65,8.4
+002_diary_study,medium,122,0,0,189.43,9.58
+002_diary_study,rich,183,19,7,52.71,62.36
+003_cardio_wellness,poor,293,0,0,111.61,9.05
+003_cardio_wellness,medium,315,0,0,75.94,10.75
+003_cardio_wellness,rich,318,43,21,73.98,105.43

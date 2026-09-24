@@ -1,0 +1,4 @@
+model,accuracy
+alpha,0.7
+beta,0.82
+gamma,0.82
