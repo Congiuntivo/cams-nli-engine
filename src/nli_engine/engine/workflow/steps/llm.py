@@ -7,7 +7,7 @@ import time
 from typing import Any
 
 from nli_engine.engine.llm.client import LLMClient, LLMResponse, ToolCall
-from nli_engine.engine.llm.dispatch import call_tool
+from nli_engine.engine.llm.dispatch import ToolResult, call_tool
 from nli_engine.engine.llm.schema import bound_tool_to_schema
 from nli_engine.engine.retrieval.chunk import format_chunks
 from nli_engine.engine.retrieval.query import LastUserMessageExtractor, QueryExtractor
@@ -191,7 +191,16 @@ class LLMStep(Step):
     ) -> list[dict[str, Any]]:
         executed = []
         for i, tc in enumerate(tool_calls):
-            result = call_tool(tool_map[tc.name], tc.arguments)
+            tool = tool_map.get(tc.name)
+            if tool is None:
+                available = ", ".join(sorted(tool_map)) or "(none)"
+                result = ToolResult.error(
+                    f"Tool '{tc.name}' does not exist for this step. "
+                    f"Available tools: {available}.",
+                    retryable=True,
+                )
+            else:
+                result = call_tool(tool, tc.arguments)
             if result.is_error and not result.retryable:
                 raise RuntimeError(result.content)
             new_messages.append(
@@ -258,13 +267,31 @@ class LLMStep(Step):
         retrieval_extra: dict[str, Any] = {}
         if self._retriever is not None:
             query = self._query_extractor.extract(context)
-            chunks = self._retriever.retrieve(query, self._top_k, self._min_score)
+            try:
+                chunks = self._retriever.retrieve(query, self._top_k, self._min_score)
+            except Exception as exc:
+                # Retrieval is an enrichment; a dead embedder or transient network
+                # error shouldn't take down the whole step. Log and continue with
+                # empty context so the LLM at least gets its base prompt.
+                _log.error(
+                    "retrieval_error",
+                    extra={
+                        "event": "retrieval_error",
+                        "step_name": self.name,
+                        "error_type": type(exc).__name__,
+                        "error": str(exc),
+                        "query": query,
+                    },
+                )
+                chunks = []
+                retrieval_extra = {"query": query, "n_chunks": 0, "error": str(exc)}
+            else:
+                retrieval_extra = {
+                    "query": query,
+                    "n_chunks": len(chunks),
+                    "chunks": [{"source": c.source, "score": c.score} for c in chunks],
+                }
             extra_vars["retrieved_context"] = format_chunks(chunks) if chunks else ""
-            retrieval_extra = {
-                "query": query,
-                "n_chunks": len(chunks),
-                "chunks": [{"source": c.source, "score": c.score} for c in chunks],
-            }
         elif "{{var: retrieved_context}}" in self._system_prompt:
             _log.warning(
                 "System prompt references {{var: retrieved_context}} but no retriever was provided. The variable will be empty."
