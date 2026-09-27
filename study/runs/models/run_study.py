@@ -103,32 +103,49 @@ def main() -> int:
     succeeded = 0
     failed: list[str] = []
 
-    for config in configs:
-        for case in cases:
-            for prompt_key, prompt_text in case.prompts.items():
-                existing = existing_run_count(config.stem, case.id, prompt_key)
-                needed = max(0, args.runs - existing)
-                if needed == 0:
-                    print(
-                        f"[skip] {config.stem} / {case.id} / {prompt_key}: "
-                        f"{existing} run(s) already present",
-                        flush=True,
-                    )
-                    continue
-                for offset in range(needed):
-                    run_number = existing + offset + 1
-                    planned += 1
-                    rc = invoke_engine(
-                        config, case.id, prompt_key, prompt_text, run_number
-                    )
-                    if rc == 0:
-                        succeeded += 1
-                    else:
-                        failed.append(
-                            f"{config.stem}/{case.id}/{prompt_key}/"
-                            f"run{run_number:02d} (exit {rc})"
+    try:
+        for config in configs:
+            for case in cases:
+                for prompt_key, prompt_text in case.prompts.items():
+                    existing = existing_run_count(config.stem, case.id, prompt_key)
+                    needed = max(0, args.runs - existing)
+                    if needed == 0:
+                        print(
+                            f"[skip] {config.stem} / {case.id} / {prompt_key}: "
+                            f"{existing} run(s) already present",
+                            flush=True,
                         )
-                        print(f"[fail] exit code {rc}", file=sys.stderr, flush=True)
+                        continue
+                    for offset in range(needed):
+                        run_number = existing + offset + 1
+                        planned += 1
+                        rc = invoke_engine(
+                            config, case.id, prompt_key, prompt_text, run_number
+                        )
+                        if rc == 0:
+                            succeeded += 1
+                        elif rc == 130:
+                            # Child received SIGINT — the user is stopping the whole
+                            # sweep, not just this cell. Bail out cleanly.
+                            print(
+                                "\nInterrupted; stopping sweep.",
+                                file=sys.stderr,
+                                flush=True,
+                            )
+                            return 130
+                        else:
+                            failed.append(
+                                f"{config.stem}/{case.id}/{prompt_key}/"
+                                f"run{run_number:02d} (exit {rc})"
+                            )
+                            print(
+                                f"[fail] exit code {rc}",
+                                file=sys.stderr,
+                                flush=True,
+                            )
+    except KeyboardInterrupt:
+        print("\nInterrupted; stopping sweep.", file=sys.stderr, flush=True)
+        return 130
 
     print(f"\nDone. {succeeded}/{planned} runs succeeded.")
     if failed:
