@@ -63,6 +63,16 @@ class WorkflowConfig(BaseModel):
         default_factory=dict,
         description="Mapping from step name to maximum number of iterations for that step.",
     )
+    think: bool | None = Field(
+        default=None,
+        description=(
+            "Forwarded to the LLM provider on every completion. Currently only "
+            "meaningful for Ollama hybrid-reasoning models (e.g. Qwen3), where "
+            "``false`` suppresses the ``<think>...</think>`` block that "
+            "otherwise breaks structured output and tool-argument JSON. "
+            "``None`` leaves it unset."
+        ),
+    )
     retrieval: RetrievalConfig | None = None
 
     @classmethod

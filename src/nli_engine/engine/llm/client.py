@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Generic, TypeVar
 
 import litellm
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 _log = logging.getLogger("nli_engine.llm")
 
@@ -93,10 +93,16 @@ class LLMClient:
         model: LiteLLM model identifier, e.g. ``"ollama/qwen2.5:7b"`` or ``"gpt-4o"``.
         temperature: Sampling temperature forwarded to the provider. ``None``
             leaves it unset so the provider applies its own default.
+        think: When set, forwarded to the provider to enable/disable reasoning
+            output. Currently only meaningful for Ollama models with a hybrid
+            reasoning mode (e.g. Qwen3), where ``False`` suppresses the
+            ``<think>...</think>`` block that otherwise interferes with
+            structured output and tool-argument JSON. ``None`` leaves it unset.
     """
 
     model: str
     temperature: float | None = None
+    think: bool | None = None
 
     def complete(self, messages: list[dict], tools: list[dict]) -> LLMResponse:
         """Send a chat completion request and return the parsed response.
@@ -114,6 +120,8 @@ class LLMClient:
             kwargs["tools"] = tools
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
+        if self.think is not None:
+            kwargs["think"] = self.think
 
         raw = _completion_or_log(kwargs, self.model)
         choice = raw.choices[0].message
@@ -121,19 +129,36 @@ class LLMClient:
         parsed_calls: list[ToolCall] = []
         if choice.tool_calls:
             for tc in choice.tool_calls:
+                raw_args = tc.function.arguments or "{}"
+                try:
+                    arguments = json.loads(raw_args)
+                except json.JSONDecodeError:
+                    # Weak models sometimes emit malformed JSON for tool args.
+                    # Pass an empty dict so downstream pydantic validation raises
+                    # a retryable ValidationError; the LLM can then correct itself.
+                    _log.warning(
+                        "malformed_tool_arguments",
+                        extra={
+                            "event": "malformed_tool_arguments",
+                            "tool_name": tc.function.name,
+                            "raw_arguments": raw_args,
+                        },
+                    )
+                    arguments = {}
                 parsed_calls.append(
                     ToolCall(
                         id=tc.id,
                         name=tc.function.name,
-                        arguments=json.loads(tc.function.arguments or "{}"),
+                        arguments=arguments,
                     )
                 )
 
+        usage = getattr(raw, "usage", None)
         return LLMResponse(
             text=choice.content,
             tool_calls=parsed_calls,
-            input_tokens=raw.usage.prompt_tokens,
-            output_tokens=raw.usage.completion_tokens,
+            input_tokens=getattr(usage, "prompt_tokens", 0) or 0,
+            output_tokens=getattr(usage, "completion_tokens", 0) or 0,
         )
 
     def complete_structured(
@@ -159,12 +184,32 @@ class LLMClient:
         }
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
+        if self.think is not None:
+            kwargs["think"] = self.think
 
         raw = _completion_or_log(kwargs, self.model)
         choice = raw.choices[0].message
-        parsed = schema.model_validate_json(choice.content)
+        content = choice.content or ""
+
+        try:
+            parsed = schema.model_validate_json(content)
+        except (ValidationError, ValueError) as exc:
+            reason = "empty completion" if not content.strip() else "invalid JSON"
+            _log.error(
+                "llm_error",
+                extra={
+                    "event": "llm_error",
+                    "model": self.model,
+                    "error_type": type(exc).__name__,
+                    "error": f"structured output parse failed ({reason}): {exc}",
+                    "content_len": len(content),
+                },
+            )
+            raise
+
+        usage = getattr(raw, "usage", None)
         return StructuredResponse(
             parsed=parsed,
-            input_tokens=raw.usage.prompt_tokens,
-            output_tokens=raw.usage.completion_tokens,
+            input_tokens=getattr(usage, "prompt_tokens", 0) or 0,
+            output_tokens=getattr(usage, "completion_tokens", 0) or 0,
         )

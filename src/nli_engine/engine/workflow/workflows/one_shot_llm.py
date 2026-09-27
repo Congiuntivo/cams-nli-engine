@@ -134,6 +134,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
             rewriter_client = LLMClient(
                 model=config.models.get("query_rewriter", config.models["default"]),
                 temperature=_resolve_temperature(config, "query_rewriter"),
+                think=config.think,
             )
             self._query_rewriter = LLMQueryRewriter(
                 client=rewriter_client,
@@ -156,6 +157,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         refiner_client = LLMClient(
             model=config.models.get("refiner", config.models["default"]),
             temperature=_resolve_temperature(config, "refiner"),
+            think=config.think,
         )
         self._refinement_step = LLMStep(
             name="refiner",
@@ -167,6 +169,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         planner_client = LLMClient(
             model=config.models.get("planner", config.models["default"]),
             temperature=_resolve_temperature(config, "planner"),
+            think=config.think,
         )
         self._planning_step = LLMStep(
             name="planner",
@@ -182,6 +185,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         extractor_client = LLMClient(
             model=config.models.get("extractor", config.models["default"]),
             temperature=_resolve_temperature(config, "extractor"),
+            think=config.think,
         )
         self._extraction_step: ExtractionStep[AssemblyPlan] = ExtractionStep(
             name="extractor",
@@ -193,6 +197,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         specialist_client = LLMClient(
             model=config.models.get("specialist", config.models["default"]),
             temperature=_resolve_temperature(config, "specialist"),
+            think=config.think,
         )
         self._setup_step = LLMStep(
             name="setup_specialist",
@@ -213,6 +218,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         orchestrator_client = LLMClient(
             model=config.models.get("orchestrator", config.models["default"]),
             temperature=_resolve_temperature(config, "orchestrator"),
+            think=config.think,
         )
         orchestrator_tools = list(UNIT_SPECIALIST_NAMES)
         if self._retriever is not None:
@@ -240,6 +246,7 @@ class OneShotLLMWorkflow(Workflow[OneShotLLMWorkflowContext]):
         explainer_client = LLMClient(
             model=config.models.get("explainer", config.models["default"]),
             temperature=_resolve_temperature(config, "explainer"),
+            think=config.think,
         )
         self._explainer_step = LLMStep(
             name="explainer",

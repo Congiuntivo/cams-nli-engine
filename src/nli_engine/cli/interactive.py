@@ -175,9 +175,40 @@ class InteractiveCLI:
                 break
 
     def _execute_turn(self, conversation: Conversation, user_input: str) -> TurnResult:
-        """Send one user turn, emit session log events, and return the result."""
+        """Send one user turn, emit session log events, and return the result.
+
+        Any exception raised by the workflow is captured, logged as an
+        ``llm_error`` event, and re-raised as ``SystemExit(1)`` with a compact
+        one-line summary. This keeps the JSONL log terminated cleanly and
+        avoids flooding stderr with a raw traceback that a downstream
+        parser can't do anything with.
+        """
         _session_log.info("user_turn", extra={"event": "user_turn", "text": user_input})
-        result = conversation.turn(user_input)
+        try:
+            result = conversation.turn(user_input)
+        except SystemExit:
+            raise
+        except KeyboardInterrupt:
+            _session_log.error(
+                "interrupted",
+                extra={"event": "interrupted", "reason": "SIGINT"},
+            )
+            self.console.print("\n[yellow]interrupted[/yellow]")
+            raise SystemExit(130)
+        except Exception as exc:
+            _session_log.error(
+                "llm_error",
+                extra={
+                    "event": "llm_error",
+                    "error_type": type(exc).__name__,
+                    "error": str(exc),
+                },
+            )
+            self.console.print(
+                f"[red]workflow_error[/red] {type(exc).__name__}: {exc}",
+                soft_wrap=True,
+            )
+            raise SystemExit(1) from exc
         _session_log.info(
             "turn_result",
             extra={
