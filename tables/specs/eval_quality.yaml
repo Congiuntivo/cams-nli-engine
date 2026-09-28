@@ -1,0 +1,20 @@
+name: eval_quality
+source: study/preprocessed/eval_quality_wide.csv
+sort_by:
+  - column: model
+    order: [gpt-5.4, gpt-5.4-mini, gpt-5.4-nano, gpt-5-nano, gpt-4o-mini]
+columns:
+  - {name: model,      header: Model,  type: text}
+  - {name: c1_poor,    header: Poor,   type: numeric, decimals: 3, highlight: max}
+  - {name: c1_medium,  header: Medium, type: numeric, decimals: 3, highlight: max}
+  - {name: c1_rich,    header: Rich,   type: numeric, decimals: 3, highlight: max}
+  - {name: c2_poor,    header: Poor,   type: numeric, decimals: 3, highlight: max}
+  - {name: c2_medium,  header: Medium, type: numeric, decimals: 3, highlight: max}
+  - {name: c2_rich,    header: Rich,   type: numeric, decimals: 3, highlight: max}
+  - {name: c3_poor,    header: Poor,   type: numeric, decimals: 3, highlight: max}
+  - {name: c3_medium,  header: Medium, type: numeric, decimals: 3, highlight: max}
+  - {name: c3_rich,    header: Rich,   type: numeric, decimals: 3, highlight: max}
+spans:
+  - {label: "Case 001", columns: [c1_poor, c1_medium, c1_rich]}
+  - {label: "Case 002", columns: [c2_poor, c2_medium, c2_rich]}
+  - {label: "Case 003", columns: [c3_poor, c3_medium, c3_rich]}
