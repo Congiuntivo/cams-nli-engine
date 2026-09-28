@@ -15,11 +15,20 @@ class ColumnSpec:
     Attributes:
         name: Column name in the source data.
         header: Display header (sentence case, units included).
-        type: ``"text"`` or ``"numeric"``.
+        type: ``"text"``, ``"numeric"``, or ``"raw"``. Raw cells are emitted
+            verbatim (no escaping, no formatting, no highlight) and get a
+            centred ``c`` colspec — use for pre-formatted LaTeX content that
+            does not fit the ``S`` column contract.
         decimals: Fixed decimal places for numeric columns.
         table_format: siunitx ``table-format`` string; inferred from data if omitted.
         wrap: For text columns, use ``X`` colspec instead of ``l``.
         highlight: ``"max"`` or ``"min"`` — bolds the extremum (ties all bolded).
+            When ``"max"``, a value of exactly ``0.0`` is never bolded (avoids
+            highlighting ``0.000 ± 0.000`` cells as the "winner").
+        sd_column: Numeric only. When set, the cell renders as ``mean \\pm sd``
+            using ``name`` as the mean and ``sd_column`` as the sd source.
+            Highlight comparison uses the mean alone; ``table-format`` is
+            inferred from the mean only.
     """
 
     name: str
@@ -29,6 +38,7 @@ class ColumnSpec:
     table_format: str | None = None
     wrap: bool = False
     highlight: str | None = None
+    sd_column: str | None = None
 
 
 @dataclass
@@ -84,6 +94,11 @@ class TableSpec:
         sort_by: Ordered list of SortSpec applied stably.
         spans: Optional spanning header groups.
         row_group: Optional row-grouping rule.
+        sections: Optional column name. When set, rows are partitioned by
+            that column's value and emitted as one ``tblr`` block per section
+            (each block gets a spanning header carrying the section value
+            over every column except the first, and highlights are computed
+            per-block). The sections column itself is not rendered.
         spec_path: Path to the YAML spec file (for diagnostics).
     """
 
@@ -94,6 +109,7 @@ class TableSpec:
     sort_by: list[SortSpec] = field(default_factory=list)
     spans: list[SpanSpec] = field(default_factory=list)
     row_group: RowGroupSpec | None = None
+    sections: str | None = None
     spec_path: Path | None = None
 
 
@@ -108,5 +124,6 @@ def load_spec(path: Path, root: Path) -> TableSpec:
         sort_by=[SortSpec(**s) for s in data.get("sort_by", [])],
         spans=[SpanSpec(**s) for s in data.get("spans", [])],
         row_group=RowGroupSpec(**data["row_group"]) if data.get("row_group") else None,
+        sections=data.get("sections"),
         spec_path=path.resolve(),
     )
