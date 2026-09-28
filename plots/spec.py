@@ -60,11 +60,15 @@ class HueSpec:
         order: Explicit categorical order; controls legend order and palette
             assignment.
         title: Legend title.
+        labels: Optional explicit legend label per hue value. When provided,
+            entries in the legend take their text from this map; missing keys
+            fall back to the raw value.
     """
 
     column: str
     order: list[str] | None = None
     title: str | None = None
+    labels: dict[str, str] | None = None
 
 
 @dataclass
@@ -150,9 +154,9 @@ class PlotSpec:
     x: AxisSpec
     y: YSpec
     hue: HueSpec
-    facet: FacetSpec
     aggregate: AggregateSpec
     figure: FigureSpec
+    facet: FacetSpec | None = None
     spec_path: Path | None = None
 
 
@@ -185,7 +189,7 @@ def load_spec(path: Path, root: Path) -> PlotSpec:
             limit=_limit(data["y"].get("limit")),
         ),
         hue=HueSpec(**data["hue"]),
-        facet=FacetSpec(**data["facet"]),
+        facet=FacetSpec(**data["facet"]) if "facet" in data else None,
         aggregate=AggregateSpec(**data["aggregate"]),
         figure=FigureSpec(
             figsize=_figsize(data.get("figure", {}).get("figsize")),

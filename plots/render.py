@@ -10,7 +10,11 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 from matplotlib.path import Path as MplPath
+
+from .spec import PlotSpec
+from .style import INK, MUTED, STROKE_MEDIUM, STROKE_THIN, apply_style, series_palette
 
 _IBEAM_MARKER = MplPath(
     vertices=[
@@ -30,9 +34,6 @@ _IBEAM_MARKER = MplPath(
         MplPath.LINETO,
     ],
 )
-
-from .spec import PlotSpec
-from .style import MUTED, STROKE_MEDIUM, STROKE_THIN, apply_style, series_palette
 
 
 def _apply_filter(df: pd.DataFrame, allow: dict[str, list[str]]) -> pd.DataFrame:
@@ -155,8 +156,117 @@ def render_small_multiples_line(spec: PlotSpec, root: Path) -> Figure:
     return fig
 
 
+def render_grouped_bar(spec: PlotSpec, root: Path) -> Figure:
+    """Render a single-panel grouped bar chart (bars grouped by hue at each x).
+
+    Bars show the mean of ``y`` across the sessions matching each
+    (x, hue) cell; when ``spec.aggregate.errorbar == "sd"`` an error bar of
+    +/-1 standard deviation is drawn at each bar top.
+
+    Args:
+        spec: Loaded plot spec. Must not carry a ``facet``; ``aggregate.method``
+            must be ``"mean"`` and ``aggregate.dodge`` must be ``0`` (bar
+            grouping handles the horizontal offset natively).
+        root: Repository root (used for resolving relative paths; the source
+            is already absolute by the time it reaches this function).
+
+    Raises:
+        ValueError: If the spec carries a facet, a non-mean method, or a
+            non-zero dodge; or if the filtered data is empty.
+    """
+    if spec.facet is not None:
+        raise ValueError(
+            f"{spec.name}: grouped_bar does not support facets (spec.facet must be None)"
+        )
+    if spec.aggregate.method != "mean":
+        raise ValueError(
+            f"{spec.name}: grouped_bar only supports aggregate.method='mean', "
+            f"got {spec.aggregate.method!r}"
+        )
+    if spec.aggregate.dodge != 0:
+        raise ValueError(
+            f"{spec.name}: grouped_bar does not support aggregate.dodge != 0 "
+            "(bar grouping handles the offset natively)"
+        )
+
+    apply_style()
+
+    df = pd.read_csv(spec.source)
+    df = _apply_filter(df, spec.filter.allow)
+    df = df.dropna(subset=[spec.y.column]).reset_index(drop=True)
+    if df.empty:
+        raise ValueError(f"{spec.name}: no rows after filter + NaN drop")
+
+    df[spec.x.column] = _as_ordered_categorical(df[spec.x.column], spec.x.order)
+    df[spec.hue.column] = _as_ordered_categorical(df[spec.hue.column], spec.hue.order)
+
+    x_order = spec.x.order or sorted(df[spec.x.column].dropna().unique())
+    hue_order = spec.hue.order or sorted(df[spec.hue.column].dropna().unique())
+    palette = list(series_palette()[: len(hue_order)])
+
+    errorbar_arg = (
+        spec.aggregate.errorbar if spec.aggregate.errorbar != "none" else None
+    )
+
+    fig, ax = plt.subplots(1, 1, figsize=spec.figure.figsize, constrained_layout=True)
+    sns.barplot(
+        data=df,
+        x=spec.x.column,
+        y=spec.y.column,
+        hue=spec.hue.column,
+        order=x_order,
+        hue_order=hue_order,
+        palette=palette,
+        estimator="mean",
+        errorbar=errorbar_arg,
+        capsize=0.15,
+        err_kws={"linewidth": STROKE_THIN, "color": MUTED},
+        edgecolor=INK,
+        linewidth=STROKE_THIN * 0.5,
+        ax=ax,
+        legend=False,
+    )
+    ax.set_xlabel(spec.x.label or "")
+    ax.set_ylabel(spec.y.label or "")
+    if spec.y.limit is not None:
+        ax.set_ylim(*spec.y.limit)
+
+    hue_label_map = spec.hue.labels or {}
+    handles = [
+        Patch(
+            facecolor=palette[i],
+            edgecolor=INK,
+            linewidth=STROKE_THIN * 0.5,
+            label=hue_label_map.get(str(h), str(h)),
+        )
+        for i, h in enumerate(hue_order)
+    ]
+    if spec.aggregate.errorbar == "sd":
+        handles.append(
+            Line2D(
+                [0],
+                [0],
+                color=MUTED,
+                linestyle="none",
+                marker=_IBEAM_MARKER,
+                markersize=5,
+                markeredgewidth=STROKE_THIN,
+                label="±1 SD",
+            )
+        )
+    fig.legend(
+        handles=handles,
+        loc="center left",
+        bbox_to_anchor=(1.0, 0.5),
+        frameon=False,
+        title=spec.hue.title,
+    )
+    return fig
+
+
 RENDERERS: dict[str, Callable[[PlotSpec, Path], Figure]] = {
     "small_multiples_line": render_small_multiples_line,
+    "grouped_bar": render_grouped_bar,
 }
 
 

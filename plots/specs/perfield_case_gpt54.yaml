@@ -1,0 +1,37 @@
+name: perfield_case_gpt54
+kind: grouped_bar
+source: study/preprocessed/eval_perfield_case_gpt54_long.csv
+filter:
+  allow: {}
+x:
+  column: field_name
+  order:
+    - primaryDevices
+    - connectedDevices
+    - tasks
+    - triggers
+    - taskControls
+    - connections
+    - applicationData
+    - other
+  label: Protocol field
+y:
+  column: f1
+  label: HashMatch F1
+  limit: [0.0, 1.05]
+hue:
+  column: case_id
+  order: [001_diary_study, 002_diary_study, 003_cardio_wellness]
+  title: Case
+  labels:
+    001_diary_study: "Case 001"
+    002_diary_study: "Case 002"
+    003_cardio_wellness: "Case 003"
+aggregate:
+  by: [case_id, field_name]
+  method: mean
+  errorbar: sd
+  dodge: 0.0
+figure:
+  figsize: [7.5, 3.2]
+  legend: right

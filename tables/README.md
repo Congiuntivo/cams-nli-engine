@@ -52,13 +52,19 @@ Some tables consume a CSV that is itself derived from a larger raw source. In th
 case, the preprocessing script lives with the raw data and must be rerun whenever
 the raw source changes:
 
-| Table          | Source CSV                                 | Rebuild command                                          |
-| -------------- | ------------------------------------------ | -------------------------------------------------------- |
-| `eval_quality` | `study/preprocessed/eval_quality_wide.csv` | `uv run python -m study.preprocessed.build_eval_quality` |
+| Table                | Source CSV                                       | Rebuild command                                                |
+| -------------------- | ------------------------------------------------ | -------------------------------------------------------------- |
+| `eval_quality`       | `study/preprocessed/eval_quality_wide.csv`       | `uv run python -m study.preprocessed.build_eval_quality`       |
+| `eval_perfield_tier` | `study/preprocessed/eval_perfield_tier_wide.csv` | `uv run python -m study.preprocessed.build_eval_perfield_tier` |
 
 The `eval_quality` table depends on `study/preprocessed/eval_quality_wide.csv`,
 produced from `study/preprocessed/sessions.csv`. Rerun the preprocessing script
 before `tables.build` after `sessions.csv` changes.
+
+The `eval_perfield_tier` table depends on
+`study/preprocessed/eval_perfield_tier_wide.csv`, produced from
+`study/preprocessed/hashmatch_fields.csv` joined against `sessions.csv`. Rerun
+its preprocessor before `tables.build` after either source changes.
 
 ## Spec reference
 
