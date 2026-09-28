@@ -46,6 +46,20 @@ Exits non-zero on any error. Output is byte-stable given the same inputs.
 3. Run `uv run python -m tables.build`. It writes `tables/my_table.tex`.
 4. In the thesis, wrap with a table float and `\input{tables/my_table.tex}`.
 
+## Preprocessed sources
+
+Some tables consume a CSV that is itself derived from a larger raw source. In that
+case, the preprocessing script lives with the raw data and must be rerun whenever
+the raw source changes:
+
+| Table          | Source CSV                                 | Rebuild command                                          |
+| -------------- | ------------------------------------------ | -------------------------------------------------------- |
+| `eval_quality` | `study/preprocessed/eval_quality_wide.csv` | `uv run python -m study.preprocessed.build_eval_quality` |
+
+The `eval_quality` table depends on `study/preprocessed/eval_quality_wide.csv`,
+produced from `study/preprocessed/sessions.csv`. Rerun the preprocessing script
+before `tables.build` after `sessions.csv` changes.
+
 ## Spec reference
 
 | Field                    | Type                | Notes                                                 |
@@ -72,9 +86,13 @@ Load these in the thesis preamble:
 ```latex
 \usepackage{booktabs}
 \usepackage{siunitx}
-\sisetup{detect-weight, mode=match}     % so \bfseries works inside S columns
+\sisetup{detect-weight=true, detect-family=true, mode=match}   % so \bfseries lands inside S columns
 \usepackage{tabularray}
+\UseTblrLibrary{siunitx}    % teach tblr about S[] columns
+\UseTblrLibrary{booktabs}   % \toprule / \midrule / \cmidrule inside tblr
 ```
+
+Without `\UseTblrLibrary{siunitx}` the fragments fail with `Unknown Column type S!`. Without `detect-weight` (and, for many font packages, `detect-family`) the `highlight: max` bolds render at the correct weight in the source but siunitx silently re-typesets the number in its regular font — the bold "does not land".
 
 ## JSON sources
 
