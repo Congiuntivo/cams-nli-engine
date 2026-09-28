@@ -2633,19 +2633,19 @@ gui = [
 [package.dev-dependencies]
 analysis = [
     { name = "ipykernel" },
-    { name = "matplotlib", version = "3.10.9", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "matplotlib", version = "3.11.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "pandas", version = "3.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "seaborn" },
 ]
 dev = [
     { name = "lexical-diversity" },
+    { name = "matplotlib", version = "3.10.9", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "matplotlib", version = "3.11.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "openapi-generator-cli" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "pandas", version = "3.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pyyaml" },
     { name = "ruff" },
+    { name = "seaborn" },
     { name = "setuptools" },
     { name = "textstat" },
 ]
@@ -2665,19 +2665,17 @@ requires-dist = [
 provides-extras = ["cli", "gui"]
 
 [package.metadata.requires-dev]
-analysis = [
-    { name = "ipykernel", specifier = ">=6.0" },
-    { name = "matplotlib", specifier = ">=3.7" },
-    { name = "pandas", specifier = ">=2.0" },
-    { name = "seaborn", specifier = ">=0.13" },
-]
+analysis = [{ name = "ipykernel", specifier = ">=6.0" }]
 dev = [
     { name = "lexical-diversity", specifier = ">=0.1.1" },
+    { name = "matplotlib", specifier = ">=3.7" },
     { name = "openapi-generator-cli", specifier = ">=7.22.0" },
+    { name = "pandas", specifier = ">=2.0" },
     { name = "pre-commit", specifier = ">=4.6.0" },
     { name = "pytest", specifier = ">=9.0.3" },
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "ruff", specifier = ">=0.4.0" },
+    { name = "seaborn", specifier = ">=0.13" },
     { name = "setuptools", specifier = "<81" },
     { name = "textstat", specifier = ">=0.7.13" },
 ]
