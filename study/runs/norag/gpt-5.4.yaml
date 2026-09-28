@@ -1,0 +1,11 @@
+models:
+  default: "gpt-5.4"
+parameters:
+  max_unit_retries: 1
+temperature:
+  default: 0.3
+# No `retrieval:` block on purpose — this is the noRAG ablation.
+# With retrieval unset, `one_shot_llm` skips QdrantRetriever construction,
+# omits the `retrieve_docs` tool, and every LLMStep runs with retriever=None.
+# The `{{var: retrieved_context}}` placeholders in the prompts resolve to
+# empty strings; the model still sees the surrounding scaffolding.
