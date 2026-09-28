@@ -63,7 +63,7 @@ Exits non-zero on any error.
 | Field                                       | Type                | Notes                                                            |
 | ------------------------------------------- | ------------------- | ---------------------------------------------------------------- |
 | `name`                                      | str                 | Output filename stem (`plots/<name>.pdf`)                        |
-| `kind`                                      | str                 | Renderer key. Supported: `small_multiples_line`                  |
+| `kind`                                      | str                 | Renderer key. Supported: `small_multiples_line`, `grouped_bar`   |
 | `source`                                    | path                | CSV relative to repo root                                        |
 | `filter.allow`                              | `{col: [values]}`   | Row allowlist per column (AND across columns)                    |
 | `x.column` / `order` / `label`              | str / list / str    | Categorical x-axis                                               |
@@ -71,6 +71,7 @@ Exits non-zero on any error.
 | `hue.column` / `order` / `title`            | str / list / str    | Series grouping; drives legend                                   |
 | `facet.column` / `order` / `title_template` | str / list / str    | Small-multiples facet; `title_template` receives `{value}`       |
 | `facet.labels`                              | `{value: label}`    | Optional explicit panel titles; overrides `title_template`       |
+| `hue.labels`                                | `{value: label}`    | Optional explicit legend labels (parallels `facet.labels`)       |
 | `aggregate.by`                              | list                | Grouping columns for the mean line                               |
 | `aggregate.errorbar`                        | str                 | Variance indicator: `sd` (+/-1 std) or `none`                    |
 | `aggregate.dodge`                           | float               | Horizontal offset between hue groups at each x tick (0 disables) |
@@ -87,6 +88,16 @@ palette; structural chrome (facet titles, annotative tints) uses the
 `tests/plots/test_palette_consistency.py` catches drift between the
 Python constants here and the typst file in the sibling `thesis/` repo.
 It skips gracefully if the thesis repo is not present.
+
+## Preprocessed data dependencies
+
+Some specs read a preprocessed CSV built by a script in `study/preprocessed/`.
+Rerun the corresponding builder whenever `sessions.csv` or a source in
+`study/preprocessed/` changes:
+
+- `perfield_case_gpt54` reads `study/preprocessed/eval_perfield_case_gpt54_long.csv`,
+  produced by `uv run python -m study.preprocessed.build_eval_perfield_case_gpt54`
+  (joins `hashmatch_fields.csv` with `sessions.csv`; rerun after either changes).
 
 ## Tests
 

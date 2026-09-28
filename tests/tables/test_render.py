@@ -24,3 +24,11 @@ def test_eval_quality_snapshot():
     actual = render(spec, root=ROOT)
     expected = (FIXTURES / "eval_quality_expected.tex").read_text()
     assert actual == expected
+
+
+def test_eval_perfield_tier_snapshot():
+    """``eval_perfield_tier.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "eval_perfield_tier.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "eval_perfield_tier_expected.tex").read_text()
+    assert actual == expected

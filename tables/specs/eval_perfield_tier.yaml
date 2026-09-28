@@ -1,0 +1,20 @@
+name: eval_perfield_tier
+source: study/preprocessed/eval_perfield_tier_wide.csv
+sort_by:
+  - column: field
+    order:
+      - primaryDevices
+      - connectedDevices
+      - tasks
+      - triggers
+      - taskControls
+      - connections
+      - applicationData
+      - other
+columns:
+  - {name: field,        header: Field,         type: text}
+  - {name: gpt-5.4,      header: gpt-5.4,       type: numeric, decimals: 3, highlight: min}
+  - {name: gpt-5.4-mini, header: gpt-5.4-mini,  type: numeric, decimals: 3, highlight: min}
+  - {name: gpt-5.4-nano, header: gpt-5.4-nano,  type: numeric, decimals: 3, highlight: min}
+  - {name: gpt-5-nano,   header: gpt-5-nano,    type: numeric, decimals: 3, highlight: min}
+  - {name: gpt-4o-mini,  header: gpt-4o-mini,   type: numeric, decimals: 3, highlight: min}
