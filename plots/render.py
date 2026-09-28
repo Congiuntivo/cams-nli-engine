@@ -10,9 +10,29 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.figure import Figure
 from matplotlib.lines import Line2D
+from matplotlib.path import Path as MplPath
+
+_IBEAM_MARKER = MplPath(
+    vertices=[
+        (-0.5, 0.5),
+        (0.5, 0.5),
+        (0.0, 0.5),
+        (0.0, -0.5),
+        (-0.5, -0.5),
+        (0.5, -0.5),
+    ],
+    codes=[
+        MplPath.MOVETO,
+        MplPath.LINETO,
+        MplPath.MOVETO,
+        MplPath.LINETO,
+        MplPath.MOVETO,
+        MplPath.LINETO,
+    ],
+)
 
 from .spec import PlotSpec
-from .style import STROKE_MEDIUM, STROKE_THIN, apply_style, series_palette
+from .style import MUTED, STROKE_MEDIUM, STROKE_THIN, apply_style, series_palette
 
 
 def _apply_filter(df: pd.DataFrame, allow: dict[str, list[str]]) -> pd.DataFrame:
@@ -112,6 +132,19 @@ def render_small_multiples_line(spec: PlotSpec, root: Path) -> Figure:
         )
         for h in hue_order
     ]
+    if spec.aggregate.errorbar == "sd":
+        handles.append(
+            Line2D(
+                [0],
+                [0],
+                color=MUTED,
+                linestyle="none",
+                marker=_IBEAM_MARKER,
+                markersize=5,
+                markeredgewidth=STROKE_THIN,
+                label="±1 SD",
+            )
+        )
     fig.legend(
         handles=handles,
         loc="center left",
