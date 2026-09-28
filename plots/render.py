@@ -89,7 +89,11 @@ def render_small_multiples_line(spec: PlotSpec, root: Path) -> Figure:
             ax=ax,
             legend=False,
         )
-        ax.set_title(spec.facet.title_template.format(value=facet_value))
+        if spec.facet.labels:
+            title = spec.facet.labels.get(facet_value, str(facet_value))
+        else:
+            title = spec.facet.title_template.format(value=facet_value)
+        ax.set_title(title)
         ax.set_xlabel(spec.x.label or "")
         ax.set_ylabel("")
         if spec.y.limit is not None:

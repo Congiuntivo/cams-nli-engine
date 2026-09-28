@@ -14,7 +14,7 @@ x:
 y:
   column: hm_f1
   label: Macro F1
-  limit: [0.0, 1.05]
+  limit: [0.0, 1.20]
 hue:
   column: model
   order: [gpt-4o-mini, gpt-5-nano, gpt-5.4-nano, gpt-5.4-mini, gpt-5.4]
@@ -22,7 +22,10 @@ hue:
 facet:
   column: case_id
   order: [001_diary_study, 002_diary_study, 003_cardio_wellness]
-  title_template: "Case {value}"
+  labels:
+    001_diary_study: "Case 001"
+    002_diary_study: "Case 002"
+    003_cardio_wellness: "Case 003"
 aggregate:
   by: [case_id, model, prompt_key]
   method: mean
