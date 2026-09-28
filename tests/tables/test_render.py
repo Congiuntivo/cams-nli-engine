@@ -50,6 +50,14 @@ def test_eval_baseline_cells_snapshot():
     assert actual == expected
 
 
+def test_eval_execution_snapshot():
+    """``eval_execution.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "eval_execution.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "eval_execution_expected.tex").read_text()
+    assert actual == expected
+
+
 def test_sd_column_emits_uncertainty_notation():
     """``sd_column`` cells emit siunitx compact-uncertainty notation."""
     col = ColumnSpec(name="mu", header="", type="numeric", decimals=3, sd_column="sd")

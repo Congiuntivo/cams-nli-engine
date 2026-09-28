@@ -94,8 +94,12 @@ def sort_rows(rows: list[dict], sort_by) -> list[dict]:
 def infer_table_format(col: ColumnSpec, rows: list[dict]) -> str:
     """Derive an siunitx table-format from data extent + column decimals.
 
-    For ``sd_column`` pairs, append ``(N)`` where ``N == col.decimals`` so
-    siunitx accepts the compact-uncertainty payload emitted by ``fmt_cell``.
+    For ``sd_column`` pairs, append ``(N)`` where ``N`` is the actual max
+    width of the compact-uncertainty payload across ``rows``. This may
+    exceed ``col.decimals`` when any ``sd >= 10**col.decimals``; if the
+    table-format's uncertainty width is narrower than the emitted payload,
+    siunitx crams the extra digits into the reserved slot and adjacent
+    characters visually overlap.
     """
     if col.table_format:
         return col.table_format
@@ -107,7 +111,15 @@ def infer_table_format(col: ColumnSpec, rows: list[dict]) -> str:
         max_int = max(max_int, len(f"{abs(float(v)):.0f}"))
     base = str(max_int) if col.decimals == 0 else f"{max_int}.{col.decimals}"
     if col.sd_column is not None:
-        base = f"{base}({col.decimals})"
+        max_unc = col.decimals
+        for r in rows:
+            sd_v = r.get(col.sd_column)
+            if sd_v in ("", None):
+                continue
+            unc_digits = round(float(sd_v) * (10**col.decimals))
+            unc_str = f"{unc_digits:0{col.decimals}d}"
+            max_unc = max(max_unc, len(unc_str))
+        base = f"{base}({max_unc})"
     return base
 
 

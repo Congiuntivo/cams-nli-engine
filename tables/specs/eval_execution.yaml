@@ -1,0 +1,15 @@
+name: eval_execution
+source: study/preprocessed/eval_execution_wide.csv
+sections: case
+sort_by:
+  - column: case
+    order: ["Case 001", "Case 002", "Case 003"]
+  - column: model
+    order: [gpt-5.4, gpt-5.4-mini, gpt-5.4-nano, gpt-5-nano, gpt-4o-mini]
+columns:
+  - {name: model,             header: Model,              type: text}
+  - {name: llm_calls_mean,    header: "LLM calls",         type: numeric, decimals: 1, highlight: min}
+  - {name: tool_calls_mean,   header: "Tool calls",        type: numeric, decimals: 1, highlight: min}
+  - {name: tool_fail_mean,    header: "Tool-fail rate",    type: numeric, decimals: 3, highlight: min}
+  - {name: input_tokens_mean, header: "Input tokens (M)",  type: numeric, decimals: 2, highlight: min}
+  - {name: latency_mean,      header: "Latency (s)",       type: numeric, decimals: 1, highlight: min}
