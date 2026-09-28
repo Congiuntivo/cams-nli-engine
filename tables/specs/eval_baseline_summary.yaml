@@ -1,0 +1,6 @@
+name: eval_baseline_summary
+source: study/preprocessed/eval_baseline_summary_wide.csv
+columns:
+  - {name: metric,   header: Metric,   type: text}
+  - {name: pipeline, header: Pipeline, type: raw}
+  - {name: baseline, header: Baseline, type: raw}

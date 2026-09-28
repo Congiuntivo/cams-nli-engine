@@ -52,10 +52,11 @@ Some tables consume a CSV that is itself derived from a larger raw source. In th
 case, the preprocessing script lives with the raw data and must be rerun whenever
 the raw source changes:
 
-| Table                | Source CSV                                       | Rebuild command                                                |
-| -------------------- | ------------------------------------------------ | -------------------------------------------------------------- |
-| `eval_quality`       | `study/preprocessed/eval_quality_wide.csv`       | `uv run python -m study.preprocessed.build_eval_quality`       |
-| `eval_perfield_tier` | `study/preprocessed/eval_perfield_tier_wide.csv` | `uv run python -m study.preprocessed.build_eval_perfield_tier` |
+| Table                                           | Source CSV                                                                                             | Rebuild command                                                |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| `eval_quality`                                  | `study/preprocessed/eval_quality_wide.csv`                                                             | `uv run python -m study.preprocessed.build_eval_quality`       |
+| `eval_perfield_tier`                            | `study/preprocessed/eval_perfield_tier_wide.csv`                                                       | `uv run python -m study.preprocessed.build_eval_perfield_tier` |
+| `eval_baseline_summary` / `eval_baseline_cells` | `study/preprocessed/eval_baseline_summary_wide.csv`, `study/preprocessed/eval_baseline_cells_wide.csv` | `uv run python -m study.preprocessed.build_eval_baseline`      |
 
 The `eval_quality` table depends on `study/preprocessed/eval_quality_wide.csv`,
 produced from `study/preprocessed/sessions.csv`. Rerun the preprocessing script
@@ -66,24 +67,32 @@ The `eval_perfield_tier` table depends on
 `study/preprocessed/hashmatch_fields.csv` joined against `sessions.csv`. Rerun
 its preprocessor before `tables.build` after either source changes.
 
+The `eval_baseline_summary` and `eval_baseline_cells` tables share a single
+preprocessor that reads `study/preprocessed/sessions.csv`, filters to the
+`gpt-5.4` pipeline arm (`source == "models"`) and the ReAct baseline arm
+(`source == "react_baseline"`), and writes two wide CSVs. Rerun it before
+`tables.build` after `sessions.csv` changes.
+
 ## Spec reference
 
-| Field                    | Type                | Notes                                                 |
-| ------------------------ | ------------------- | ----------------------------------------------------- |
-| `name`                   | str                 | Output filename stem                                  |
-| `source`                 | path                | CSV or JSON, relative to repo root                    |
-| `csv_options.comment`    | str                 | Skip lines starting with this char                    |
-| `sort_by[]`              | list                | `{column, order?}`; applied stably in listed order    |
-| `columns[]`              | list                | Ordered ColumnSpec list                               |
-| `columns[].name`         | str                 | Source column name                                    |
-| `columns[].header`       | str                 | Display header (LaTeX special chars are escaped)      |
-| `columns[].type`         | `text` \| `numeric` | Determines colspec (`l`/`X` vs `S[…]`)                |
-| `columns[].decimals`     | int                 | Fixed decimals for numeric printing                   |
-| `columns[].table_format` | str                 | siunitx `table-format`; inferred from data if omitted |
-| `columns[].wrap`         | bool                | Text only: use `X` instead of `l`                     |
-| `columns[].highlight`    | `max` \| `min`      | Bold the extremum in this column; ties all bolded     |
-| `spans[]`                | list                | `{label, columns[]}`; columns must be contiguous      |
-| `row_group`              | obj                 | `{column, style}`; break on value change              |
+| Field                    | Type                         | Notes                                                                                                                                                                                                                                                                                          |
+| ------------------------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                   | str                          | Output filename stem                                                                                                                                                                                                                                                                           |
+| `source`                 | path                         | CSV or JSON, relative to repo root                                                                                                                                                                                                                                                             |
+| `csv_options.comment`    | str                          | Skip lines starting with this char                                                                                                                                                                                                                                                             |
+| `sort_by[]`              | list                         | `{column, order?}`; applied stably in listed order                                                                                                                                                                                                                                             |
+| `columns[]`              | list                         | Ordered ColumnSpec list                                                                                                                                                                                                                                                                        |
+| `columns[].name`         | str                          | Source column name                                                                                                                                                                                                                                                                             |
+| `columns[].header`       | str                          | Display header (LaTeX special chars are escaped)                                                                                                                                                                                                                                               |
+| `columns[].type`         | `text` \| `numeric` \| `raw` | Determines colspec (`l`/`X` vs `S[…]` vs `c`). `raw` cells are emitted verbatim (no escape, no formatting, no highlight) — use for pre-formatted LaTeX content that does not fit the `S` column contract (e.g. rows with per-row decimals).                                                    |
+| `columns[].decimals`     | int                          | Fixed decimals for numeric printing                                                                                                                                                                                                                                                            |
+| `columns[].table_format` | str                          | siunitx `table-format`; inferred from data if omitted                                                                                                                                                                                                                                          |
+| `columns[].wrap`         | bool                         | Text only: use `X` instead of `l`                                                                                                                                                                                                                                                              |
+| `columns[].highlight`    | `max` \| `min`               | Bold the extremum in this column; ties all bolded. `max` never bolds a value of exactly `0.0` (avoids highlighting `0.000 ± 0.000` cells as the winner).                                                                                                                                       |
+| `columns[].sd_column`    | str                          | Numeric only. Pair with another column carrying the standard deviation; cell renders as `mean \pm sd`. Highlight compares on the mean alone.                                                                                                                                                   |
+| `spans[]`                | list                         | `{label, columns[]}`; columns must be contiguous                                                                                                                                                                                                                                               |
+| `row_group`              | obj                          | `{column, style}`; break on value change                                                                                                                                                                                                                                                       |
+| `sections`               | str                          | Column name. Partitions rows by that column's value and emits one `tblr` block per section, separated by `\vspace{0.5em}`. Each block adds a spanning header carrying the section value over every column except the first. Highlights compute per-block. The sections column is not rendered. |
 
 ## LaTeX document requirements
 
@@ -99,6 +108,17 @@ Load these in the thesis preamble:
 ```
 
 Without `\UseTblrLibrary{siunitx}` the fragments fail with `Unknown Column type S!`. Without `detect-weight` (and, for many font packages, `detect-family`) the `highlight: max` bolds render at the correct weight in the source but siunitx silently re-typesets the number in its regular font — the bold "does not land".
+
+If any spec uses `sd_column` (paired mean ± sd cells), add `separate-uncertainty=true` to the same `\sisetup{}` call:
+
+```latex
+\sisetup{detect-weight=true, detect-family=true, mode=match, separate-uncertainty=true}
+```
+
+Cells are emitted as `{$X.YYY \pm Y.YYY$}` — the braces stop siunitx from
+parsing the cell as a single number, and the inner `$...$` puts `\pm` in math
+mode. `separate-uncertainty=true` keeps rendering consistent with any
+hand-authored `\num{0.784(123)}` elsewhere in prose.
 
 ## JSON sources
 
