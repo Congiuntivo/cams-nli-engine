@@ -57,6 +57,7 @@ the raw source changes:
 | `eval_quality`                                  | `study/preprocessed/eval_quality_wide.csv`                                                             | `uv run python -m study.preprocessed.build_eval_quality`       |
 | `eval_perfield_tier`                            | `study/preprocessed/eval_perfield_tier_wide.csv`                                                       | `uv run python -m study.preprocessed.build_eval_perfield_tier` |
 | `eval_baseline_summary` / `eval_baseline_cells` | `study/preprocessed/eval_baseline_summary_wide.csv`, `study/preprocessed/eval_baseline_cells_wide.csv` | `uv run python -m study.preprocessed.build_eval_baseline`      |
+| `eval_execution`                                | `study/preprocessed/eval_execution_wide.csv`                                                           | `uv run python -m study.preprocessed.build_eval_execution`     |
 
 The `eval_quality` table depends on `study/preprocessed/eval_quality_wide.csv`,
 produced from `study/preprocessed/sessions.csv`. Rerun the preprocessing script
@@ -72,6 +73,13 @@ preprocessor that reads `study/preprocessed/sessions.csv`, filters to the
 `gpt-5.4` pipeline arm (`source == "models"`) and the ReAct baseline arm
 (`source == "react_baseline"`), and writes two wide CSVs. Rerun it before
 `tables.build` after `sessions.csv` changes.
+
+The `eval_execution` table depends on
+`study/preprocessed/eval_execution_wide.csv`, produced from
+`study/preprocessed/sessions.csv` (filtered to the five cloud pipeline models
+under `source == "models"`, aggregated per `(model, case)` over the nine
+richness × run sessions). Rerun its preprocessor before `tables.build` after
+`sessions.csv` changes.
 
 ## Spec reference
 
