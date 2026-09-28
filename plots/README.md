@@ -70,6 +70,7 @@ Exits non-zero on any error.
 | `y.column` / `label` / `limit`              | str / str / [lo,hi] | Continuous y-axis; y-limit shared across facets                  |
 | `hue.column` / `order` / `title`            | str / list / str    | Series grouping; drives legend                                   |
 | `facet.column` / `order` / `title_template` | str / list / str    | Small-multiples facet; `title_template` receives `{value}`       |
+| `facet.labels`                              | `{value: label}`    | Optional explicit panel titles; overrides `title_template`       |
 | `aggregate.by`                              | list                | Grouping columns for the mean line                               |
 | `aggregate.errorbar`                        | str                 | Variance indicator: `sd` (+/-1 std) or `none`                    |
 | `aggregate.dodge`                           | float               | Horizontal offset between hue groups at each x tick (0 disables) |

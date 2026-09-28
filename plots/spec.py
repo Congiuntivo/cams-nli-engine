@@ -75,12 +75,16 @@ class FacetSpec:
         column: Source column name.
         order: Explicit categorical order; controls panel order left-to-right.
         title_template: Python format string; receives ``value`` (the facet
-            column value) as keyword argument.
+            column value) as keyword argument. Ignored when ``labels`` is set.
+        labels: Optional explicit display label per facet value. When
+            provided, ``title_template`` is ignored and each panel takes its
+            title from this map; missing keys fall back to the raw value.
     """
 
     column: str
     order: list[str] | None = None
     title_template: str = "{value}"
+    labels: dict[str, str] | None = None
 
 
 @dataclass
