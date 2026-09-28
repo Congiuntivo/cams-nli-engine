@@ -1,0 +1,33 @@
+name: richness_f1_small_multiples
+kind: small_multiples_line
+source: study/runs/summary.csv
+filter:
+  allow:
+    source: [models]
+    model: [gpt-4o-mini, gpt-5-nano, gpt-5.4-nano, gpt-5.4-mini, gpt-5.4]
+    case_id: [001_diary_study, 002_diary_study, 003_cardio_wellness]
+    prompt_key: [poor, medium, rich]
+x:
+  column: prompt_key
+  order: [poor, medium, rich]
+  label: Prompt richness
+y:
+  column: hm_f1
+  label: Macro F1
+  limit: [0.0, 1.05]
+hue:
+  column: model
+  order: [gpt-4o-mini, gpt-5-nano, gpt-5.4-nano, gpt-5.4-mini, gpt-5.4]
+  title: Model
+facet:
+  column: case_id
+  order: [001_diary_study, 002_diary_study, 003_cardio_wellness]
+  title_template: "Case {value}"
+aggregate:
+  by: [case_id, model, prompt_key]
+  method: mean
+  errorbar: sd
+  dodge: 0.4
+figure:
+  figsize: [7.5, 3.2]
+  legend: right
