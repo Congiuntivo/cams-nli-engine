@@ -1,0 +1,13 @@
+name: eval_norag_cells
+source: study/preprocessed/eval_norag_cells_wide.csv
+sections: case
+sort_by:
+  - column: case
+    order: ["Case 001", "Case 002", "Case 003"]
+  - column: arm
+    order: [with_rag, no_rag]
+columns:
+  - {name: arm,         header: "",     type: text}
+  - {name: poor_mean,   sd_column: poor_sd,   header: Poor,   type: numeric, decimals: 3, highlight: max}
+  - {name: medium_mean, sd_column: medium_sd, header: Medium, type: numeric, decimals: 3, highlight: max}
+  - {name: rich_mean,   sd_column: rich_sd,   header: Rich,   type: numeric, decimals: 3, highlight: max}

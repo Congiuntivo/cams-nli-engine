@@ -58,6 +58,22 @@ def test_eval_execution_snapshot():
     assert actual == expected
 
 
+def test_eval_norag_summary_snapshot():
+    """``eval_norag_summary.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "eval_norag_summary.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "eval_norag_summary_expected.tex").read_text()
+    assert actual == expected
+
+
+def test_eval_norag_cells_snapshot():
+    """``eval_norag_cells.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "eval_norag_cells.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "eval_norag_cells_expected.tex").read_text()
+    assert actual == expected
+
+
 def test_sd_column_emits_uncertainty_notation():
     """``sd_column`` cells emit siunitx compact-uncertainty notation."""
     col = ColumnSpec(name="mu", header="", type="numeric", decimals=3, sd_column="sd")

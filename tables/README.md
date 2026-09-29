@@ -58,6 +58,7 @@ the raw source changes:
 | `eval_perfield_tier`                            | `study/preprocessed/eval_perfield_tier_wide.csv`                                                       | `uv run python -m study.preprocessed.build_eval_perfield_tier` |
 | `eval_baseline_summary` / `eval_baseline_cells` | `study/preprocessed/eval_baseline_summary_wide.csv`, `study/preprocessed/eval_baseline_cells_wide.csv` | `uv run python -m study.preprocessed.build_eval_baseline`      |
 | `eval_execution`                                | `study/preprocessed/eval_execution_wide.csv`                                                           | `uv run python -m study.preprocessed.build_eval_execution`     |
+| `eval_norag_summary` / `eval_norag_cells`       | `study/preprocessed/eval_norag_summary_wide.csv`, `study/preprocessed/eval_norag_cells_wide.csv`       | `uv run python -m study.preprocessed.build_eval_norag`         |
 
 The `eval_quality` table depends on `study/preprocessed/eval_quality_wide.csv`,
 produced from `study/preprocessed/sessions.csv`. Rerun the preprocessing script
@@ -80,6 +81,12 @@ The `eval_execution` table depends on
 under `source == "models"`, aggregated per `(model, case)` over the nine
 richness × run sessions). Rerun its preprocessor before `tables.build` after
 `sessions.csv` changes.
+
+The `eval_norag_summary` and `eval_norag_cells` tables share a single
+preprocessor that reads `study/preprocessed/sessions.csv`, filters to the
+with-RAG arm (`source == "models" AND model == "gpt-5.4"`) and the no-RAG
+ablation arm (`source == "norag"`), and writes two wide CSVs. Rerun it
+before `tables.build` after `sessions.csv` changes.
 
 ## Spec reference
 
