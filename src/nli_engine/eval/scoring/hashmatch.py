@@ -34,14 +34,16 @@ _NAMED_FIELDS: frozenset[str] = _COLLECTION_FIELDS | {"applicationData"}
 
 STRIPPED_KEYS: frozenset[str] = frozenset(
     {
+        "apiKey",
         "createdOn",
         "description",
         "id",
+        "instructions",
         "name",
+        "namePrefix",
         "ownerId",
         "roleName",
         "title",
-        "instructions",
     }
 )
 

@@ -12,6 +12,8 @@ import statistics
 import sys
 from pathlib import Path
 
+csv.field_size_limit(sys.maxsize)
+
 ROOT = Path(__file__).resolve().parents[2]
 SESSIONS = Path(__file__).parent / "sessions.csv"
 OUTPUT = Path(__file__).parent / "eval_quality_wide.csv"

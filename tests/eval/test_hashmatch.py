@@ -1042,3 +1042,59 @@ def test_normalize_location_trigger_source_no_smartphone_noop():
     )
     _normalize_location_trigger_sources(proto, device_map={}, task_map=task_map)
     assert proto["triggers"]["0"]["sourceDeviceRoleName"] == _HLOC_SVC
+
+
+# ---------------------------------------------------------------------------
+# apiKey / namePrefix stripping — human/machine parity
+# ---------------------------------------------------------------------------
+
+
+def test_apikey_stripped_makes_placeholder_and_real_key_equivalent():
+    """Placeholder and real ``apiKey`` values must hash identically after stripping."""
+    placeholder = {
+        "primaryDevices": [{"roleName": "Phone", "__type": "Smartphone"}],
+        "connectedDevices": [
+            {
+                "roleName": "Weather",
+                "__type": "dk.carp.cams.devices.WeatherService",
+                "apiKey": "<WEATHER_SERVICE_API_KEY>",
+            }
+        ],
+    }
+    real_key = {
+        "primaryDevices": [{"roleName": "Phone", "__type": "Smartphone"}],
+        "connectedDevices": [
+            {
+                "roleName": "Weather",
+                "__type": "dk.carp.cams.devices.WeatherService",
+                "apiKey": "0123456789abcdef0123456789abcdef",
+            }
+        ],
+    }
+    score = HashMatchScore.compute(placeholder, real_key)
+    assert score.per_field["connectedDevices"].f1 == 1.0
+
+
+def test_nameprefix_stripped_makes_present_and_absent_equivalent():
+    """Presence vs absence of ``namePrefix`` must not affect the content hash."""
+    with_prefix = {
+        "primaryDevices": [{"roleName": "Phone", "__type": "Smartphone"}],
+        "connectedDevices": [
+            {
+                "roleName": "Movesense",
+                "__type": "dk.carp.cams.devices.MovesenseDevice",
+                "namePrefix": "Movesense",
+            }
+        ],
+    }
+    without_prefix = {
+        "primaryDevices": [{"roleName": "Phone", "__type": "Smartphone"}],
+        "connectedDevices": [
+            {
+                "roleName": "Movesense",
+                "__type": "dk.carp.cams.devices.MovesenseDevice",
+            }
+        ],
+    }
+    score = HashMatchScore.compute(with_prefix, without_prefix)
+    assert score.per_field["connectedDevices"].f1 == 1.0
