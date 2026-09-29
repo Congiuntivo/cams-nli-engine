@@ -1,0 +1,11 @@
+name: eval_norag_summary
+source: study/preprocessed/eval_norag_summary_wide.csv
+sort_by:
+  - column: arm
+    order: [with_rag, no_rag]
+columns:
+  - {name: arm,                header: Arm,                    type: text}
+  - {name: f1_mean,            sd_column: f1_sd,               header: "Macro-F1",             type: numeric, decimals: 3, highlight: max}
+  - {name: input_tokens_mean,  sd_column: input_tokens_sd,     header: "Input tokens / run (M)", type: numeric, decimals: 2, highlight: min}
+  - {name: tool_calls_mean,    sd_column: tool_calls_sd,       header: "Tool calls / run",     type: numeric, decimals: 1, highlight: min}
+  - {name: llm_calls_mean,     sd_column: llm_calls_sd,        header: "LLM calls / run",      type: numeric, decimals: 1, highlight: min}
