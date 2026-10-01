@@ -74,6 +74,30 @@ def test_eval_norag_cells_snapshot():
     assert actual == expected
 
 
+def test_experts_scratch_snapshot():
+    """``experts_scratch.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "experts_scratch.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "experts_scratch_expected.tex").read_text()
+    assert actual == expected
+
+
+def test_eval_human_headline_snapshot():
+    """``eval_human_headline.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "eval_human_headline.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "eval_human_headline_expected.tex").read_text()
+    assert actual == expected
+
+
+def test_eval_human_perfield_snapshot():
+    """``eval_human_perfield.yaml`` must render to the pinned fixture."""
+    spec = load_spec(SPECS_DIR / "eval_human_perfield.yaml", root=ROOT)
+    actual = render(spec, root=ROOT)
+    expected = (FIXTURES / "eval_human_perfield_expected.tex").read_text()
+    assert actual == expected
+
+
 def test_sd_column_emits_uncertainty_notation():
     """``sd_column`` cells emit siunitx compact-uncertainty notation."""
     col = ColumnSpec(name="mu", header="", type="numeric", decimals=3, sd_column="sd")
