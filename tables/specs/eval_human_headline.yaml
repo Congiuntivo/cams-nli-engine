@@ -1,0 +1,18 @@
+name: eval_human_headline
+source: study/preprocessed/experts_headline_wide.csv
+sort_by:
+  - column: who
+    order: [subject01, subject02, "pipeline (gpt-5.4)"]
+columns:
+  - {name: who,         header: "Subject",           type: text}
+  - {name: role,        header: "Role (yrs)", type: text}
+  - {name: f1_poor,     header: F1,           type: numeric, decimals: 3, highlight: max}
+  - {name: conf_poor,   header: Conf,         type: text}
+  - {name: f1_medium,   header: F1,           type: numeric, decimals: 3, highlight: max}
+  - {name: conf_medium, header: Conf,         type: text}
+  - {name: f1_rich,     header: F1,           type: numeric, decimals: 3, highlight: max}
+  - {name: conf_rich,   header: Conf,         type: text}
+spans:
+  - {label: Poor,   columns: [f1_poor, conf_poor]}
+  - {label: Medium, columns: [f1_medium, conf_medium]}
+  - {label: Rich,   columns: [f1_rich, conf_rich]}

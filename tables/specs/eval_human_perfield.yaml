@@ -1,0 +1,17 @@
+name: eval_human_perfield
+source: study/preprocessed/experts_perfield_transposed.csv
+columns:
+  - {name: field,            header: "Field",  type: text}
+  - {name: subject01_poor,   header: Poor,     type: numeric, decimals: 3}
+  - {name: subject01_medium, header: Medium,   type: numeric, decimals: 3}
+  - {name: subject01_rich,   header: Rich,     type: numeric, decimals: 3}
+  - {name: subject02_poor,   header: Poor,     type: numeric, decimals: 3}
+  - {name: subject02_medium, header: Medium,   type: numeric, decimals: 3}
+  - {name: subject02_rich,   header: Rich,     type: numeric, decimals: 3}
+  - {name: pipeline_poor,    header: Poor,     type: numeric, decimals: 3}
+  - {name: pipeline_medium,  header: Medium,   type: numeric, decimals: 3}
+  - {name: pipeline_rich,    header: Rich,     type: numeric, decimals: 3}
+spans:
+  - {label: subject01, columns: [subject01_poor, subject01_medium, subject01_rich]}
+  - {label: subject02, columns: [subject02_poor, subject02_medium, subject02_rich]}
+  - {label: "pipeline (gpt-5.4)", columns: [pipeline_poor, pipeline_medium, pipeline_rich]}

@@ -1,0 +1,4 @@
+who,role,f1_poor,conf_poor,f1_medium,conf_medium,f1_rich,conf_rich
+subject01,Main architect (10y),0.9679965156794424,5,0.9679965156794424,5,1.0,5
+subject02,Software Developer (1y),0.6085227272727273,5,0.975,5,1.0,4
+pipeline (gpt-5.4),—,0.85479838546228,—,0.8759192873522142,—,0.8821109652101168,—

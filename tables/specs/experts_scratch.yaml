@@ -1,0 +1,24 @@
+name: experts_scratch
+source: study/preprocessed/experts_scratch_wide.csv
+sort_by:
+  - column: who
+    order: [subject01, subject02, "pipeline (gpt-5.4)"]
+  - column: richness
+    order: [Poor, Medium, Rich]
+row_group:
+  column: who
+  style: merge
+columns:
+  - {name: who,               header: Who,              type: text}
+  - {name: richness,          header: Richness,         type: text}
+  - {name: role_or_years,     header: "Role (yrs)",     type: text}
+  - {name: confidence,        header: Conf,             type: text}
+  - {name: macro_f1,          header: "Macro-F1",       type: numeric, decimals: 3, highlight: max}
+  - {name: primaryDevices,    header: primDev,          type: numeric, decimals: 3}
+  - {name: connectedDevices,  header: connDev,          type: numeric, decimals: 3}
+  - {name: tasks,             header: tasks,            type: numeric, decimals: 3}
+  - {name: triggers,          header: triggers,         type: numeric, decimals: 3}
+  - {name: taskControls,      header: taskCtl,          type: numeric, decimals: 3}
+  - {name: connections,       header: conn,             type: numeric, decimals: 3}
+  - {name: applicationData,   header: appData,          type: numeric, decimals: 3}
+  - {name: other,             header: other,            type: numeric, decimals: 3}
