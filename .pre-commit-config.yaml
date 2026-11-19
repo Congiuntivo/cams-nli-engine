@@ -4,6 +4,8 @@ default_install_hook_types:
   - post-checkout
   - post-merge
   - post-rewrite
+default_language_version:
+  node: "20.18.0"
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.5.16
@@ -17,8 +19,8 @@ repos:
         args: [--fix-only, --extend-select, I]
       - id: ruff-format
         entry: sh -c 'ruff format --force-exclude && git add -u'
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.3.3
     hooks:
       - id: prettier
         types_or: [markdown, json]
