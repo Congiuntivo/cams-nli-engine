@@ -43,10 +43,15 @@ cp .env.example .env
 # edit .env and fill in OPENAI_API_KEY, FASTEMBED_CACHE_PATH, QDRANT_URL
 ```
 
-The engine also needs a running CAMS authoring server reachable at `http://localhost:8080` (or pass `--server URL`), and a Qdrant instance for retrieval if you use the one-shot LLM workflow. First-time Qdrant setup:
+The engine also needs:
+
+- A running [**CAMS authoring server**](https://github.com/Congiuntivo/cams-authoring-server) reachable at `http://localhost:8080` (or pass `--server URL`). It is the typed construction interface the pipeline drives.
+- A Qdrant instance for retrieval if you use the `one_shot_llm` workflow. The indexed collection is built by the [**cams-kb**](https://github.com/Congiuntivo/cams-kb) pipeline over the CAMS documentation.
+
+First-time Qdrant setup (caches FastEmbed models locally):
 
 ```bash
-uv run python scripts/download_models.py   # cache FastEmbed models once
+uv run python scripts/download_models.py
 ```
 
 ## Use
@@ -182,6 +187,11 @@ rm nli_engine-study-results.tar.zst
 ```
 
 See [`study/runs/README.md`](study/runs/README.md) for the archive layout and how to regenerate everything from scratch.
+
+## Related repos
+
+- [**cams-authoring-server**](https://github.com/Congiuntivo/cams-authoring-server): the stateful HTTP authoring API this engine drives. Every typed tool here maps to one of its endpoints.
+- [**cams-kb**](https://github.com/Congiuntivo/cams-kb): ingestion and retrieval pipeline over the CAMS documentation; produces the Qdrant collection used by the `one_shot_llm` workflow's RAG step.
 
 ## Design docs
 
