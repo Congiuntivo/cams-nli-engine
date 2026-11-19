@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SESSIONS = Path(__file__).parent / "sessions.csv"
 SUMMARY_OUT = Path(__file__).parent / "eval_norag_summary_wide.csv"
 CELLS_OUT = Path(__file__).parent / "eval_norag_cells_wide.csv"
+CELLS_LONG_OUT = Path(__file__).parent / "eval_norag_cells_long.csv"
 
 CASE_DISPLAY = {
     "001_diary_study": "Case 001",
@@ -117,16 +118,45 @@ def _write_cells(arms: dict[str, list[dict]]) -> None:
         writer.writerows(rows_out)
 
 
+def _write_cells_long(arms: dict[str, list[dict]]) -> int:
+    """Emit one row per run with arm/case/prompt/f1 — consumed by the
+    grouped-bar plot (``plots/specs/norag_bar_by_case.yaml``)."""
+    fieldnames = ["session_id", "arm", "case", "prompt_key", "hm_f1"]
+    rows_out: list[dict[str, str]] = []
+    for arm in ARMS:
+        for r in arms[arm]:
+            case_id = r["case_id"]
+            if case_id not in CASE_DISPLAY:
+                continue
+            rows_out.append(
+                {
+                    "session_id": r["session_id"],
+                    "arm": arm,
+                    "case": CASE_DISPLAY[case_id],
+                    "prompt_key": r["prompt_key"],
+                    "hm_f1": repr(_hm_f1(r)),
+                }
+            )
+
+    with CELLS_LONG_OUT.open("w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows_out)
+    return len(rows_out)
+
+
 def main() -> int:
     arms = _load_arms()
     _write_summary(arms)
     _write_cells(arms)
+    n_long = _write_cells_long(arms)
 
     print(f"wrote {SUMMARY_OUT.resolve().relative_to(ROOT)} ({len(ARMS)} arms)")
     print(
         f"wrote {CELLS_OUT.resolve().relative_to(ROOT)} "
         f"({len(ARMS)} arms x {len(CASE_DISPLAY)} cases)"
     )
+    print(f"wrote {CELLS_LONG_OUT.resolve().relative_to(ROOT)} ({n_long} runs)")
     return 0
 
 
