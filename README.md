@@ -220,4 +220,4 @@ bash openapi/generate_client.sh
 
 ## License
 
-See [LICENSE](LICENSE).
+Licensed under MIT; see [LICENSE](LICENSE).
