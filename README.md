@@ -179,6 +179,27 @@ automatically (same as `extract`).
 
 See [eval design doc](docs/design/eval/eval.md) for the full metric reference and comparison model.
 
+## Study data
+
+Study run artefacts (per-run JSONL logs under `study/runs/**/results/` and `study/baselines/**/results/`, plus the preprocessing derivatives `study/preprocessed/steps.csv`, `tools.csv` and `protocols/`) are not tracked in git. They are published as a GitHub Release asset:
+
+**[Study data v1 — nli_engine-study-results.tar.zst](https://github.com/Congiuntivo/cams-nli-engine/releases/tag/study-data-v1)** (~23 MB compressed, ~1.6 GB extracted).
+
+Extract from the repo root so paths line up:
+
+```bash
+# From the repo root:
+curl -L -o nli_engine-study-results.tar.zst \
+  https://github.com/Congiuntivo/cams-nli-engine/releases/download/study-data-v1/nli_engine-study-results.tar.zst
+
+sha256sum -c <<<"9f1e06aeceb6bf7039c35e8d85cd51c7fb3496e6918825b959544099ab32d2bc  nli_engine-study-results.tar.zst"
+
+tar --zstd -xf nli_engine-study-results.tar.zst
+rm nli_engine-study-results.tar.zst
+```
+
+See [`study/runs/README.md`](study/runs/README.md) for the archive layout and how to regenerate the artefacts.
+
 ## Design docs
 
 - [Session layer](docs/design/session_layer/session_layer.md) — `ProtocolSession`, `ToolSpec`, `BoundTool` ([diagram](docs/design/session_layer/session_layer.puml))
