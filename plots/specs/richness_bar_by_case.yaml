@@ -1,0 +1,36 @@
+name: richness_bar_by_case
+kind: grouped_bar
+source: study/runs/summary.csv
+filter:
+  allow:
+    source: [models]
+    model: [gpt-4o-mini, gpt-5-nano, gpt-5.4-nano, gpt-5.4-mini, gpt-5.4]
+    case_id: [001_diary_study, 002_diary_study, 003_cardio_wellness]
+    prompt_key: [poor, medium, rich]
+x:
+  column: model
+  order: [gpt-5.4, gpt-5.4-mini, gpt-5.4-nano, gpt-5-nano, gpt-4o-mini]
+  label: Model
+y:
+  column: hm_f1
+  label: Macro F1
+  limit: [0.0, 1.05]
+hue:
+  column: prompt_key
+  order: [poor, medium, rich]
+  title: Richness
+facet:
+  column: case_id
+  order: [001_diary_study, 002_diary_study, 003_cardio_wellness]
+  labels:
+    001_diary_study: "Case 001"
+    002_diary_study: "Case 002"
+    003_cardio_wellness: "Case 003"
+aggregate:
+  by: [case_id, model, prompt_key]
+  method: mean
+  errorbar: sd
+  dodge: 0.0
+figure:
+  figsize: [10.0, 3.2]
+  legend: right

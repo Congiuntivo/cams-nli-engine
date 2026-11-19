@@ -1,0 +1,31 @@
+name: norag_bar_by_case
+kind: grouped_bar
+source: study/preprocessed/eval_norag_cells_long.csv
+filter:
+  allow: {}
+x:
+  column: prompt_key
+  order: [poor, medium, rich]
+  label: Prompt richness
+y:
+  column: hm_f1
+  label: Macro F1
+  limit: [0.0, 1.05]
+hue:
+  column: arm
+  order: [with_rag, no_rag]
+  title: Arm
+  labels:
+    with_rag: "with RAG"
+    no_rag: "no RAG"
+facet:
+  column: case
+  order: ["Case 001", "Case 002", "Case 003"]
+aggregate:
+  by: [case, arm, prompt_key]
+  method: mean
+  errorbar: sd
+  dodge: 0.0
+figure:
+  figsize: [9.0, 3.2]
+  legend: right
