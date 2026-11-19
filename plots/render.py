@@ -157,27 +157,25 @@ def render_small_multiples_line(spec: PlotSpec, root: Path) -> Figure:
 
 
 def render_grouped_bar(spec: PlotSpec, root: Path) -> Figure:
-    """Render a single-panel grouped bar chart (bars grouped by hue at each x).
+    """Render a grouped bar chart; optionally faceted as a horizontal row.
 
     Bars show the mean of ``y`` across the sessions matching each
     (x, hue) cell; when ``spec.aggregate.errorbar == "sd"`` an error bar of
-    +/-1 standard deviation is drawn at each bar top.
+    +/-1 standard deviation is drawn at each bar top. When ``spec.facet`` is
+    set, one panel is drawn per facet value (left-to-right) with a shared y
+    axis — mirroring the small-multiples line layout.
 
     Args:
-        spec: Loaded plot spec. Must not carry a ``facet``; ``aggregate.method``
-            must be ``"mean"`` and ``aggregate.dodge`` must be ``0`` (bar
-            grouping handles the horizontal offset natively).
+        spec: Loaded plot spec. ``aggregate.method`` must be ``"mean"`` and
+            ``aggregate.dodge`` must be ``0`` (bar grouping handles the
+            horizontal offset natively). ``spec.facet`` is optional.
         root: Repository root (used for resolving relative paths; the source
             is already absolute by the time it reaches this function).
 
     Raises:
-        ValueError: If the spec carries a facet, a non-mean method, or a
-            non-zero dodge; or if the filtered data is empty.
+        ValueError: If ``aggregate.method != "mean"`` or ``aggregate.dodge != 0``;
+            or if the filtered data is empty.
     """
-    if spec.facet is not None:
-        raise ValueError(
-            f"{spec.name}: grouped_bar does not support facets (spec.facet must be None)"
-        )
     if spec.aggregate.method != "mean":
         raise ValueError(
             f"{spec.name}: grouped_bar only supports aggregate.method='mean', "
@@ -208,28 +206,63 @@ def render_grouped_bar(spec: PlotSpec, root: Path) -> Figure:
         spec.aggregate.errorbar if spec.aggregate.errorbar != "none" else None
     )
 
-    fig, ax = plt.subplots(1, 1, figsize=spec.figure.figsize, constrained_layout=True)
-    sns.barplot(
-        data=df,
-        x=spec.x.column,
-        y=spec.y.column,
-        hue=spec.hue.column,
-        order=x_order,
-        hue_order=hue_order,
-        palette=palette,
-        estimator="mean",
-        errorbar=errorbar_arg,
-        capsize=0.15,
-        err_kws={"linewidth": STROKE_THIN, "color": MUTED},
-        edgecolor=INK,
-        linewidth=STROKE_THIN * 0.5,
-        ax=ax,
-        legend=False,
-    )
-    ax.set_xlabel(spec.x.label or "")
-    ax.set_ylabel(spec.y.label or "")
-    if spec.y.limit is not None:
-        ax.set_ylim(*spec.y.limit)
+    if spec.facet is not None:
+        df[spec.facet.column] = _as_ordered_categorical(
+            df[spec.facet.column], spec.facet.order
+        )
+        facet_order = spec.facet.order or sorted(
+            df[spec.facet.column].dropna().unique()
+        )
+        fig, axes = plt.subplots(
+            1,
+            len(facet_order),
+            sharey=True,
+            figsize=spec.figure.figsize,
+            constrained_layout=True,
+        )
+        if len(facet_order) == 1:
+            axes = [axes]
+    else:
+        facet_order = [None]
+        fig, ax = plt.subplots(
+            1, 1, figsize=spec.figure.figsize, constrained_layout=True
+        )
+        axes = [ax]
+
+    for ax, facet_value in zip(axes, facet_order):
+        panel_df = (
+            df if facet_value is None else df[df[spec.facet.column] == facet_value]
+        )
+        sns.barplot(
+            data=panel_df,
+            x=spec.x.column,
+            y=spec.y.column,
+            hue=spec.hue.column,
+            order=x_order,
+            hue_order=hue_order,
+            palette=palette,
+            estimator="mean",
+            errorbar=errorbar_arg,
+            capsize=0.15,
+            err_kws={"linewidth": STROKE_THIN, "color": MUTED},
+            edgecolor=INK,
+            linewidth=STROKE_THIN * 0.5,
+            ax=ax,
+            legend=False,
+        )
+        ax.set_xlabel(spec.x.label or "")
+        ax.set_ylabel("")
+        if spec.y.limit is not None:
+            ax.set_ylim(*spec.y.limit)
+        if facet_value is not None:
+            title = (
+                spec.facet.labels.get(facet_value, str(facet_value))
+                if spec.facet.labels
+                else spec.facet.title_template.format(value=facet_value)
+            )
+            ax.set_title(title)
+
+    axes[0].set_ylabel(spec.y.label or "")
 
     hue_label_map = spec.hue.labels or {}
     handles = [
