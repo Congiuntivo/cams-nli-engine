@@ -4,7 +4,7 @@ A natural-language interface that generates [CARP Mobile Sensing](https://github
 
 Authoring a CAMS study protocol today requires fluency in CAMS's domain model and a Dart/Flutter codebase. This engine lets a researcher describe a study in natural language and emits a valid protocol JSON by driving a running authoring server with an LLM-based pipeline.
 
-The engine is the artefact produced by the MSc thesis _Natural-language authoring of CAMS study protocols_ (DTU, 2025/2026). The published results are reproducible from this repo and the [`study-data-v1`](https://github.com/Congiuntivo/cams-nli-engine/releases/tag/study-data-v1) release.
+The engine is the artefact produced by an MSc thesis at DTU (2025/2026). The published results are reproducible from this repo and the [`study-data-v1`](https://github.com/Congiuntivo/cams-nli-engine/releases/tag/study-data-v1) release.
 
 ![System architecture](docs/images/system-architecture.png)
 
@@ -207,12 +207,6 @@ The generated client under `src/nli_engine/client/_generated/` is produced from 
 ```bash
 bash openapi/generate_client.sh
 ```
-
-## Citing
-
-If you use this work, please cite the accompanying MSc thesis:
-
-> De Carli, S. (2026). _Natural-language authoring of CAMS study protocols_. MSc thesis, Technical University of Denmark.
 
 ## License
 
