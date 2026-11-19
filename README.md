@@ -1,111 +1,126 @@
 # NLI Engine
 
-Natural-language interface engine for authoring CARP study protocols.
+A natural-language interface that generates [CARP Mobile Sensing](https://github.com/cph-cachet/carp.sensing-flutter) (CAMS) study protocols from plain-English descriptions.
 
-## Architecture
+Authoring a CAMS study protocol today requires fluency in CAMS's domain model and a Dart/Flutter codebase. This engine lets a researcher describe a study in natural language and emits a valid protocol JSON by driving a running authoring server with an LLM-based pipeline.
 
-```mermaid
-flowchart LR
-    User(["User"])
-    CLIGUI["CLI / GUI"]
-    WF["Workflow Layer"]
-    LLM["LLM Layer"]
-    SL["Session Layer"]
-    GC["Generated Client"]
-    PS[["Protocol Server\n:8080"]]
+The engine is the artefact produced by the MSc thesis _Natural-language authoring of CAMS study protocols_ (DTU, 2025/2026). The published results are reproducible from this repo and the [`study-data-v1`](https://github.com/Congiuntivo/cams-nli-engine/releases/tag/study-data-v1) release.
 
-    User --> CLIGUI --> WF --> LLM --> SL --> GC --> PS
-```
+![System architecture](docs/images/system-architecture.png)
 
-The engine receives free-text descriptions of a study protocol, maps them to API
-calls via an LLM planner, and assembles the protocol on a running authoring server.
+## How it works
 
-**Key principle:** `session_id` is managed entirely by the engine — the LLM never
-sees it. Every API operation is exposed as a `BoundTool` with `session_id`
-pre-filled and a Pydantic schema the LLM can use for structured output.
+The engine never asks the LLM to emit a protocol as free-form JSON. Instead, it exposes every authoring-server operation as a **typed tool** with its schema and a pre-bound `session_id`, and the LLM composes the protocol by calling these tools one step at a time. Syntactic validity is guaranteed by construction; the LLM is free to focus on intent.
 
-## Usage
+Generation is **staged**: the user prompt flows through a pipeline of narrow LLM-driven steps, each with its own system prompt, tool set and (optionally) retrieval over the CAMS knowledge base.
 
-### Install with CLI extras
+![Pipeline stages](docs/images/pipeline-stages.png)
+
+| Stage              | Role                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| Refiner            | Rewrites the raw prompt into a canonical description                                 |
+| Planner            | Decomposes the description into N self-contained **assembly units**                  |
+| Extractor          | Emits a typed assembly plan the orchestrator can execute                             |
+| Setup specialist   | Adds the shared infrastructure (smartphone, CAWS endpoint, participant role)         |
+| Orchestrator       | Iterates over assembly units and delegates each sub-operation to a domain specialist |
+| Domain specialists | Device, trigger, task, task-control (one LLM each, with a narrow tool set)           |
+| Explainer          | Produces a user-facing summary of what was built                                     |
+
+See [`docs/design/`](docs/design/) for a per-layer breakdown.
+
+## Install
+
+Python 3.10 (pinned via `.python-version`). Dependency manager: [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
 uv sync --extra cli
 ```
 
-### Basic interactive session
+Set up environment variables (see [`.env.example`](.env.example)):
+
+```bash
+cp .env.example .env
+# edit .env and fill in OPENAI_API_KEY, FASTEMBED_CACHE_PATH, QDRANT_URL
+```
+
+The engine also needs a running CAMS authoring server reachable at `http://localhost:8080` (or pass `--server URL`), and a Qdrant instance for retrieval if you use the one-shot LLM workflow. First-time Qdrant setup:
+
+```bash
+uv run python scripts/download_models.py   # cache FastEmbed models once
+```
+
+## Use
+
+### Interactive
 
 ```bash
 uv run nli-engine
 ```
 
-### Run with configuration file
-
-```bash
-uv run nli-engine --config workflow.yaml
-```
-
-### Fully automated run with no prompts
+### Fully automated
 
 ```bash
 uv run nli-engine \
   --workflow one_shot_llm \
   --name "my-study" \
-  --prompt "record steps with the smartphone, heartbeat every hour" \
-  --config workflow.yaml \
-  --log-file run.jsonl
+  --prompt "record steps with the smartphone and heartbeat every hour" \
+  --config config.yaml \
+  --log-output logs/
 ```
 
-Type `exit` or press `Ctrl-C` to quit an interactive session.
+### Browser GUI
 
-### Flags reference
+```bash
+uv sync --extra gui
+uv run nli-engine-gui
+```
 
-| Flag              | Default                 | Description                                                                                        |
-| ----------------- | ----------------------- | -------------------------------------------------------------------------------------------------- |
-| `--workflow ID`   | —                       | Skip the workflow selector and use this workflow directly                                          |
-| `--name NAME`     | —                       | Protocol name; skips the interactive name prompt                                                   |
-| `--prompt TEXT`   | —                       | Fire the first turn automatically; best combined with `--workflow` and `--name`                    |
-| `--config PATH`   | —                       | Path to a workflow YAML config file                                                                |
-| `--server URL`    | `http://localhost:8080` | Authoring server base URL                                                                          |
-| `--log-file PATH` | —                       | Write a full JSON Lines session log (see [CLI design doc](docs/design/cli/cli.md#session-logging)) |
-| `-v` / `-vv`      | —                       | Verbose trace: `-v` one-line events, `-vv` full debug blocks                                       |
+### CLI flags
+
+| Flag                | Default                 | Description                                                            |
+| ------------------- | ----------------------- | ---------------------------------------------------------------------- |
+| `-w, --workflow ID` |                         | Workflow to run (see below). Skips the interactive workflow picker     |
+| `-n, --name NAME`   |                         | Protocol name; skips the interactive name prompt                       |
+| `-p, --prompt TEXT` |                         | Fire the first turn automatically; best combined with `-w` and `-n`    |
+| `-c, --config PATH` |                         | Path to a workflow YAML config file                                    |
+| `-s, --server URL`  | `http://localhost:8080` | Authoring server base URL                                              |
+| `-lo, --log-output` |                         | Write a JSON Lines session log (file path or directory for autoname)   |
+| `--stop-after STEP` |                         | Stop after `refiner`, `planner`, `extractor` or `orchestrator` (debug) |
+| `-v`, `-vv`         |                         | `-v` one-line trace per event, `-vv` full debug blocks                 |
 
 ### Workflow config
 
-LLM workflows require a YAML config file that maps step names to model identifiers
-and provides provider-specific parameters:
-
 ```yaml
-# workflow.yaml
+# config.yaml
 models:
-  default: "ollama/qwen2.5:7b" # or "gpt-4o", "anthropic/claude-sonnet-4-6", …
-  # override individual steps (all fall back to "default" if omitted):
-  # orchestrator: "gpt-4o"
+  default: "gpt-5.4-mini" # LiteLLM routing: provider/model
+  # orchestrator: "gpt-4o"       # override individual steps if needed
 parameters:
   api_base: "http://localhost:11434" # required for Ollama; omit for cloud providers
+temperature:
+  default: 0.3
+retrieval:
+  dense_model: "ollama/mahonzhan/all-MiniLM-L6-v2"
+  sparse_model: "Qdrant/bm25"
+  multi_model: "colbert-ir/colbertv2.0"
+  method: "hybrid"
+  rerank: true
+  top_k: 5
 ```
 
 Model identifiers follow [LiteLLM's routing conventions](https://docs.litellm.ai/docs/providers).
 
 ### Available workflows
 
-| ID             | Description                                                                                               |
-| -------------- | --------------------------------------------------------------------------------------------------------- |
-| `dummy`        | Deterministic baseline — hard-codes the three setup tool calls; no LLM                                    |
-| `dummy_llm`    | LLM-driven version — instructs the model to make the same calls autonomously                              |
-| `one_shot_llm` | Five-step pipeline: refiner → planner → extractor → setup → per-unit orchestrator with domain specialists |
+| ID             | What it does                                                                                 |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| `dummy`        | Deterministic baseline: hard-codes the three setup tool calls, no LLM                        |
+| `dummy_llm`    | LLM-driven version of the above; same calls, autonomous                                      |
+| `one_shot_llm` | Full staged pipeline (refiner → planner → extractor → setup → orchestrator with specialists) |
 
 ## Evaluation
 
-`nli-eval` reads session logs produced by `--log-file` and reports execution metrics.
-No running engine or server required.
-
-### Install with CLI extras
-
-As with the engine, the evaluation CLI is included in the `cli` extra:
-
-```bash
-uv sync --extra cli
-```
+`nli-eval` reads session logs (`--log-output`) and reports protocol-level metrics (HashMatch F1 over the field structure of the CAMS protocol) plus execution metrics (tokens, cost, wall time, tool-call failures).
 
 ### Evaluate a single run
 
@@ -116,123 +131,89 @@ uv run nli-eval run run.jsonl --output metrics.json
 
 ### Evaluate a dataset
 
-Provide a YAML manifest that describes the dataset — expected outputs and the
-prompts that should produce them:
+The dataset is described by a YAML manifest that pairs **cases** (each with an expected protocol) and **prompts** (each a description of that case at varying richness):
 
 ```yaml
 # dataset/manifest.yaml
 cases:
   - id: "001_diary_study"
-    expected: cases/001_expected.json # relative to this file
+    expected: cases/001_expected.json
     prompts:
       v1: "record steps with the smartphone, heartbeat every hour"
       detailed: "record steps and location every hour, collect participant name at enrolment"
 ```
 
-The manifest has no log paths. Logs are resolved at evaluation time in one of two ways:
-
-**Single log** — evaluate exactly one case by passing a log path. The manifest is
-searched for a `(case_id, prompt_key)` pair whose prompt text matches the first
-`user_turn` in the log:
+Evaluate one case:
 
 ```bash
 uv run nli-eval dataset dataset/manifest.yaml logs/run1.jsonl
 ```
 
-**Batch (`--last-from`)** — for each `(case, prompt_key)` pair in the manifest,
-find the most recently modified `.jsonl` file in the given directory whose
-`user_turn` matches the prompt text. Unmatched pairs are skipped with a warning:
+Batch over a logs directory (picks the most recent log matching each prompt):
 
 ```bash
-uv run nli-eval dataset dataset/manifest.yaml --last-from logs/
 uv run nli-eval dataset dataset/manifest.yaml --last-from logs/ --output results.json
 ```
 
-### Extract the final protocol from a log
+### Inspect the output
 
 ```bash
-uv run nli-eval extract run.jsonl protocol.json
+uv run nli-eval extract run.jsonl protocol.json           # final protocol from a log
+uv run nli-eval canonicalize protocol.json --output c.json # content-addressed form (internal diff format)
 ```
 
-Writes the protocol from the last completed turn to `protocol.json`. Useful for
-inspecting what the engine actually produced or seeding a new expected-output file.
+See the [eval design doc](docs/design/eval/eval.md) for the full metric reference.
 
-### Inspect canonicalized protocol JSON
+## Results
 
-`canonicalize` converts one or two protocols to their content-addressed form — the
-same internal representation used by HashMatch — so you can diff them directly:
+The thesis evaluates the pipeline on a 3-scenario × 3-prompt-richness matrix across five OpenAI models and compares against a ReAct baseline and human-expert protocols. Macro F1 by model and prompt richness, faceted by case:
 
-```bash
-# Single file → stdout
-uv run nli-eval canonicalize dataset/cases/002_expected.json | jq .
+![Macro F1 by case, model and prompt richness](docs/images/richness-by-case.png)
 
-# Single file → output file
-uv run nli-eval canonicalize protocol.json --output ca.json
-
-# Two files → both written to a directory, ready to diff
-uv run nli-eval canonicalize run.jsonl dataset/cases/002_expected.json --out-dir /tmp/diff/
-diff /tmp/diff/run.json /tmp/diff/002_expected.json
-```
-
-A `.jsonl` input is treated as a session log and the final protocol is extracted
-automatically (same as `extract`).
-
-See [eval design doc](docs/design/eval/eval.md) for the full metric reference and comparison model.
-
-## Study data
-
-Study run artefacts (per-run JSONL logs under `study/runs/**/results/` and `study/baselines/**/results/`, plus the preprocessing derivatives `study/preprocessed/steps.csv`, `tools.csv` and `protocols/`) are not tracked in git. They are published as a GitHub Release asset:
-
-**[Study data v1 — nli_engine-study-results.tar.zst](https://github.com/Congiuntivo/cams-nli-engine/releases/tag/study-data-v1)** (~23 MB compressed, ~1.6 GB extracted).
-
-Extract from the repo root so paths line up:
+Raw per-run JSONL logs and preprocessed CSVs are packaged in release [`study-data-v1`](https://github.com/Congiuntivo/cams-nli-engine/releases/tag/study-data-v1). To unpack:
 
 ```bash
-# From the repo root:
+# From the repo root, so paths line up with the working tree:
 curl -L -o nli_engine-study-results.tar.zst \
   https://github.com/Congiuntivo/cams-nli-engine/releases/download/study-data-v1/nli_engine-study-results.tar.zst
-
 sha256sum -c <<<"9f1e06aeceb6bf7039c35e8d85cd51c7fb3496e6918825b959544099ab32d2bc  nli_engine-study-results.tar.zst"
-
 tar --zstd -xf nli_engine-study-results.tar.zst
 rm nli_engine-study-results.tar.zst
 ```
 
-See [`study/runs/README.md`](study/runs/README.md) for the archive layout and how to regenerate the artefacts.
+See [`study/runs/README.md`](study/runs/README.md) for the archive layout and how to regenerate everything from scratch.
 
 ## Design docs
 
-- [Session layer](docs/design/session_layer/session_layer.md) — `ProtocolSession`, `ToolSpec`, `BoundTool` ([diagram](docs/design/session_layer/session_layer.puml))
-- [Workflow layer](docs/design/workflow_layer/workflow_layer.md) — `Workflow`, `Step`, `WorkflowContext`, `TurnResult`, `Conversation` ([diagram](docs/design/workflow_layer/workflow_layer.puml))
-- [LLM layer](docs/design/llm_layer/llm_layer.md) — `LLMClient`, `LLMStep`, schema conversion, tool dispatch ([diagram](docs/design/llm_layer/llm_layer.puml))
-- [Retrieval layer](docs/design/retrieval_layer/retrieval_layer.md) — `Retriever`, `Document`, `RetrievedChunk`, `QueryExtractor`; backends: `KeywordRetriever` (in-memory), `QdrantRetriever` (hybrid dense+sparse+ColBERT); wired per-step via `LLMStep(retriever=…)`
-- [CLI](docs/design/cli/cli.md) — argument structure, interactive flow, Rich components, session logging
-- [Eval](docs/design/eval/eval.md) — `nli-eval` CLI, JSONL parsing, metrics, dataset manifest, comparison model
+- [Session layer](docs/design/session_layer/session_layer.md): `ProtocolSession`, `ToolSpec`, `BoundTool`
+- [Workflow layer](docs/design/workflow_layer/workflow_layer.md): `Workflow`, `Step`, `WorkflowContext`, `TurnResult`, `Conversation`
+- [LLM layer](docs/design/llm_layer/llm_layer.md): `LLMClient`, `LLMStep`, schema conversion, tool dispatch
+- [Retrieval layer](docs/design/retrieval_layer/retrieval_layer.md): `Retriever`, `Document`, `RetrievedChunk`; backends: `KeywordRetriever`, `QdrantRetriever` (hybrid dense+sparse+ColBERT)
+- [CLI](docs/design/cli/cli.md): argument structure, interactive flow, session logging
+- [Eval](docs/design/eval/eval.md): `nli-eval` CLI, JSONL parsing, metrics, dataset manifest, HashMatch
 
 ## Development
 
 ```bash
 uv sync --all-extras
 uv run pytest
+uv run pre-commit install --install-hooks
 ```
 
 ### Regenerate the API client
 
-The generated client under `src/nli_engine/client/_generated/` is produced from
-`openapi/openapi.yaml`. Regenerate it after changing the spec (requires Java):
+The generated client under `src/nli_engine/client/_generated/` is produced from `openapi/openapi.yaml`. It is committed so CI and fresh clones work without Java; regenerate after changing the spec:
 
 ```bash
 bash openapi/generate_client.sh
 ```
 
-The generated code is committed to the repo so CI and fresh clones work without Java.
+## Citing
 
-### First-time Qdrant setup
+If you use this work, please cite the accompanying MSc thesis:
 
-Set `FASTEMBED_CACHE_PATH`, `QDRANT_URL`, and `QDRANT_COLLECTION` in `.env`, then download the FastEmbed models once:
+> De Carli, S. (2026). _Natural-language authoring of CAMS study protocols_. MSc thesis, Technical University of Denmark.
 
-```bash
-uv run python scripts/download_models.py
-```
+## License
 
-The script exits with an error if `FASTEMBED_CACHE_PATH` is unset. Models are downloaded only on the first run; subsequent calls are instant.
+See [LICENSE](LICENSE).
