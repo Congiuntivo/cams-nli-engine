@@ -33,3 +33,10 @@ gui_logs/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+
+# Study run outputs (archived out-of-band; see study/runs/README.md)
+study/runs/**/results/
+study/baselines/**/results/
+study/preprocessed/steps.csv
+study/preprocessed/tools.csv
+study/preprocessed/protocols/
